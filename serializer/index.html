@@ -19,7 +19,7 @@
         <h2>Problem:</h2>
             <pre>
 someElement.innerHTML = someElement.innerHTML;
-// Alert: This line above deletes all someELement's children nodes as it overrides its html content
+// Alert: This line above deletes all someElement's children nodes as it overrides its html content
 </pre>
         <p>This is very inconvenient for example you want save the selection range on the DOM object and restore it later on but you can't because the container elements
             assigned to the saved range don't exist anymore after you have overrided the object's innerHTML.</p>
@@ -28,7 +28,7 @@ someElement.innerHTML = someElement.innerHTML;
         <pre>var serializer = new Serializer(editor); // editor is a root node</pre>
         <p>The mechanism of Serializer is with the given root node, in this example, <code>editor</code>, it saves the position of a specific node and serialize
             it into a string. Therefore, when the root node innerHTML is overriden, it can still find that specific node through the saved string.</p>
-        <p>See the example below: </p>
+        <p>See the example below: (or view in <a href="http://embed.plnkr.co/kjgeTf/preview">plnkr</a>)</p>
     </div>
 </div>
 <button id="saveRangeBtn" class="btn btn-primary">Save Range</button>

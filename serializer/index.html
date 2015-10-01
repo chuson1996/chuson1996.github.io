@@ -9,7 +9,7 @@
     <script data-require="bootstrap@*" data-semver="3.3.5" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
     <script data-require="lodash.js@*" data-semver="3.10.0" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js"></script>
     <link rel="stylesheet" href="style.css" />
-    <script src="serializer.js"></script>
+    <script src="node_modules/cson-serializer/lib/serializer.js"></script>
 </head>
 
 <body class="container">
@@ -21,7 +21,7 @@
 someElement.innerHTML = someElement.innerHTML;
 // Alert: This line above deletes all someElement's children nodes as it overrides its html content
 </pre>
-        <p>This is very inconvenient for example you want save the selection range on the DOM object and restore it later on but you can't because the container elements
+        <p>This is very inconvenient for example you want to save the selection range on the DOM object and restore it later on but you can't because the container elements
             assigned to the saved range don't exist anymore after you have overrided the object's innerHTML.</p>
 
         <h2>Solution: </h2>

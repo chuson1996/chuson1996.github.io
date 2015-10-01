@@ -1,0 +1,18 @@
+{
+  "name": "serializer-demo",
+  "version": "1.0.0",
+  "description": "Demo of serializer",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "demo",
+    "serializer"
+  ],
+  "author": "Chu Hoang Son",
+  "license": "ISC",
+  "dependencies": {
+    "cson-serializer": "^1.0.0"
+  }
+}

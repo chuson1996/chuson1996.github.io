@@ -1,0 +1,13 @@
+/* Styles go here */
+.figure{
+    display:inline-block;
+}
+.figure.focused{
+    border: 3px solid green;
+}
+#editor{
+    margin-top:10px;
+    padding: 10px;
+    border: 2px solid burlywood;
+    border-radius: 5px;
+}

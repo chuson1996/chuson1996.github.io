@@ -1,0 +1,50 @@
+.figure {
+  width: 48%;
+  float: left;
+  margin-right: 20px;
+  outline: none; }
+  .figure.justifyCenter {
+    width: 100%;
+    float: none;
+    margin: 0 auto; }
+    .figure.justifyCenter img {
+      text-align: center; }
+  .figure.justifyRight {
+    float: right;
+    margin-right: 0; }
+    .figure.justifyRight img {
+      text-align: center; }
+  .figure .aspectRatioPlaceholder {
+    text-align: center; }
+    .figure .aspectRatioPlaceholder:focus {
+      outline: none; }
+    .figure .aspectRatioPlaceholder img {
+      max-width: 100%;
+      width: auto;
+      height: auto; }
+      .figure .aspectRatioPlaceholder img.focused {
+        -webkit-box-shadow: 0 0 0 3px #57ad68;
+        -moz-box-shadow: 0 0 0 3px #57ad68;
+        box-shadow: 0 0 0 3px #57ad68; }
+  .figure.center {
+    margin-left: auto;
+    margin-right: auto; }
+  .figure .figureMenu {
+    position: absolute;
+    height: 42px;
+    width: 213px;
+    border: 1px solid aquamarine;
+    background-color: aliceblue;
+    margin-top: -53px;
+    visibility: hidden;
+    text-align: center; }
+    .figure .figureMenu.show {
+      visibility: visible; }
+  .figure .figureCaption {
+    text-align: center;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.6); }
+
+/*# sourceMappingURL=figure.css.map */

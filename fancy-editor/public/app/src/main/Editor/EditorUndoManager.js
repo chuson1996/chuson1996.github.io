@@ -6,7 +6,7 @@ import hp from '../../helper/helper';
 import Figure from './Figure/Figure.js';
 
 
-export default class ParagraphUndoManager{
+export default class EditorUndoManager{
     constructor(editor){
         this.paraUndoManager = new UndoManager();
         this.editor = editor;
@@ -66,7 +66,7 @@ export default class ParagraphUndoManager{
     undo(){
         if (!this.hasUndo()) return;
         //this.saveEditorState();
-        console.log(this.editorStates);
+        //console.log(this.editorStates);
 
         this.paraUndoManager.undo();
         // Clear time out when undo
@@ -109,7 +109,7 @@ export default class ParagraphUndoManager{
                 //console.log(nR);
                 //console.log(storedRange);
                 document.getSelection().removeAllRanges();
-                console.log(nR);
+                //console.log(nR);
                 document.getSelection().addRange(nR);
 
             }

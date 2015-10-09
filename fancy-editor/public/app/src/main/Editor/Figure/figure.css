@@ -5,7 +5,7 @@
   outline: none; }
   .figure.justifyCenter {
     width: 100%;
-    float: none;
+    float: left;
     margin: 0 auto; }
     .figure.justifyCenter img {
       text-align: center; }
@@ -29,22 +29,25 @@
   .figure.center {
     margin-left: auto;
     margin-right: auto; }
-  .figure .figureMenu {
-    position: absolute;
-    height: 42px;
-    width: 213px;
-    border: 1px solid aquamarine;
-    background-color: aliceblue;
-    margin-top: -53px;
-    visibility: hidden;
-    text-align: center; }
-    .figure .figureMenu.show {
-      visibility: visible; }
   .figure .figureCaption {
     text-align: center;
     font-size: 14px;
     font-style: italic;
     font-weight: normal;
     color: rgba(0, 0, 0, 0.6); }
+
+.editor .figureMenu {
+  position: absolute;
+  height: 42px;
+  width: 213px;
+  border: 1px solid aquamarine;
+  background-color: aliceblue;
+  margin-top: -53px;
+  visibility: hidden;
+  text-align: center;
+  animation-duration: 0.2s;
+  animation-delay: 0s; }
+  .editor .figureMenu.show {
+    visibility: visible; }
 
 /*# sourceMappingURL=figure.css.map */

@@ -25,9 +25,9 @@ export default `
         <button class="btn expandInsertToolbarBtn" >+</button>
         <div class="content">
             <button class="btn addImgBtn">Img</button>
-            <div class="addImgOptions" style="visibility: hidden;">
+            <div class="addImgOptions">
                 <button class="btn enterImgUrlBtn">Paste an url</button>
-                <form style="visibility: hidden;"><input type="text" name="pastedImgUrl" style="display: none;"/></form>
+                <form><input type="text" name="pastedImgUrl"/></form>
                 <button class="btn uploadImgBtn">
                     Upload Image
                     <input type="file" accept="image/*" name="files[]" data-url="upload/" class="imageUploadInput"/>
@@ -38,6 +38,9 @@ export default `
         </div>
     </div>
 
+    <div class="menu figureMenu">
+        <button class="btn imageJustifyBtn">Justify</button>
+    </div>
     <div class="editor article" contenteditable="true">
         <blockquote>aasdgasdjghaksjdg</blockquote>
         <p><br/></p>

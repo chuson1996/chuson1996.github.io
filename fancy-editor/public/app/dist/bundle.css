@@ -5,7 +5,7 @@
   outline: none; }
   .figure.justifyCenter {
     width: 100%;
-    float: none;
+    float: left;
     margin: 0 auto; }
     .figure.justifyCenter img {
       text-align: center; }
@@ -29,17 +29,6 @@
   .figure.center {
     margin-left: auto;
     margin-right: auto; }
-  .figure .figureMenu {
-    position: absolute;
-    height: 42px;
-    width: 213px;
-    border: 1px solid aquamarine;
-    background-color: aliceblue;
-    margin-top: -53px;
-    visibility: hidden;
-    text-align: center; }
-    .figure .figureMenu.show {
-      visibility: visible; }
   .figure .figureCaption {
     text-align: center;
     font-size: 14px;
@@ -47,18 +36,54 @@
     font-weight: normal;
     color: rgba(0, 0, 0, 0.6); }
 
+.editor .figureMenu {
+  position: absolute;
+  height: 42px;
+  width: 213px;
+  border: 1px solid aquamarine;
+  background-color: aliceblue;
+  margin-top: -53px;
+  visibility: hidden;
+  text-align: center;
+  animation-duration: 0.2s;
+  animation-delay: 0s; }
+  .editor .figureMenu.show {
+    visibility: visible; }
+
 /*# sourceMappingURL=figure.css.map */
 
-.editorContainer .editorMenu .linkingStuff {
+.editorContainer .btn {
+  cursor: pointer;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  border: 1px solid lightblue;
+  margin: 1px;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease; }
+  .editorContainer .btn:hover {
+    background-color: rgba(173, 216, 230, 0.39); }
+.editorContainer .editorMenu {
   position: absolute;
-  top: 0;
-  width: 100%;
-  background-color: forestgreen;
-  left: 0;
-  height: 100%; }
-
-/*# sourceMappingURL=editor.css.map */
-
+  /* width: 300px; */
+  height: 39px;
+  background-color: white;
+  border: 1px solid tan;
+  padding: 5px;
+  -webkit-transition: left 0.5s ease, opacity 0.5s ease;
+  -moz-transition: left 0.5s ease, opacity 0.5s ease;
+  -ms-transition: left 0.5s ease, opacity 0.5s ease;
+  -o-transition: left 0.5s ease, opacity 0.5s ease;
+  transition: left 0.5s ease, opacity 0.5s ease; }
+  .editorContainer .editorMenu .linkingStuff {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: forestgreen;
+    left: 0;
+    height: 100%; }
 .editorContainer .editor {
   margin: 20px;
   border: 1px solid lightcoral;
@@ -77,85 +102,79 @@
     padding-bottom: 3px; }
   .editorContainer .editor .alignCenter {
     text-align: center; }
-.editorContainer .editorMenu {
-  position: absolute;
-  /* width: 300px; */
-  height: 39px;
-  background-color: white;
-  border: 1px solid tan;
-  padding: 5px;
-  -webkit-transition: left 0.5s ease, opacity 0.5s ease;
-  -moz-transition: left 0.5s ease, opacity 0.5s ease;
-  -ms-transition: left 0.5s ease, opacity 0.5s ease;
-  -o-transition: left 0.5s ease, opacity 0.5s ease;
-  transition: left 0.5s ease, opacity 0.5s ease; }
-  .editorContainer .editorMenu.hidden {
-    opacity: 0;
-    z-index: -999; }
-  .editorContainer .editorMenu.show {
-    opacity: 1;
-    z-index: 999; }
 .editorContainer .editorInsertToolbar {
   position: absolute;
   width: auto;
   height: 40px;
+  display: none;
+  z-index: -999;
   -webkit-transition: top 0.5s ease, opacity 0.3s ease;
   -moz-transition: top 0.5s ease, opacity 0.3s ease;
   -ms-transition: top 0.5s ease, opacity 0.3s ease;
   -o-transition: top 0.5s ease, opacity 0.3s ease;
-  transition: top 0.5s ease, opacity 0.3s ease;
-  border: 1px solid tan; }
-  .editorContainer .editorInsertToolbar.hidden {
-    opacity: 0;
-    z-index: -999; }
+  transition: top 0.5s ease, opacity 0.3s ease; }
   .editorContainer .editorInsertToolbar.show {
-    opacity: 1;
+    display: block;
     z-index: 999; }
   .editorContainer .editorInsertToolbar .content {
-    display: inline-block;
-    opacity: 1; }
+    display: none; }
+    .editorContainer .editorInsertToolbar .content.show {
+      display: inline-block; }
     .editorContainer .editorInsertToolbar .content .addImgOptions {
+      display: none;
       position: absolute;
       width: 250px;
       background-color: white;
       top: 0; }
+      .editorContainer .editorInsertToolbar .content .addImgOptions.show {
+        display: block; }
       .editorContainer .editorInsertToolbar .content .addImgOptions form {
+        display: none;
         position: absolute;
-        display: inline-block;
-        background-color: black;
+        background-color: white;
         left: 0;
         z-index: 300;
         width: 100%;
         height: 100%; }
+        .editorContainer .editorInsertToolbar .content .addImgOptions form.show {
+          display: inline-block; }
+        .editorContainer .editorInsertToolbar .content .addImgOptions form input[name="pastedImgUrl"] {
+          width: 100%;
+          height: 84%;
+          font-size: 16px;
+          font-family: Trebuchet, 'Trebuchet MS', Arial, sans-serif;
+          font-weight: 500;
+          border: 1px solid lightblue;
+          border-radius: 0;
+          padding-left: 7px;
+          padding-right: 7px;
+          margin-top: 1px; }
+          .editorContainer .editorInsertToolbar .content .addImgOptions form input[name="pastedImgUrl"]:focus {
+            outline: none; }
       .editorContainer .editorInsertToolbar .content .addImgOptions .uploadImgBtn {
         position: relative;
         overflow: hidden;
         display: inline-block; }
-    .editorContainer .editorInsertToolbar .content.hidden {
-      opacity: 0; }
-  .editorContainer .editorInsertToolbar input[type="file"] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    opacity: 0;
-    -ms-filter: 'alpha(opacity=0)';
-    font-size: 200px;
-    direction: ltr;
-    cursor: pointer; }
-.editorContainer .btn {
-  cursor: pointer;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0);
-  border: 1px solid lightblue;
-  margin: 1px;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  transition: all 0.3s ease; }
-  .editorContainer .btn:hover {
-    background-color: rgba(173, 216, 230, 0.39); }
+        .editorContainer .editorInsertToolbar .content .addImgOptions .uploadImgBtn input[type="file"] {
+          display: block;
+          position: absolute;
+          top: 0;
+          right: 0;
+          margin: 0;
+          opacity: 0;
+          -ms-filter: 'alpha(opacity=0)';
+          font-size: 200px;
+          direction: ltr;
+          cursor: pointer; }
+
+/*# sourceMappingURL=editor.css.map */
+
+.editorContainer .editorMenu.hidden {
+  opacity: 0;
+  z-index: -999; }
+.editorContainer .editorMenu.show {
+  opacity: 1;
+  z-index: 999; }
 .editorContainer .highlighted {
   background-color: pink; }
 

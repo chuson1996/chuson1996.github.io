@@ -22,7 +22,8 @@ exports['default'] = (function () {
         isLineEmpty: isLineEmpty,
         swap: swap,
         isCurrentRangeInEditorContainer: isCurrentRangeInEditorContainer,
-        testImageUrl: testImageUrl
+        testImageUrl: testImageUrl,
+        moveCursorTo: moveCursorTo
 
     };
     function decorateWithBeforeValidator(sc, property, beforeValidator) {
@@ -49,6 +50,25 @@ exports['default'] = (function () {
                 afterCb();
             };
         });
+    }
+    function moveCursorTo(_ref) {
+        var startContainer = _ref.startContainer;
+        var startOffset = _ref.startOffset;
+        var endContainer = _ref.endContainer;
+        var endOffset = _ref.endOffset;
+
+        startOffset = startOffset || 0;
+        endOffset = endOffset || 0;
+        var newR = rangy.createRange();
+        if (startOffset) newR.setStart(startContainer, startOffset);
+        if (endOffset) newR.setEnd(endContainer, endOffset);else {
+            endContainer = startContainer;
+            endOffset = startOffset;
+        }
+        if (startContainer) {
+            rangy.getSelection().removeAllRanges();
+            rangy.getSelection().addRange(newR);
+        }
     }
     function addEventListener() {
         var node;
@@ -178,8 +198,10 @@ exports['default'] = (function () {
             });
 
             // Normalize text nodes
-            _node.innerHTML = _node.innerHTML;
+            //_node.innerHTML = _node.innerHTML;
+            _node.normalize();
 
+            //console.log(_node.innerHTML);
             node(_node).nodeChildLoop(function (n) {
                 var $imgs = n.nodeName.toUpperCase() == "IMG" ? $(n) : $(n).find('img');
                 //console.log($imgs.length);
@@ -192,6 +214,8 @@ exports['default'] = (function () {
                 }
             });
 
+            //console.log(_node.innerHTML);
+
             // Clean up #comment, empty #text nodes and empty node
             for (var i = 0; i < _node.childNodes.length; i++) {
                 var _nodeS = _node.childNodes[i];
@@ -199,14 +223,15 @@ exports['default'] = (function () {
                     _nodeS.remove();
                     i--;
                 }
-                if (_nodeS.nodeName.toUpperCase() != "IMG" && !_nodeS.innerText.trim()) {
+                if (_nodeS.nodeName.toUpperCase() != "IMG" && !_nodeS.querySelectorAll('img').length && !_nodeS.textContent.trim()) {
                     _nodeS.remove();
                     i--;
                 }
             }
 
             // If an figure is an the end, append a <p><br/></p> after it!
-            if (_node.lastChild.nodeName.toUpperCase() == "DIV" && /figure/i.test(_node.lastChild.className)) {
+
+            if (_node.lastChild && _node.lastChild.nodeName.toUpperCase() == "DIV" && /figure/i.test(_node.lastChild.className)) {
                 $(_node).append("<p>&nbsp;</p>");
                 //var newP = document.createElement('p');
                 //newP.appendChild(document.createTextNode(""));
@@ -382,9 +407,9 @@ var _EditorUndoManagerJs = require('./EditorUndoManager.js');
 
 var _EditorUndoManagerJs2 = _interopRequireDefault(_EditorUndoManagerJs);
 
-var Paragraph = (function () {
-    function Paragraph() {
-        _classCallCheck(this, Paragraph);
+var Editor = (function () {
+    function Editor() {
+        _classCallCheck(this, Editor);
 
         this.template = _editorTemplateJs2['default'];
 
@@ -439,7 +464,7 @@ var Paragraph = (function () {
         this.paragraphUndoManager.saveEditorState();
     }
 
-    Paragraph.prototype.bindCustomEvents = function bindCustomEvents() {
+    Editor.prototype.bindCustomEvents = function bindCustomEvents() {
         var _this = this;
 
         EventListener.addEventListener().on(this.editor)['with']({
@@ -462,7 +487,7 @@ var Paragraph = (function () {
         });
     };
 
-    Paragraph.prototype.bindEvents = function bindEvents() {
+    Editor.prototype.bindEvents = function bindEvents() {
         var _this2 = this;
 
         /* Events on this.editor */
@@ -477,28 +502,23 @@ var Paragraph = (function () {
                 $(cbData).append($(e.clipboardData.getData('text/html')));
                 _helperHelper2['default'].node(cbData).removeAttributes();
                 _helperHelper2['default'].node(cbData).editorFormat();
-                console.log(cbData.childNodes);
 
                 if (!rangy.getSelection().isCollapsed) document.execCommand('delete');
-
-                //rangeStartContainer = hp.node(cbData).findTextNodes()[hp.node(cbData).findTextNodes().length-1];
 
                 var rangeStartContainer = undefined;
                 var rangeStartOffset = undefined;
 
                 if (_helperHelper2['default'].node(cbData.lastChild).findTextNodes().length) {
-                    console.log('Found some text nodes: ', _helperHelper2['default'].node(cbData.lastChild).findTextNodes());
                     rangeStartContainer = _helperHelper2['default'].node(cbData.lastChild).findTextNodes()[_helperHelper2['default'].node(cbData.lastChild).findTextNodes().length - 1];
                     rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
                 } else {
                     rangeStartContainer = curRange.startContainer;
                     rangeStartOffset = curRange.startOffset;
-                    console.log('No text nodes found in the clipboard! new startContainer: ', rangeStartContainer);
                 }
 
                 /* Check if cursor is at the first or end of the block */
                 if (_helperHelper2['default'].node(curRange.startContainer).isFirstNodeIn(block) && curRange.startOffset == 0 || !block.innerText.trim()) {
-                    console.log('Prepend to the block');
+                    //console.log('Prepend to the block');
 
                     if (cbData.lastChild.nodeName.toUpperCase() == "P" || cbData.lastChild.nodeName == block.nodeName) {
                         // Merge the last node to block
@@ -511,83 +531,62 @@ var Paragraph = (function () {
                         $(block).before(cbData.childNodes);
                         cbData.remove();
                     }
-
-                    //console.log(rangeStartContainer);
-
-                    //rangeStartContainer = hp.node(block).findTextNodes()[0] || block;
-                    //rangeStartOffset = 0;
                 } else if (_helperHelper2['default'].node(curRange.startContainer).isLastNodeIn(block) && curRange.startOffset == rangy.dom.getNodeLength(curRange.startContainer)) {
-                        console.log('Append to block');
-                        if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == block.nodeName) {
-                            // Merge the first node to block
-                            $(block).append(cbData.firstChild.childNodes);
-                            block.normalize();
-                            rangeStartContainer = _helperHelper2['default'].node(block).findTextNodes()[_helperHelper2['default'].node(block).findTextNodes().length - 1];
-                            //console.log(rangeStartContainer);
-                            rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
+                    //console.log('Append to block');
+                    if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == block.nodeName) {
+                        /* Merge the first node to block */
+                        $(block).append(cbData.firstChild.childNodes);
+                        block.normalize();
+                        rangeStartContainer = _helperHelper2['default'].node(block).findTextNodes()[_helperHelper2['default'].node(block).findTextNodes().length - 1];
+                        rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
 
-                            cbData.firstChild.remove();
-                        }
-                        if (cbData.childNodes.length) {
-                            //rangeStartContainer = hp.node(cbData.lastChild).findTextNodes()[hp.node(cbData.lastChild).findTextNodes().length-1];
-                            //console.log(rangeStartContainer);
-                            //rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
+                        cbData.firstChild.remove();
+                    }
+                    if (cbData.childNodes.length) {
+                        $(block).after(cbData.childNodes);
+                        cbData.remove();
+                    }
+                } else {
+                    //console.log('Split and insert in the middle!');
 
-                            //console.log();
-                            $(block).after(cbData.childNodes);
-                            cbData.remove();
-                        }
-                        //rangeStartContainer = hp.node(block).findTextNodes()[hp.node(block).findTextNodes().length-1] || block;
-                        //rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
-                    } else {
-                            console.log('Split and insert in the middle!');
+                    var _hp$node$split = _helperHelper2['default'].node(block).split(curRange.startContainer, curRange.startOffset);
 
-                            var _hp$node$split = _helperHelper2['default'].node(block).split(curRange.startContainer, curRange.startOffset);
+                    var blockL = _hp$node$split[0];
+                    var blockR = _hp$node$split[1];
 
-                            var blockL = _hp$node$split[0];
-                            var blockR = _hp$node$split[1];
+                    /* Merge to blockL if possible */
+                    if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == blockL.nodeName) {
+                        $(blockL).append(cbData.firstChild.childNodes);
+                        blockL.normalize();
+                        rangeStartContainer = _helperHelper2['default'].node(blockL).findTextNodes()[_helperHelper2['default'].node(blockL).findTextNodes().length - 1];
+                        rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
 
-                            if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == blockL.nodeName) {
-                                $(blockL).append(cbData.firstChild.childNodes);
-                                blockL.normalize();
-                                rangeStartContainer = _helperHelper2['default'].node(blockL).findTextNodes()[_helperHelper2['default'].node(blockL).findTextNodes().length - 1];
-                                rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
+                        cbData.firstChild.remove();
+                    }
 
-                                cbData.firstChild.remove();
-                            } else {}
-                            //console.log(cbData.children);
-                            if (!cbData.children.length) {
-                                //console.log('Merge blockR to blockL');
-                                $(blockL).append(blockR.childNodes);
-                                blockL.normalize();
-                                //rangeStartContainer = hp.node(blockL).findTextNodes()[hp.node(blockL).findTextNodes().length-1];
-                                //rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
+                    /* If the paste document is one piece, then merge blockR to blockL */
+                    if (!cbData.children.length) {
+                        $(blockL).append(blockR.childNodes);
+                        blockL.normalize();
 
-                                blockR.remove();
-                            } else if (cbData.lastChild.nodeName.toUpperCase() == "P" || cbData.lastChild.nodeName == blockR.nodeName) {
-                                // Merge the rest of the copied content to blockR
-                                $(blockR).prepend(cbData.lastChild.childNodes);
-                                blockR.normalize();
-                                cbData.lastChild.remove();
-                            }
-                            if (cbData.childNodes.length) {
-                                $(blockL).after(cbData.childNodes);
-                            }
-                            //rangeStartContainer = hp.node(blockR).findTextNodes()[0];
-                            //rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
-                        }
+                        blockR.remove();
+                    } else if (cbData.lastChild.nodeName.toUpperCase() == "P" || cbData.lastChild.nodeName == blockR.nodeName) {
+                        /* Merge the rest of the copied content to blockR */
+                        $(blockR).prepend(cbData.lastChild.childNodes);
+                        blockR.normalize();
+                        cbData.lastChild.remove();
+                    }
+                    if (cbData.childNodes.length) {
+                        $(blockL).after(cbData.childNodes);
+                    }
+                }
 
                 var newRange = rangy.createRange();
-                console.log(rangeStartContainer, rangeStartOffset);
+                //console.log(rangeStartContainer, rangeStartOffset);
                 newRange.setStart(rangeStartContainer, rangeStartOffset);
 
                 rangy.getSelection().removeAllRanges();
                 rangy.getSelection().addRange(newRange);
-
-                //console.log(cbData.innerHTML);
-                //document.execCommand('insertHTML', false, cbData.innerHTML);
-
-                //$(hp.node(curRange.endContainer).parentOfTypes("P BLOCKQUOTE H1 H2 H3")).after($(cbData).children());
             },
             'mouseup keyup': function mouseupKeyup(e) {
                 /* Guarantee that the editor must always contain at least 1 "P" node. If not, "#TEXT" node will take place. */
@@ -621,8 +620,6 @@ var Paragraph = (function () {
                     e.preventDefault();
                     // If timer is still running, terminate it and saveEditorState
                     if (saving) {
-                        //console.log('TTTTTerminate');
-                        //console.log(saving);
                         clearTimeout(timer);
                         saving = false;
                         _this2.paragraphUndoManager.saveEditorState();
@@ -638,15 +635,27 @@ var Paragraph = (function () {
                 /* Remain a br tag within a paragraph when editor is emptied. */
                 if (e.keyCode == 8 && $(_this2.elements.editor).find('p, blockquote, h1, h2, h3').length == 1 && (!$(_this2.elements.editor).text() || _this2.elements.editor.innerText == document.createElement("br").innerText)) e.preventDefault();
 
+                /* Disable line breaking in mode inline */
                 if (e.keyCode == 13 && _this2.options.mode == "inline") {
                     e.preventDefault();
                     return;
                 }
+
+                /* When backspacing at the beginning of a paragraph where after a Figure div */
+                var curRange = rangy.getSelection().getRangeAt(0);
+                var parBlock = _helperHelper2['default'].node(curRange.startContainer).parentOfTypes("P H1 H2 H3 PRE BLOCKQUOTE");
+                if (e.keyCode == 8 && rangy.getSelection().isCollapsed && parBlock && curRange.startOffset == 0 && (curRange.startContainer == parBlock || curRange.startContainer == _helperHelper2['default'].node(parBlock).findTextNodes()[0]) && (parBlock.previousElementSibling.nodeName == 'DIV' && /figure/i.test(parBlock.previousElementSibling.className))) {
+                    e.preventDefault();
+
+                    var sFig = new _FigureFigure2['default']();
+                    sFig.assignElements(parBlock.previousElementSibling);
+                    sFig.focus();
+                }
+
                 if (e.keyCode == 13 && !e.shiftKey) {
                     var selectionRange = rangy.getSelection().getRangeAt(0);
                     var block = _helperHelper2['default'].node(selectionRange.commonAncestorContainer).parentOfTypes("BLOCKQUOTE H1 H2 H3 PRE");
                     if (block) {
-                        // if ($(selectionRange.commonAncestorContainer).parents("blockquote").length > 0) {
                         e.preventDefault();
                         _this2.exitBlockAfterLinebreak();
                     }
@@ -778,9 +787,54 @@ var Paragraph = (function () {
                 _this2.insertToolbarState().initial();
             }
         });
+
+        EventListener.addEventListener().on(this.elements.editorContainer.querySelector('.figureMenu .imageJustifyBtn'))['with']({
+            'click': function click(e) {
+                _this2.imageJustify().auto();
+            }
+        });
     };
 
-    Paragraph.prototype.getEditorContent = function getEditorContent() {
+    Editor.prototype.imageJustify = function imageJustify() {
+        // var focusedImgContainer = $(".figure").has("img.focused")[0];
+        var _imageJustify = {
+            left: left,
+            right: right,
+            center: center,
+            auto: auto
+        };
+
+        var focusedImgContainer = $(this.elements.editorContainer).find('.figure').has("img.focused")[0];
+        return _imageJustify;
+
+        function left() {
+            if (!focusedImgContainer) return;
+
+            $(focusedImgContainer).removeClass('justifyRight justifyCenter').addClass('justifyLeft');
+            focusedImgContainer.querySelector('img').click();
+        }
+
+        function right() {
+            if (!focusedImgContainer) return;
+
+            $(focusedImgContainer).removeClass('justifyCenter justifyLeft').addClass('justifyRight');
+            focusedImgContainer.querySelector('img').click();
+        }
+
+        function center() {
+            if (!focusedImgContainer) return;
+
+            $(focusedImgContainer).removeClass('justifyRight justifyLeft').addClass('justifyCenter');
+            focusedImgContainer.querySelector('img').click();
+        }
+
+        function auto() {
+            if (!focusedImgContainer) return;
+            if ($(focusedImgContainer).hasClass('justifyLeft')) center();else if ($(focusedImgContainer).hasClass('justifyCenter')) right();else if ($(focusedImgContainer).hasClass('justifyRight')) left();
+        }
+    };
+
+    Editor.prototype.getEditorContent = function getEditorContent() {
         /* 1. Clone the editor
          * 2. Remove menus off the clone
          * 3. Get html */
@@ -792,7 +846,7 @@ var Paragraph = (function () {
         return $clone.html();
     };
 
-    Paragraph.prototype.bindImageUploadHandler = function bindImageUploadHandler() {
+    Editor.prototype.bindImageUploadHandler = function bindImageUploadHandler() {
         var _this4 = this;
 
         this.uploadFileHandler($(this.editorContainer).find('.editorInsertToolbar .content input.imageUploadInput'), function (files) {
@@ -803,7 +857,7 @@ var Paragraph = (function () {
         });
     };
 
-    Paragraph.prototype.uploadFileHandler = function uploadFileHandler(fileInput, _done, error) {
+    Editor.prototype.uploadFileHandler = function uploadFileHandler(fileInput, _done, error) {
         $(fileInput).fileupload({
             dataType: 'json',
             disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
@@ -835,7 +889,7 @@ var Paragraph = (function () {
         });
     };
 
-    Paragraph.prototype.showEditorMenu = function showEditorMenu() {
+    Editor.prototype.showEditorMenu = function showEditorMenu() {
         var editorMenu = this.elements.editorMenu;
 
         /*  Move editorMenu to a new position and show */
@@ -847,11 +901,11 @@ var Paragraph = (function () {
         $(editorMenu).addClass('show');
     };
 
-    Paragraph.prototype.hideEditorMenu = function hideEditorMenu() {
+    Editor.prototype.hideEditorMenu = function hideEditorMenu() {
         $(this.elements.editorMenu).addClass('hidden').removeClass('show');
     };
 
-    Paragraph.prototype.showInsertToolbar = function showInsertToolbar() {
+    Editor.prototype.showInsertToolbar = function showInsertToolbar() {
         var selectionRange = rangy.getSelection().getRangeAt(0);
         var pContainer = _helperHelper2['default'].node(selectionRange.commonAncestorContainer).parentOfTypes("P");
         if (!pContainer) return;
@@ -861,12 +915,12 @@ var Paragraph = (function () {
         $(this.editorInsertToolbar).removeClass('hidden').addClass('show');
     };
 
-    Paragraph.prototype.hideInsertToolbar = function hideInsertToolbar() {
+    Editor.prototype.hideInsertToolbar = function hideInsertToolbar() {
         /*  */
         $(this.editorInsertToolbar).removeClass('show').addClass('hidden');
     };
 
-    Paragraph.prototype.insertImage = function insertImage(imgUrl) {
+    Editor.prototype.insertImage = function insertImage(imgUrl) {
         var selectionRange = rangy.getSelection().getRangeAt(0);
         var pContainer = selectionRange.commonAncestorContainer.nodeName == 'P' ? selectionRange.commonAncestorContainer : $(selectionRange.commonAncestorContainer).parents('p')[0];
         //console.log(pContainer);
@@ -884,47 +938,12 @@ var Paragraph = (function () {
         }
     };
 
-    Paragraph.prototype.exitBlockAfterLinebreak = function exitBlockAfterLinebreak() {
-        //let selectionRange = rangy.getSelection().getRangeAt(0);
-        //let block = hp.node(selectionRange.commonAncestorContainer).parentOfTypes(blockName);
-        //if (!rangy.getSelection().isCollapsed)
-        //    document.execCommand('delete');
-        //
-        //let range2 = rangy.createRange();
-        //range2.setStart(selectionRange.endContainer, selectionRange.endOffset);
-        //range2.setEndAfter(block);
-        //let copiedFrag = range2.extractContents();
-        //let copiedContainer = copiedFrag.firstChild;
-        //let copiedContent = $(copiedContainer).html();
-        //
-        //let newP = document.createElement('p');
-        //if (copiedContent && copiedContainer.innerText)
-        //    $(newP).html(copiedContent);
-        //else
-        //    $(newP).html('<br/>');
-        //rangy.dom.insertAfter(newP, block);
-        //block.normalize();
-        //let newRange = rangy.createRange();
-        //newRange.setStart(newP, 0);
-        //rangy.getSelection().removeAllRanges();
-        //rangy.getSelection().addRange(newRange);
+    Editor.prototype.exitBlockAfterLinebreak = function exitBlockAfterLinebreak() {
         document.execCommand('insertParagraph');
         document.execCommand('formatBlock', false, "p");
-        //console.log(blockName);
     };
 
-    Paragraph.prototype.expandInsertToolbar = function expandInsertToolbar() {
-        var $insertToolbarContent = $(this.editorInsertToolbar).find('.content');
-        $insertToolbarContent.show();
-    };
-
-    Paragraph.prototype.narrowInsertToolbar = function narrowInsertToolbar() {
-        var $insertToolbarContent = $(this.editorInsertToolbar).find('.content');
-        //this.elements.addImgOptions.style.visibility = "hidden";
-        $insertToolbarContent.hide();
-    };
-
-    Paragraph.prototype.insertToolbarState = function insertToolbarState() {
+    Editor.prototype.insertToolbarState = function insertToolbarState() {
         var state = "initial";
         var contentDiv = $(this.elements.editorInsertToolbar).find('.content')[0];
         var addImgOptions = $(this.elements.editorInsertToolbar).find('.addImgOptions')[0];
@@ -939,37 +958,42 @@ var Paragraph = (function () {
 
         function initial() {
             state = "initial";
-            contentDiv.style.display = "none";
+            //contentDiv.style.display = "none";
+            $(contentDiv).removeClass('show');
         }
 
         function showOptions() {
             state = "showOptions";
             /* Make sure no redundancy is shown */
-            addImgOptions.style.visibility = "hidden";
-            addImgForm.style.visibility = "hidden";
+            //addImgOptions.style.visibility = "hidden";
+            $(addImgOptions).removeClass('show');
+            //addImgForm.style.visibility = "hidden";
+            $(addImgForm).removeClass('show');
             /* ------ */
-            $(contentDiv).show();
+            $(contentDiv).addClass('show');
         }
 
         function addImg() {
             state = "addImg";
-            addImgOptions.style.visibility = "visible";
-
+            //addImgOptions.style.visibility = "visible";
+            $(addImgOptions).addClass('show');
             return {
                 pasteUrl: pasteUrl
             };
 
             function pasteUrl() {
-                addImgForm.style.visibility = "visible";
-                inputText.style.display = "block";
+                //addImgForm.style.visibility = "visible";
+                $(addImgForm).addClass('show');
+                //inputText.style.display = "block";
+                $(inputText).addClass('show');
             }
         }
     };
 
-    return Paragraph;
+    return Editor;
 })();
 
-exports['default'] = Paragraph;
+exports['default'] = Editor;
 module.exports = exports['default'];
 
 },{"../../helper/helper":1,"./EditorUndoManager.js":3,"./Figure/Figure":4,"./editor.template.js":5,"./formatTextM":6,"./linkingM":7}],3:[function(require,module,exports){
@@ -996,9 +1020,9 @@ var _FigureFigureJs = require('./Figure/Figure.js');
 
 var _FigureFigureJs2 = _interopRequireDefault(_FigureFigureJs);
 
-var ParagraphUndoManager = (function () {
-    function ParagraphUndoManager(editor) {
-        _classCallCheck(this, ParagraphUndoManager);
+var EditorUndoManager = (function () {
+    function EditorUndoManager(editor) {
+        _classCallCheck(this, EditorUndoManager);
 
         this.paraUndoManager = new _undoManager2['default']();
         this.editor = editor;
@@ -1008,7 +1032,7 @@ var ParagraphUndoManager = (function () {
         //this.saveEditorState();
     }
 
-    ParagraphUndoManager.prototype.saveEditorState = function saveEditorState() {
+    EditorUndoManager.prototype.saveEditorState = function saveEditorState() {
         var _this = this;
 
         //let id = this.generateId();
@@ -1041,35 +1065,35 @@ var ParagraphUndoManager = (function () {
         });
     };
 
-    ParagraphUndoManager.prototype.addEditorState = function addEditorState(id, editorState) {
+    EditorUndoManager.prototype.addEditorState = function addEditorState(id, editorState) {
         this.editorStates[id] = editorState;
         this.index++;
     };
 
-    ParagraphUndoManager.prototype.removeEditorState = function removeEditorState(id) {
+    EditorUndoManager.prototype.removeEditorState = function removeEditorState(id) {
         delete this.editorStates[id];
         this.index--;
     };
 
-    ParagraphUndoManager.prototype.hasUndo = function hasUndo() {
+    EditorUndoManager.prototype.hasUndo = function hasUndo() {
         return this.paraUndoManager.hasUndo();
     };
 
-    ParagraphUndoManager.prototype.hasRedo = function hasRedo() {
+    EditorUndoManager.prototype.hasRedo = function hasRedo() {
         return this.paraUndoManager.hasRedo();
     };
 
-    ParagraphUndoManager.prototype.undo = function undo() {
+    EditorUndoManager.prototype.undo = function undo() {
         if (!this.hasUndo()) return;
         //this.saveEditorState();
-        console.log(this.editorStates);
+        //console.log(this.editorStates);
 
         this.paraUndoManager.undo();
         // Clear time out when undo
         this.restoreEditorState();
     };
 
-    ParagraphUndoManager.prototype.redo = function redo() {
+    EditorUndoManager.prototype.redo = function redo() {
         if (!this.hasRedo()) return;
         this.paraUndoManager.redo();
         //console.log(this.editorStates);
@@ -1077,7 +1101,7 @@ var ParagraphUndoManager = (function () {
         this.restoreEditorState();
     };
 
-    ParagraphUndoManager.prototype.restoreEditorState = function restoreEditorState() {
+    EditorUndoManager.prototype.restoreEditorState = function restoreEditorState() {
         if (Object.getOwnPropertyNames(this.editorStates).length) {
             var _editorStates = this.editorStates[Object.getOwnPropertyNames(this.editorStates).length - 1];
             var innerHTML = _editorStates.innerHTML;
@@ -1109,22 +1133,22 @@ var ParagraphUndoManager = (function () {
                 //console.log(nR);
                 //console.log(storedRange);
                 document.getSelection().removeAllRanges();
-                console.log(nR);
+                //console.log(nR);
                 document.getSelection().addRange(nR);
             }
             //else this.editor.focus();
         }
     };
 
-    ParagraphUndoManager.prototype.generateId = function generateId() {
+    EditorUndoManager.prototype.generateId = function generateId() {
         var generatedNumber = Math.round(Math.random() * 10000000);
         if (_.indexOf(Object.getOwnPropertyNames(this.editorStates), generatedNumber) == -1) return generatedNumber;else this.generateId();
     };
 
-    return ParagraphUndoManager;
+    return EditorUndoManager;
 })();
 
-exports['default'] = ParagraphUndoManager;
+exports['default'] = EditorUndoManager;
 module.exports = exports['default'];
 
 },{"../../helper/helper":1,"./Figure/Figure.js":4,"undo-manager":9}],4:[function(require,module,exports){
@@ -1150,7 +1174,7 @@ var Figure = (function () {
 
         //this.imgUrl = imgUrl;
         if (imgUrl) {
-            this.template = '<div class="figure" contenteditable="false"><div class="menu figureMenu"><button class="btn imageJustifyLeftBtn">L</button><button class="btn imageJustifyCenterBtn">C</button><button class="btn imageJustifyRightBtn">R</button></div><div class="aspectRatioPlaceholder"><img src="' + imgUrl + '" alt=""/><div class="figureCaption" contenteditable="true"><br/></div></div></div>';
+            this.template = '<div class="figure justifyLeft" contenteditable="false"><div class="aspectRatioPlaceholder"><img src="' + imgUrl + '" alt=""/><div class="figureCaption" contenteditable="true"><br/></div></div></div>';
             this.assignElements();
 
             this.bindEvents();
@@ -1167,30 +1191,20 @@ var Figure = (function () {
     Figure.prototype.assignElements = function assignElements(figureElement) {
         this.elements = {};
         this.elements.container = figureElement ? figureElement : $(this.template)[0];
-        this.elements.figureMenu = this.elements.container.querySelector('.figureMenu');
 
         this.elements.img = this.elements.container.querySelector('img');
         this.elements.aspectRatioPlaceholder = this.elements.container.querySelector('.aspectRatioPlaceholder');
         this.elements.figureCaption = this.elements.container.querySelector('.figureCaption');
-        this.elements.imageJustifyLeftBtn = this.elements.figureMenu.querySelector('.imageJustifyLeftBtn');
-        this.elements.imageJustifyRightBtn = this.elements.figureMenu.querySelector('.imageJustifyRightBtn');
-        this.elements.imageJustifyCenterBtn = this.elements.figureMenu.querySelector('.imageJustifyCenterBtn');
     };
 
     Figure.prototype.bindEvents = function bindEvents() {
-        var _this2 = this;
+        var _this = this;
 
         /* Events on image */
         EventListener.addEventListener().on(this.elements.img)['with']({
             'click': function click(e) {
                 //console.log('c');
-                $(_this2.elements.img).addClass('focused');
-                var nRange = rangy.createRange();
-                nRange.setStart(_this2.elements.figureCaption, 0);
-                nRange.setEnd(_this2.elements.figureCaption, 0);
-                rangy.getSelection().removeAllRanges();
-                rangy.getSelection().addRange(nRange);
-                _this2.showFigureMenu();
+                _this.focus();
             },
             'dragstart': function dragstart(e) {
                 // Disable dragging images
@@ -1207,7 +1221,7 @@ var Figure = (function () {
                     var newLine = document.createElement('p');
                     $(newLine).html('<br/>');
 
-                    $(newLine).insertAfter(_this2.elements.container);
+                    $(newLine).insertAfter(_this.elements.container);
 
                     var newRange = rangy.createRange();
                     newRange.setStart(newLine, 0);
@@ -1221,9 +1235,9 @@ var Figure = (function () {
                     if (rangy.getSelection().getRangeAt(0).startOffset == 0) {
                         e.preventDefault();
                         var nRange = rangy.createRange();
-                        nRange.setStartBefore(_this2.elements.container);
-                        nRange.setEndBefore(_this2.elements.container);
-                        _this2.elements.container.parentNode.removeChild(_this2.elements.container);
+                        nRange.setStartBefore(_this.elements.container);
+                        nRange.setEndBefore(_this.elements.container);
+                        _this.elements.container.parentNode.removeChild(_this.elements.container);
                         rangy.getSelection().removeAllRanges();
                         rangy.getSelection().addRange(nRange);
 
@@ -1233,22 +1247,24 @@ var Figure = (function () {
                 }
             },
             'keyup': function keyup(e) {
-                if (_this2.elements.figureCaption.innerText.trim() == "" && _this2.elements.figureCaption.innerHTML !== "<br>") {
-                    _this2.elements.figureCaption.innerHTML = "<br>";
+                if (_this.elements.figureCaption.innerText.trim() == "" && _this.elements.figureCaption.innerHTML !== "<br>") {
+                    _this.elements.figureCaption.innerHTML = "<br>";
                 }
             },
             'focusin': function focusin(e) {
 
-                $(_this2.elements.img).removeClass('focused');
-                $(_this2.elements.img).addClass('focused');
+                $(_this.elements.img).removeClass('focused');
+                $(_this.elements.img).addClass('focused');
 
                 //focusoutImage(){
                 //    $(this.editor.querySelector('img')).removeClass('focused');
                 //}
             },
             'focusout': function focusout(e) {
-                $(_this2.elements.img).removeClass('focused');
-                _this2.hideFigureMenu();
+                if (!$(e.relatedTarget).parents('.figureMenu').length) {
+                    $(_this.elements.img).removeClass('focused');
+                    _this.hideFigureMenu();
+                }
             },
             'paste': function paste(e) {
                 /* Prevent pasting format text */
@@ -1258,62 +1274,32 @@ var Figure = (function () {
                 document.execCommand("insertHTML", false, text);
             }
         });
-
-        /* Events on buttons */
-        EventListener.addEventListener().on(this.elements.imageJustifyLeftBtn)['with']({
-            'click': this.imageJustify.call(this).left
-        });
-        EventListener.addEventListener().on(this.elements.imageJustifyRightBtn)['with']({
-            'click': this.imageJustify.call(this).right
-        });
-        EventListener.addEventListener().on(this.elements.imageJustifyCenterBtn)['with']({
-            'click': this.imageJustify.call(this).center
-        });
     };
 
-    Figure.prototype.imageJustify = function imageJustify() {
-        var _this = this;
-        var whereCursorAt = rangy.getSelection().getBookmark();
-        var _imageJustify = {
-            left: left,
-            right: right,
-            center: center
-        };
-        //hp.decorateAfter(_imageJustify, 'left right center', () => {
-        //    console.log('Run this shit', whereCursorAt);
-        //    rangy.getSelection().moveToBookmark(whereCursorAt);
-        //});
-
-        return _imageJustify;
-
-        function left() {
-            $(_this.elements.container).removeClass('justifyRight justifyCenter');
-            // this.showFigureMenu.call(_this);
-            _this.elements.img.click();
-        }
-
-        function right() {
-            $(_this.elements.container).removeClass('justifyCenter').addClass('justifyRight');
-            // this.showFigureMenu.call(_this);
-            _this.elements.img.click();
-        }
-
-        function center() {
-            $(_this.elements.container).removeClass('justifyRight').addClass('justifyCenter');
-            // this.showFigureMenu.call(_this);
-            _this.elements.img.click();
-        }
+    Figure.prototype.focus = function focus() {
+        $(this.elements.img).addClass('focused');
+        var nRange = rangy.createRange();
+        nRange.setStart(this.elements.figureCaption, 0);
+        nRange.setEnd(this.elements.figureCaption, 0);
+        rangy.getSelection().removeAllRanges();
+        rangy.getSelection().addRange(nRange);
+        this.showFigureMenu();
     };
 
     Figure.prototype.showFigureMenu = function showFigureMenu() {
         var imgWidth = this.elements.img.width;
         var figureMenuWidth = 215;
-        this.elements.figureMenu.style.marginLeft = (this.elements.aspectRatioPlaceholder.clientWidth - figureMenuWidth) / 2 + "px";
-        $(this.elements.figureMenu).addClass('show');
+        var figureMenu = $(this.elements.container).parents('.editorContainer').find('.figureMenu')[0];
+        // console.log($(this.elements.container).parents('.editorContainer')[0].querySelector('.figureMenu'))
+        figureMenu.style.left = this.elements.aspectRatioPlaceholder.offsetLeft + (this.elements.aspectRatioPlaceholder.clientWidth - figureMenuWidth) / 2 + "px";
+        // console.log($(this.elements.aspectRatioPlaceholder.offsetTop));
+        figureMenu.style.top = this.elements.aspectRatioPlaceholder.offsetTop + "px";
+        $(figureMenu).addClass('show animated slideInUp');
     };
 
     Figure.prototype.hideFigureMenu = function hideFigureMenu() {
-        $(this.elements.figureMenu).removeClass('show');
+        var figureMenu = $(this.elements.container).parents('.editorContainer').find('.figureMenu')[0];
+        $(figureMenu).removeClass('show animated slideInUp');
     };
 
     return Figure;
@@ -1329,7 +1315,7 @@ module.exports = exports['default'];
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = "\n<div class=\"editorContainer\">\n    <div class=\"editorMenu hidden\">\n        <button class=\"btn h1Btn\">H1</button>\n        <button class=\"btn h2Btn\">H2</button>\n        <button class=\"btn boldBtn\">B</button>\n        <button class=\"btn highlightBtn\"><span class=\"highlighted\"><em>A</em></span></button>\n        <button class=\"btn justifyLeftBtn\">L</button>\n        <button class=\"btn justifyCenterBtn\">C</button>\n        <button class=\"btn justifyRightBtn\">R</button>\n        <button class=\"btn linkBtn\" >Link</button>\n        <button class=\"btn unlinkBtn\" style=\"display: none;\">Unlink</button>\n        <button class=\"btn blockquoteBtn\">\"</button>\n        <!-- Linking stuff -->\n        <div class=\"linkingStuff\" style=\"visibility: hidden;\">\n            <input type=\"text\" name=\"linkAttached\" disabled/>\n            <button class=\"btn confirmLinkBtn\" disabled>OK</button>\n        </div>\n\n    </div>\n    <div class=\"editorInsertToolbar hidden\">\n        <button class=\"btn expandInsertToolbarBtn\" >+</button>\n        <div class=\"content\">\n            <button class=\"btn addImgBtn\">Img</button>\n            <div class=\"addImgOptions\" style=\"visibility: hidden;\">\n                <button class=\"btn enterImgUrlBtn\">Paste an url</button>\n                <form style=\"visibility: hidden;\"><input type=\"text\" name=\"pastedImgUrl\" style=\"display: none;\"/></form>\n                <button class=\"btn uploadImgBtn\">\n                    Upload Image\n                    <input type=\"file\" accept=\"image/*\" name=\"files[]\" data-url=\"upload/\" class=\"imageUploadInput\"/>\n                </button>\n            </div>\n\n\n        </div>\n    </div>\n\n    <div class=\"editor article\" contenteditable=\"true\">\n        <blockquote>aasdgasdjghaksjdg</blockquote>\n        <p><br/></p>\n    </div>\n\n</div>\n";
+exports["default"] = "\n<div class=\"editorContainer\">\n    <div class=\"editorMenu hidden\">\n        <button class=\"btn h1Btn\">H1</button>\n        <button class=\"btn h2Btn\">H2</button>\n        <button class=\"btn boldBtn\">B</button>\n        <button class=\"btn highlightBtn\"><span class=\"highlighted\"><em>A</em></span></button>\n        <button class=\"btn justifyLeftBtn\">L</button>\n        <button class=\"btn justifyCenterBtn\">C</button>\n        <button class=\"btn justifyRightBtn\">R</button>\n        <button class=\"btn linkBtn\" >Link</button>\n        <button class=\"btn unlinkBtn\" style=\"display: none;\">Unlink</button>\n        <button class=\"btn blockquoteBtn\">\"</button>\n        <!-- Linking stuff -->\n        <div class=\"linkingStuff\" style=\"visibility: hidden;\">\n            <input type=\"text\" name=\"linkAttached\" disabled/>\n            <button class=\"btn confirmLinkBtn\" disabled>OK</button>\n        </div>\n\n    </div>\n    <div class=\"editorInsertToolbar hidden\">\n        <button class=\"btn expandInsertToolbarBtn\" >+</button>\n        <div class=\"content\">\n            <button class=\"btn addImgBtn\">Img</button>\n            <div class=\"addImgOptions\">\n                <button class=\"btn enterImgUrlBtn\">Paste an url</button>\n                <form><input type=\"text\" name=\"pastedImgUrl\"/></form>\n                <button class=\"btn uploadImgBtn\">\n                    Upload Image\n                    <input type=\"file\" accept=\"image/*\" name=\"files[]\" data-url=\"upload/\" class=\"imageUploadInput\"/>\n                </button>\n            </div>\n\n\n        </div>\n    </div>\n\n    <div class=\"menu figureMenu\">\n        <button class=\"btn imageJustifyBtn\">Justify</button>\n    </div>\n    <div class=\"editor article\" contenteditable=\"true\">\n        <blockquote>aasdgasdjghaksjdg</blockquote>\n        <p><br/></p>\n    </div>\n\n</div>\n";
 module.exports = exports["default"];
 
 },{}],6:[function(require,module,exports){

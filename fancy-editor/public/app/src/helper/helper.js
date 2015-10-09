@@ -14,6 +14,7 @@ export default (function(){
         swap,
         isCurrentRangeInEditorContainer,
         testImageUrl,
+        moveCursorTo
 
 
 
@@ -45,6 +46,23 @@ export default (function(){
                 afterCb();
             }
         })
+
+    }
+    function moveCursorTo({startContainer, startOffset, endContainer, endOffset}){
+        startOffset = startOffset || 0;
+        endOffset = endOffset || 0;
+        let newR = rangy.createRange();
+        if (startOffset) newR.setStart(startContainer, startOffset);
+        if (endOffset) newR.setEnd(endContainer, endOffset);
+        else{
+            endContainer = startContainer;
+            endOffset = startOffset;
+        }
+        if (startContainer)
+        {
+            rangy.getSelection().removeAllRanges();
+            rangy.getSelection().addRange(newR);
+        }
 
     }
     function addEventListener(){
@@ -177,9 +195,10 @@ export default (function(){
             });
 
             // Normalize text nodes
-            _node.innerHTML = _node.innerHTML;
+            //_node.innerHTML = _node.innerHTML;
+            _node.normalize();
 
-
+            //console.log(_node.innerHTML);
             node(_node).nodeChildLoop((n)=>{
                 let $imgs = n.nodeName.toUpperCase() == "IMG" ? $(n) : $(n).find('img');
                 //console.log($imgs.length);
@@ -191,6 +210,8 @@ export default (function(){
                     $imgs.remove();
                 }
             });
+
+            //console.log(_node.innerHTML);
             
             // Clean up #comment, empty #text nodes and empty node
             for(var i=0; i< _node.childNodes.length; i++){
@@ -200,14 +221,15 @@ export default (function(){
                     _nodeS.remove();
                     i--;
                 }
-                if (_nodeS.nodeName.toUpperCase() != "IMG" && !_nodeS.innerText.trim()){
+                if (_nodeS.nodeName.toUpperCase() != "IMG" && !_nodeS.querySelectorAll('img').length && !_nodeS.textContent.trim()){
                     _nodeS.remove();
                     i--;
                 }
             }
 
             // If an figure is an the end, append a <p><br/></p> after it!
-            if (_node.lastChild.nodeName.toUpperCase() == "DIV" && /figure/i.test(_node.lastChild.className)){
+
+            if (_node.lastChild && _node.lastChild.nodeName.toUpperCase() == "DIV" && /figure/i.test(_node.lastChild.className)){
                 $(_node).append("<p>&nbsp;</p>");
                 //var newP = document.createElement('p');
                 //newP.appendChild(document.createTextNode(""));

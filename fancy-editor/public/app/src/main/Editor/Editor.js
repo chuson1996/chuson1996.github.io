@@ -7,7 +7,7 @@ import paragraphTemp from './editor.template.js';
 import ParagraphUndoManager from './EditorUndoManager.js';
 
 
-export default class Paragraph {
+export default class Editor {
     constructor() {
         this.template = paragraphTemp;
 
@@ -105,32 +105,27 @@ export default class Paragraph {
                 $(cbData).append($(e.clipboardData.getData('text/html')));
                 hp.node(cbData).removeAttributes();
                 hp.node(cbData).editorFormat();
-                console.log(cbData.childNodes);
 
 
                 if (!rangy.getSelection().isCollapsed)
                     document.execCommand('delete');
-
-                //rangeStartContainer = hp.node(cbData).findTextNodes()[hp.node(cbData).findTextNodes().length-1];
 
 
                 let rangeStartContainer;
                 let rangeStartOffset;
 
                 if (hp.node(cbData.lastChild).findTextNodes().length){
-                    console.log('Found some text nodes: ', hp.node(cbData.lastChild).findTextNodes());
                     rangeStartContainer = hp.node(cbData.lastChild).findTextNodes()[hp.node(cbData.lastChild).findTextNodes().length - 1];
                     rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
                 }else {
                     rangeStartContainer = curRange.startContainer;
                     rangeStartOffset = curRange.startOffset;
-                    console.log('No text nodes found in the clipboard! new startContainer: ', rangeStartContainer);
                 }
 
 
                 /* Check if cursor is at the first or end of the block */
                 if ((hp.node(curRange.startContainer).isFirstNodeIn(block) && curRange.startOffset==0) || (!block.innerText.trim())){
-                    console.log('Prepend to the block');
+                    //console.log('Prepend to the block');
 
                     if (cbData.lastChild.nodeName.toUpperCase() == "P" || cbData.lastChild.nodeName == block.nodeName){
                         // Merge the last node to block
@@ -144,41 +139,29 @@ export default class Paragraph {
                         $(block).before(cbData.childNodes);
                         cbData.remove();
                     }
-
-                    //console.log(rangeStartContainer);
-
-                    //rangeStartContainer = hp.node(block).findTextNodes()[0] || block;
-                    //rangeStartOffset = 0;
                 }
                 else if (hp.node(curRange.startContainer).isLastNodeIn(block) && curRange.startOffset==rangy.dom.getNodeLength(curRange.startContainer)){
-                    console.log('Append to block');
+                    //console.log('Append to block');
                     if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == block.nodeName){
-                        // Merge the first node to block
+                        /* Merge the first node to block */
                         $(block).append(cbData.firstChild.childNodes);
                         block.normalize();
                         rangeStartContainer = hp.node(block).findTextNodes()[hp.node(block).findTextNodes().length-1];
-                        //console.log(rangeStartContainer);
                         rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
 
                         cbData.firstChild.remove();
                     }
                     if (cbData.childNodes.length) {
-                        //rangeStartContainer = hp.node(cbData.lastChild).findTextNodes()[hp.node(cbData.lastChild).findTextNodes().length-1];
-                        //console.log(rangeStartContainer);
-                        //rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
-
-                        //console.log();
                         $(block).after(cbData.childNodes);
                         cbData.remove();
                     }
-                    //rangeStartContainer = hp.node(block).findTextNodes()[hp.node(block).findTextNodes().length-1] || block;
-                    //rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
 
                 }
                 else{
-                    console.log('Split and insert in the middle!');
+                    //console.log('Split and insert in the middle!');
                     let [blockL, blockR] = hp.node(block).split(curRange.startContainer, curRange.startOffset);
 
+                    /* Merge to blockL if possible */
                     if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == blockL.nodeName){
                         $(blockL).append(cbData.firstChild.childNodes);
                         blockL.normalize();
@@ -186,21 +169,17 @@ export default class Paragraph {
                         rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
 
                         cbData.firstChild.remove();
-                    }else{
-
                     }
-                    //console.log(cbData.children);
+
+                    /* If the paste document is one piece, then merge blockR to blockL */
                     if (!cbData.children.length) {
-                        //console.log('Merge blockR to blockL');
                         $(blockL).append(blockR.childNodes);
                         blockL.normalize();
-                        //rangeStartContainer = hp.node(blockL).findTextNodes()[hp.node(blockL).findTextNodes().length-1];
-                        //rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
 
                         blockR.remove();
                     }
                     else if (cbData.lastChild.nodeName.toUpperCase() == "P" || cbData.lastChild.nodeName == blockR.nodeName){
-                        // Merge the rest of the copied content to blockR
+                        /* Merge the rest of the copied content to blockR */
                         $(blockR).prepend(cbData.lastChild.childNodes);
                         blockR.normalize();
                         cbData.lastChild.remove();
@@ -208,29 +187,17 @@ export default class Paragraph {
                     if (cbData.childNodes.length) {
                         $(blockL).after(cbData.childNodes);
                     }
-                    //rangeStartContainer = hp.node(blockR).findTextNodes()[0];
-                    //rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
                 }
 
 
 
 
                 let newRange = rangy.createRange();
-                console.log(rangeStartContainer, rangeStartOffset);
+                //console.log(rangeStartContainer, rangeStartOffset);
                 newRange.setStart(rangeStartContainer, rangeStartOffset);
 
                 rangy.getSelection().removeAllRanges();
                 rangy.getSelection().addRange(newRange);
-
-
-                //console.log(cbData.innerHTML);
-                //document.execCommand('insertHTML', false, cbData.innerHTML);
-
-
-
-
-
-                //$(hp.node(curRange.endContainer).parentOfTypes("P BLOCKQUOTE H1 H2 H3")).after($(cbData).children());
             },
             'mouseup keyup': (e) => {
                 /* Guarantee that the editor must always contain at least 1 "P" node. If not, "#TEXT" node will take place. */
@@ -265,8 +232,6 @@ export default class Paragraph {
                     e.preventDefault();
                     // If timer is still running, terminate it and saveEditorState
                     if (saving){
-                        //console.log('TTTTTerminate');
-                        //console.log(saving);
                         clearTimeout(timer);
                         saving=false;
                         this.paragraphUndoManager.saveEditorState();
@@ -283,15 +248,29 @@ export default class Paragraph {
                 if (e.keyCode == 8 && $(this.elements.editor).find('p, blockquote, h1, h2, h3').length == 1 && (!$(this.elements.editor).text() || this.elements.editor.innerText == document.createElement("br").innerText))
                     e.preventDefault();
 
+                /* Disable line breaking in mode inline */
                 if (e.keyCode == 13 && this.options.mode == "inline") {
                     e.preventDefault();
                     return;
                 }
+
+                /* When backspacing at the beginning of a paragraph where after a Figure div */
+                let curRange = rangy.getSelection().getRangeAt(0);
+                let parBlock = hp.node(curRange.startContainer).parentOfTypes("P H1 H2 H3 PRE BLOCKQUOTE");
+                if (e.keyCode == 8 && rangy.getSelection().isCollapsed && parBlock && curRange.startOffset == 0
+                    && (curRange.startContainer == parBlock || curRange.startContainer == hp.node(parBlock).findTextNodes()[0])
+                    && (parBlock.previousElementSibling.nodeName=='DIV' && /figure/i.test(parBlock.previousElementSibling.className))){
+                    e.preventDefault();
+
+                    let sFig = new Figure();
+                    sFig.assignElements(parBlock.previousElementSibling);
+                    sFig.focus();
+                }
+
                 if (e.keyCode == 13 && !e.shiftKey) {
                     let selectionRange = rangy.getSelection().getRangeAt(0);
                     let block = hp.node(selectionRange.commonAncestorContainer).parentOfTypes("BLOCKQUOTE H1 H2 H3 PRE");
                     if (block) {
-                        // if ($(selectionRange.commonAncestorContainer).parents("blockquote").length > 0) {
                         e.preventDefault();
                         this.exitBlockAfterLinebreak();
                     }
@@ -426,10 +405,60 @@ export default class Paragraph {
             }
         });
 
+        EventListener.addEventListener().on(this.elements.editorContainer.querySelector('.figureMenu .imageJustifyBtn')).with({
+            'click': (e)=>{
+                this.imageJustify().auto();
+            }
+        })
 
 
     }
+    imageJustify() {
+        // var focusedImgContainer = $(".figure").has("img.focused")[0];
+        var _imageJustify = {
+            left,
+            right,
+            center,
+            auto
+        };
 
+        var focusedImgContainer = $(this.elements.editorContainer).find('.figure').has("img.focused")[0];
+        return _imageJustify;
+
+        function left() {
+            if (!focusedImgContainer) return;
+
+            $(focusedImgContainer)
+                .removeClass('justifyRight justifyCenter')
+                .addClass('justifyLeft');
+            focusedImgContainer.querySelector('img').click();
+        }
+
+        function right() {
+            if (!focusedImgContainer) return;
+
+            $(focusedImgContainer)
+                .removeClass('justifyCenter justifyLeft')
+                .addClass('justifyRight');
+            focusedImgContainer.querySelector('img').click();
+        }
+
+        function center() {
+            if (!focusedImgContainer) return;
+
+            $(focusedImgContainer)
+                .removeClass('justifyRight justifyLeft')
+                .addClass('justifyCenter');
+            focusedImgContainer.querySelector('img').click();
+        }
+
+        function auto(){
+            if (!focusedImgContainer) return;
+            if ($(focusedImgContainer).hasClass('justifyLeft')) center();
+            else if ($(focusedImgContainer).hasClass('justifyCenter')) right();
+            else if ($(focusedImgContainer).hasClass('justifyRight')) left();
+        }
+    }
     getEditorContent(){
         /* 1. Clone the editor
          * 2. Remove menus off the clone
@@ -533,41 +562,8 @@ export default class Paragraph {
         }
     }
     exitBlockAfterLinebreak() {
-        //let selectionRange = rangy.getSelection().getRangeAt(0);
-        //let block = hp.node(selectionRange.commonAncestorContainer).parentOfTypes(blockName);
-        //if (!rangy.getSelection().isCollapsed)
-        //    document.execCommand('delete');
-        //
-        //let range2 = rangy.createRange();
-        //range2.setStart(selectionRange.endContainer, selectionRange.endOffset);
-        //range2.setEndAfter(block);
-        //let copiedFrag = range2.extractContents();
-        //let copiedContainer = copiedFrag.firstChild;
-        //let copiedContent = $(copiedContainer).html();
-        //
-        //let newP = document.createElement('p');
-        //if (copiedContent && copiedContainer.innerText)
-        //    $(newP).html(copiedContent);
-        //else
-        //    $(newP).html('<br/>');
-        //rangy.dom.insertAfter(newP, block);
-        //block.normalize();
-        //let newRange = rangy.createRange();
-        //newRange.setStart(newP, 0);
-        //rangy.getSelection().removeAllRanges();
-        //rangy.getSelection().addRange(newRange);
         document.execCommand('insertParagraph');
         document.execCommand('formatBlock', false, "p");
-        //console.log(blockName);
-    }
-    expandInsertToolbar() {
-        let $insertToolbarContent = $(this.editorInsertToolbar).find('.content');
-        $insertToolbarContent.show();
-    }
-    narrowInsertToolbar() {
-        let $insertToolbarContent = $(this.editorInsertToolbar).find('.content');
-        //this.elements.addImgOptions.style.visibility = "hidden";
-        $insertToolbarContent.hide();
     }
     insertToolbarState() {
         let state = "initial";
@@ -584,29 +580,35 @@ export default class Paragraph {
 
         function initial() {
             state = "initial";
-            contentDiv.style.display = "none";
+            //contentDiv.style.display = "none";
+            $(contentDiv).removeClass('show');
+
         }
 
         function showOptions() {
             state = "showOptions";
             /* Make sure no redundancy is shown */
-            addImgOptions.style.visibility = "hidden";
-            addImgForm.style.visibility = "hidden";
+            //addImgOptions.style.visibility = "hidden";
+            $(addImgOptions).removeClass('show');
+            //addImgForm.style.visibility = "hidden";
+            $(addImgForm).removeClass('show');
             /* ------ */
-            $(contentDiv).show();
+            $(contentDiv).addClass('show');
         }
 
         function addImg() {
             state = "addImg";
-            addImgOptions.style.visibility = "visible";
-
+            //addImgOptions.style.visibility = "visible";
+            $(addImgOptions).addClass('show');
             return {
                 pasteUrl
             };
 
             function pasteUrl() {
-                addImgForm.style.visibility = "visible";
-                inputText.style.display = "block";
+                //addImgForm.style.visibility = "visible";
+                $(addImgForm).addClass('show');
+                //inputText.style.display = "block";
+                $(inputText).addClass('show');
             }
         }
     }

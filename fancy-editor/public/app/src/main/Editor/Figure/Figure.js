@@ -9,7 +9,7 @@ export default class Figure {
     constructor(imgUrl) {
         //this.imgUrl = imgUrl;
         if (imgUrl){
-            this.template = `<div class="figure" contenteditable="false"><div class="menu figureMenu"><button class="btn imageJustifyLeftBtn">L</button><button class="btn imageJustifyCenterBtn">C</button><button class="btn imageJustifyRightBtn">R</button></div><div class="aspectRatioPlaceholder"><img src="${imgUrl}" alt=""/><div class="figureCaption" contenteditable="true"><br/></div></div></div>`;
+            this.template = `<div class="figure justifyLeft" contenteditable="false"><div class="aspectRatioPlaceholder"><img src="${imgUrl}" alt=""/><div class="figureCaption" contenteditable="true"><br/></div></div></div>`;
             this.assignElements();
 
 
@@ -28,27 +28,19 @@ export default class Figure {
     assignElements(figureElement){
         this.elements = {};
         this.elements.container= figureElement? figureElement : $(this.template)[0];
-        this.elements.figureMenu = this.elements.container.querySelector('.figureMenu');
+
 
         this.elements.img = this.elements.container.querySelector('img');
         this.elements.aspectRatioPlaceholder = this.elements.container.querySelector('.aspectRatioPlaceholder');
         this.elements.figureCaption = this.elements.container.querySelector('.figureCaption');
-        this.elements.imageJustifyLeftBtn = this.elements.figureMenu.querySelector('.imageJustifyLeftBtn');
-        this.elements.imageJustifyRightBtn = this.elements.figureMenu.querySelector('.imageJustifyRightBtn');
-        this.elements.imageJustifyCenterBtn = this.elements.figureMenu.querySelector('.imageJustifyCenterBtn');
+
     }
     bindEvents() {
         /* Events on image */
         EventListener.addEventListener().on(this.elements.img).with({
             'click': (e) => {
                 //console.log('c');
-                $(this.elements.img).addClass('focused');
-                var nRange = rangy.createRange();
-                nRange.setStart(this.elements.figureCaption, 0);
-                nRange.setEnd(this.elements.figureCaption, 0);
-                rangy.getSelection().removeAllRanges();
-                rangy.getSelection().addRange(nRange);
-                this.showFigureMenu();
+                this.focus();
             },
             'dragstart':(e)=>{
                 // Disable dragging images
@@ -107,8 +99,11 @@ export default class Figure {
                 //}
             },
             'focusout': (e) => {
-                $(this.elements.img).removeClass('focused');
-                this.hideFigureMenu();
+                if (!$(e.relatedTarget).parents('.figureMenu').length)
+                {
+                    $(this.elements.img).removeClass('focused');
+                    this.hideFigureMenu();
+                }
             },
             'paste': (e) => {
                 /* Prevent pasting format text */
@@ -119,58 +114,30 @@ export default class Figure {
             }
         });
 
-        /* Events on buttons */
-        EventListener.addEventListener().on(this.elements.imageJustifyLeftBtn).with({
-            'click': this.imageJustify.call(this).left
-        });
-        EventListener.addEventListener().on(this.elements.imageJustifyRightBtn).with({
-            'click': this.imageJustify.call(this).right
-        });
-        EventListener.addEventListener().on(this.elements.imageJustifyCenterBtn).with({
-            'click': this.imageJustify.call(this).center
-        });
+
 
     }
-    imageJustify() {
-        var _this = this;
-        var whereCursorAt = rangy.getSelection().getBookmark();
-        var _imageJustify = {
-            left,
-            right,
-            center
-        };
-        //hp.decorateAfter(_imageJustify, 'left right center', () => {
-        //    console.log('Run this shit', whereCursorAt);
-        //    rangy.getSelection().moveToBookmark(whereCursorAt);
-        //});
-
-        return _imageJustify;
-
-        function left() {
-            $(_this.elements.container).removeClass('justifyRight justifyCenter');
-            // this.showFigureMenu.call(_this);
-            _this.elements.img.click();
-        }
-
-        function right() {
-            $(_this.elements.container).removeClass('justifyCenter').addClass('justifyRight');
-            // this.showFigureMenu.call(_this);
-            _this.elements.img.click();
-        }
-
-        function center() {
-            $(_this.elements.container).removeClass('justifyRight').addClass('justifyCenter');
-            // this.showFigureMenu.call(_this);
-            _this.elements.img.click();
-        }
+    focus(){
+        $(this.elements.img).addClass('focused');
+        var nRange = rangy.createRange();
+        nRange.setStart(this.elements.figureCaption, 0);
+        nRange.setEnd(this.elements.figureCaption, 0);
+        rangy.getSelection().removeAllRanges();
+        rangy.getSelection().addRange(nRange);
+        this.showFigureMenu();
     }
     showFigureMenu() {
-        let imgWidth = this.elements.img.width;
-        let figureMenuWidth = 215;
-        this.elements.figureMenu.style.marginLeft = (this.elements.aspectRatioPlaceholder.clientWidth - figureMenuWidth) / 2 + "px";
-        $(this.elements.figureMenu).addClass('show');
+        var imgWidth = this.elements.img.width;
+        var figureMenuWidth = 215;
+        var figureMenu = $(this.elements.container).parents('.editorContainer').find('.figureMenu')[0];
+        // console.log($(this.elements.container).parents('.editorContainer')[0].querySelector('.figureMenu'))
+        figureMenu.style.left = (this.elements.aspectRatioPlaceholder.offsetLeft + (this.elements.aspectRatioPlaceholder.clientWidth - figureMenuWidth)/2) + "px";
+        // console.log($(this.elements.aspectRatioPlaceholder.offsetTop));
+        figureMenu.style.top = (this.elements.aspectRatioPlaceholder.offsetTop) + "px";
+        $(figureMenu).addClass('show animated slideInUp');
     }
     hideFigureMenu() {
-        $(this.elements.figureMenu).removeClass('show');
+        var figureMenu = $(this.elements.container).parents('.editorContainer').find('.figureMenu')[0];
+        $(figureMenu).removeClass('show animated slideInUp');
     }
 }

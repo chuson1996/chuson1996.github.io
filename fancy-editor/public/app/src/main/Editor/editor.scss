@@ -1,4 +1,8 @@
 .editorContainer{
+
+  .highlighted{
+    background-color: #79b7e7;
+  }
   .btn{
     cursor: pointer;
     padding:10px;
@@ -18,29 +22,46 @@
   }
 
   .editorMenu{
+    display: none;
+
     position: absolute;
     /* width: 300px; */
     height: 39px;
     background-color: white;
     border: 1px solid tan;
     padding: 5px;
-    -webkit-transition: left 0.5s ease, opacity 0.5s ease;
-    -moz-transition: left 0.5s ease, opacity 0.5s ease;
-    -ms-transition: left 0.5s ease, opacity 0.5s ease;
-    -o-transition: left 0.5s ease, opacity 0.5s ease;
-    transition: left 0.5s ease, opacity 0.5s ease;
+    -webkit-transition: left 0.1s linear, top 0.1s linear;
+    -moz-transition: left 0.1s linear, top 0.1s linear;
+    -ms-transition: left 0.1s linear, top 0.1s linear;
+    -o-transition: left 0.1s linear, top 0.1s linear;
+    transition: left 0.1s linear, top 0.1s linear;
 
+
+    animation-duration: 0.5s;
+    animation-delay: 0s;
+
+    &.show{
+      display:block;
+    }
     ///
     .linkingStuff{
+      display: none;
+
       position: absolute;
       top: 0;
       width: 100%;
       background-color: forestgreen;
       left: 0;
       height: 100%;
+
+
+      &.show{
+        display: block;
+      }
     }
   }
 
+  /* */
   .editor{
     margin: 20px;
     border: 1px solid lightcoral;
@@ -49,8 +70,14 @@
       outline:none;
     }
 
-    p, blockquote, h1, h2, h3{
+    p, blockquote, h1, h2, h3, code, pre{
       font-family: Trebuchet, 'Trebuchet MS', Arial, sans-serif;
+      -ms-word-wrap: break-word;
+      word-wrap: break-word;
+    }
+    p{
+      letter-spacing: -0.072px;
+      line-height: 27px;
     }
     p:focus {
       outline: rgba(255, 255, 255, 0);
@@ -69,7 +96,7 @@
 
   }
 
-  .editorInsertToolbar{
+  .editorInlineTooltip{
     position: absolute;
     width: auto;
     height: 40px;

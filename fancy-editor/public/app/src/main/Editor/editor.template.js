@@ -3,30 +3,14 @@
  */
 export default `
 <div class="editorContainer">
-    <div class="editorMenu hidden">
-        <button class="btn h1Btn">H1</button>
-        <button class="btn h2Btn">H2</button>
-        <button class="btn boldBtn">B</button>
-        <button class="btn highlightBtn"><span class="highlighted"><em>A</em></span></button>
-        <button class="btn justifyLeftBtn">L</button>
-        <button class="btn justifyCenterBtn">C</button>
-        <button class="btn justifyRightBtn">R</button>
-        <button class="btn linkBtn" >Link</button>
-        <button class="btn unlinkBtn" style="display: none;">Unlink</button>
-        <button class="btn blockquoteBtn">"</button>
-        <!-- Linking stuff -->
-        <div class="linkingStuff" style="visibility: hidden;">
-            <input type="text" name="linkAttached" disabled/>
-            <button class="btn confirmLinkBtn" disabled>OK</button>
-        </div>
+    <div class="editorMenu hidden"></div>
 
-    </div>
-    <div class="editorInsertToolbar hidden">
+    <div class="editorInlineTooltip hidden">
         <button class="btn expandInsertToolbarBtn" >+</button>
         <div class="content">
             <button class="btn addImgBtn">Img</button>
             <div class="addImgOptions">
-                <button class="btn enterImgUrlBtn">Paste an url</button>
+                <button class="btn pasteBtn">Paste an url</button>
                 <form><input type="text" name="pastedImgUrl"/></form>
                 <button class="btn uploadImgBtn">
                     Upload Image
@@ -38,11 +22,8 @@ export default `
         </div>
     </div>
 
-    <div class="menu figureMenu">
-        <button class="btn imageJustifyBtn">Justify</button>
-    </div>
-    <div class="editor article" contenteditable="true">
-        <blockquote>aasdgasdjghaksjdg</blockquote>
+    <div class="menu figureMenu"></div>
+    <div class="editor article" contenteditable="true" data-placeholder="Enter text...">
         <p><br/></p>
     </div>
 

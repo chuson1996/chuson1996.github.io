@@ -12,4 +12,4 @@ import Editor from './Editor/Editor.js';
 
 rangy.init();
 let editor = new Editor();
-$('.editor').append(editor.editorContainer);
+$('.editor').append(editor.elements.editorContainer);

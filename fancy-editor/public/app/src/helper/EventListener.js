@@ -60,6 +60,10 @@
             }
         }
         function With(content){
+            if (!node) {
+                //console.error('EventListener.addEventListener().on([Node])... Parameter 1 in on() is not of type Node!');
+                return;
+            }
             var linesOfKey = Object.getOwnPropertyNames(content);
             linesOfKey.forEach(function (keyString) {
                 var keys = typeof keyString == "string" ? keyString.split(' ') : keyString;

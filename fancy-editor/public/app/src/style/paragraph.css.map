@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAMI,mCAAQ;EAEN,OAAO,EAAE,CAAC;EACV,OAAO,EAAE,IAAI;AAEf,iCAAM;EAEJ,OAAO,EAAE,CAAC;EACV,OAAO,EAAE,GAAG;AAsChB,6BAAY;EACV,gBAAgB,EAAE,IAAkB",
-"sources": ["paragraph.scss"],
-"names": [],
-"file": "paragraph.css"
-}

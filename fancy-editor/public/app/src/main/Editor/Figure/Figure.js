@@ -70,11 +70,15 @@ export default class Figure {
             'keydown': (e) => {
                 /* When hitting backspace at the first offset in figureCaption, delete this figure */
                 if (e.keyCode == 8) {
-                    if (rangy.getSelection().getRangeAt(0).startOffset == 0) {
+                    if (rangy.getSelection().isCollapsed && rangy.getSelection().getRangeAt(0).startOffset == 0) {
                         e.preventDefault();
                         let nRange = rangy.createRange();
-                        nRange.setStartBefore(this.elements.container);
-                        nRange.setEndBefore(this.elements.container);
+                        if (!this.elements.container.previousElementSibling) $(this.elements.container).before('<p><br/></p>');
+
+                        nRange.selectNodeContents(this.elements.container.previousElementSibling);
+                        nRange.collapse(false);
+
+
                         this.elements.container.parentNode.removeChild(this.elements.container);
                         rangy.getSelection().removeAllRanges();
                         rangy.getSelection().addRange(nRange);
@@ -89,17 +93,14 @@ export default class Figure {
                     this.elements.figureCaption.innerHTML = "<br>";
                 }
             },
-            'focusin': (e) => {
-
+            'focus': (e) => {
                 $(this.elements.img).removeClass('focused');
                 $(this.elements.img).addClass('focused');
-
-                //focusoutImage(){
-                //    $(this.editor.querySelector('img')).removeClass('focused');
-                //}
             },
-            'focusout': (e) => {
-                if (!$(e.relatedTarget).parents('.figureMenu').length)
+            'blur': (e) => {
+                if (!$(e.relatedTarget).parents('.figureMenu').length
+                    // Mozilla
+                    && !$(e.explicitOriginalTarget).parents('.figureMenu').length)
                 {
                     $(this.elements.img).removeClass('focused');
                     this.hideFigureMenu();
@@ -118,7 +119,8 @@ export default class Figure {
 
     }
     focus(){
-        $(this.elements.img).addClass('focused');
+        //$(this.elements.img).addClass('focused');
+        this.elements.figureCaption.focus();
         var nRange = rangy.createRange();
         nRange.setStart(this.elements.figureCaption, 0);
         nRange.setEnd(this.elements.figureCaption, 0);

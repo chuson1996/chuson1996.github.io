@@ -14,11 +14,19 @@ export default (function(){
         swap,
         isCurrentRangeInEditorContainer,
         testImageUrl,
-        moveCursorTo
+        moveCursorTo,
+        assign,
+        getBrowser
 
 
 
     };
+    function assign(dest, source){
+        if (typeof source != "object" || typeof dest != "object") return;
+        Object.getOwnPropertyNames(source).forEach(function (souKey) {
+            if (!dest[souKey]) dest[souKey] = source[souKey];
+        });
+    }
     function decorateWithBeforeValidator(sc, property, beforeValidator){
         if (typeof property == "string") property = property.split(' ');
 
@@ -95,6 +103,23 @@ export default (function(){
         }
 
     }
+    function getBrowser(){
+        return (function(){
+            var ua= navigator.userAgent, tem,
+                M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if(/trident/i.test(M[1])){
+                tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return 'IE '+(tem[1] || '');
+            }
+            if(M[1]=== 'Chrome'){
+                tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+                if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+            }
+            M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+            if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+            return M.join(' ');
+        })();
+    }
     function node(_node) {
         return{
             isChildOf,
@@ -139,20 +164,9 @@ export default (function(){
             return null;
         }
         function removeAttributes(){
-            //console.log(_node);
             if (!_node.nodeName && _node.length && _node.length > 0){
                 _.forEach(_node, (n)=>{
                     if (n.nodeName.toUpperCase() != "#TEXT" && n.nodeName.toUpperCase() != "#COMMENT") node(n).removeAttributes();
-                    //if (n.nodeName.toUpperCase() == "#TEXT" && !n.textContent.trim())
-                    //{
-                    //    console.log(_node);
-                    //    _node.remove(n);
-                    //}
-                    //if (n.nodeName.toUpperCase() == "#COMMENT")
-                    //{
-                    //    console.log(_node);
-                    //    _node.remove(n);
-                    //}
                 })
             }else{
                 if (_node.attributes.length > 0){
@@ -165,9 +179,8 @@ export default (function(){
                     if (_node.nodeName.toUpperCase() == "A" && _.indexOf(attributesToDelete, "href") > -1){
                         _.remove(attributesToDelete, (n)=>n=="href");
                     }
-                    //console.log(`attributesToDelete: `, attributesToDelete);
+
                     _.forEach(attributesToDelete, (a)=>{
-                        //console.log(`Removing ${a} from `, $(_node));
                         _node.removeAttribute(a);
 
                     });
@@ -187,21 +200,14 @@ export default (function(){
                 if (_.indexOf(elementBlocks, n.nodeName) == -1 && n.nodeName.toUpperCase() != "IMG"){
                     $(n).wrap("<p></p>");
                 }
-                //else if (n.nodeName == "IMG"){
-                //    var nImg = new Figure(n.attributes.src.value);
-                //    $(n).after(nImg.elements.container);
-                //    n.remove();
-                //}
             });
 
             // Normalize text nodes
-            //_node.innerHTML = _node.innerHTML;
             _node.normalize();
 
             //console.log(_node.innerHTML);
             node(_node).nodeChildLoop((n)=>{
                 let $imgs = n.nodeName.toUpperCase() == "IMG" ? $(n) : $(n).find('img');
-                //console.log($imgs.length);
                 if ($imgs.length > 0){
                     _.forEach($imgs, (img)=>{
                         //console.log('Adding new Figure');
@@ -211,8 +217,6 @@ export default (function(){
                 }
             });
 
-            //console.log(_node.innerHTML);
-            
             // Clean up #comment, empty #text nodes and empty node
             for(var i=0; i< _node.childNodes.length; i++){
                 var _nodeS = _node.childNodes[i];
@@ -228,13 +232,9 @@ export default (function(){
             }
 
             // If an figure is an the end, append a <p><br/></p> after it!
-
             if (_node.lastChild && _node.lastChild.nodeName.toUpperCase() == "DIV" && /figure/i.test(_node.lastChild.className)){
-                $(_node).append("<p>&nbsp;</p>");
-                //var newP = document.createElement('p');
-                //newP.appendChild(document.createTextNode(""));
-                //_node.appendChild(newP);
-
+                //$(_node).append("<p>&nbsp;</p>");
+                $(_node).append("<p><br/></p>");
             }
         }
 
@@ -247,6 +247,8 @@ export default (function(){
                 }
             }
         }
+
+
 
         function findTextNodes(){
             var textNodes = [];
@@ -332,11 +334,11 @@ export default (function(){
 
 
     function isLineEmpty(pContainer){
-        if (!pContainer || !pContainer.innerText){
-            //console.log(`This bitch don't even have innerText: `, pContainer);
+        if (!pContainer || !pContainer.textContent){
+            //console.log(`This bitch don't even have textContent: `, pContainer);
             return true;
         }
-        return !pContainer.innerText.trim();
+        return !pContainer.textContent.trim();
     }
     function swap(v1, v2){
         let c = v1;

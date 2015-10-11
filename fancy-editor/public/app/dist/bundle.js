@@ -3,17 +3,17 @@
  * Created by chuso_000 on 19/9/2015.
  */
 
-'use strict';
+"use strict";
 
 exports.__esModule = true;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _mainEditorFigureFigure = require('../main/Editor/Figure/Figure');
 
 var _mainEditorFigureFigure2 = _interopRequireDefault(_mainEditorFigureFigure);
 
-exports['default'] = (function () {
+exports["default"] = (function () {
     return {
         decorateWithBeforeValidator: decorateWithBeforeValidator,
         decorateAfter: decorateAfter,
@@ -23,9 +23,17 @@ exports['default'] = (function () {
         swap: swap,
         isCurrentRangeInEditorContainer: isCurrentRangeInEditorContainer,
         testImageUrl: testImageUrl,
-        moveCursorTo: moveCursorTo
+        moveCursorTo: moveCursorTo,
+        assign: assign,
+        getBrowser: getBrowser
 
     };
+    function assign(dest, source) {
+        if (typeof source != "object" || typeof dest != "object") return;
+        Object.getOwnPropertyNames(source).forEach(function (souKey) {
+            if (!dest[souKey]) dest[souKey] = source[souKey];
+        });
+    }
     function decorateWithBeforeValidator(sc, property, beforeValidator) {
         if (typeof property == "string") property = property.split(' ');
 
@@ -78,7 +86,7 @@ exports['default'] = (function () {
         function on(_node) {
             node = _node;
             return {
-                'with': With
+                "with": With
             };
         }
         function With(content) {
@@ -96,6 +104,24 @@ exports['default'] = (function () {
                 });
             });
         }
+    }
+    function getBrowser() {
+        return (function () {
+            var ua = navigator.userAgent,
+                tem,
+                M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if (/trident/i.test(M[1])) {
+                tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return 'IE ' + (tem[1] || '');
+            }
+            if (M[1] === 'Chrome') {
+                tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
+                if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+            }
+            M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+            if ((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
+            return M.join(' ');
+        })();
     }
     function node(_node) {
         return {
@@ -119,7 +145,7 @@ exports['default'] = (function () {
         }
         function findSibling(sibling) {
             return {
-                'in': In
+                "in": In
             };
             function In(parent) {
                 return $(_node).parents(parent).find(sibling)[0];
@@ -139,44 +165,32 @@ exports['default'] = (function () {
             return null;
         }
         function removeAttributes() {
-            //console.log(_node);
             if (!_node.nodeName && _node.length && _node.length > 0) {
                 _.forEach(_node, function (n) {
                     if (n.nodeName.toUpperCase() != "#TEXT" && n.nodeName.toUpperCase() != "#COMMENT") node(n).removeAttributes();
-                    //if (n.nodeName.toUpperCase() == "#TEXT" && !n.textContent.trim())
-                    //{
-                    //    console.log(_node);
-                    //    _node.remove(n);
-                    //}
-                    //if (n.nodeName.toUpperCase() == "#COMMENT")
-                    //{
-                    //    console.log(_node);
-                    //    _node.remove(n);
-                    //}
                 });
             } else {
-                    if (_node.attributes.length > 0) {
-                        var attributesToDelete = _.map(_node.attributes, function (attr) {
-                            return attr.nodeName;
-                        });
-                        if (_node.nodeName.toUpperCase() == "IMG" && _.indexOf(attributesToDelete, "src") > -1) {
-                            _.remove(attributesToDelete, function (n) {
-                                return n == "src";
-                            });
-                        }
-                        if (_node.nodeName.toUpperCase() == "A" && _.indexOf(attributesToDelete, "href") > -1) {
-                            _.remove(attributesToDelete, function (n) {
-                                return n == "href";
-                            });
-                        }
-                        //console.log(`attributesToDelete: `, attributesToDelete);
-                        _.forEach(attributesToDelete, function (a) {
-                            //console.log(`Removing ${a} from `, $(_node));
-                            _node.removeAttribute(a);
+                if (_node.attributes.length > 0) {
+                    var attributesToDelete = _.map(_node.attributes, function (attr) {
+                        return attr.nodeName;
+                    });
+                    if (_node.nodeName.toUpperCase() == "IMG" && _.indexOf(attributesToDelete, "src") > -1) {
+                        _.remove(attributesToDelete, function (n) {
+                            return n == "src";
                         });
                     }
-                    if (_node.hasChildNodes()) node(_node.childNodes).removeAttributes();
+                    if (_node.nodeName.toUpperCase() == "A" && _.indexOf(attributesToDelete, "href") > -1) {
+                        _.remove(attributesToDelete, function (n) {
+                            return n == "href";
+                        });
+                    }
+
+                    _.forEach(attributesToDelete, function (a) {
+                        _node.removeAttribute(a);
+                    });
                 }
+                if (_node.hasChildNodes()) node(_node.childNodes).removeAttributes();
+            }
         }
         function editorFormat() {
             var elementBlocks = "P BLOCKQUOTE H1 H2 H3 PRE".split(' ');
@@ -190,31 +204,22 @@ exports['default'] = (function () {
                 if (_.indexOf(elementBlocks, n.nodeName) == -1 && n.nodeName.toUpperCase() != "IMG") {
                     $(n).wrap("<p></p>");
                 }
-                //else if (n.nodeName == "IMG"){
-                //    var nImg = new Figure(n.attributes.src.value);
-                //    $(n).after(nImg.elements.container);
-                //    n.remove();
-                //}
             });
 
             // Normalize text nodes
-            //_node.innerHTML = _node.innerHTML;
             _node.normalize();
 
             //console.log(_node.innerHTML);
             node(_node).nodeChildLoop(function (n) {
                 var $imgs = n.nodeName.toUpperCase() == "IMG" ? $(n) : $(n).find('img');
-                //console.log($imgs.length);
                 if ($imgs.length > 0) {
                     _.forEach($imgs, function (img) {
                         //console.log('Adding new Figure');
-                        $(n).before(new _mainEditorFigureFigure2['default'](img.attributes.src.value).elements.container);
+                        $(n).before(new _mainEditorFigureFigure2["default"](img.attributes.src.value).elements.container);
                     });
                     $imgs.remove();
                 }
             });
-
-            //console.log(_node.innerHTML);
 
             // Clean up #comment, empty #text nodes and empty node
             for (var i = 0; i < _node.childNodes.length; i++) {
@@ -230,12 +235,9 @@ exports['default'] = (function () {
             }
 
             // If an figure is an the end, append a <p><br/></p> after it!
-
             if (_node.lastChild && _node.lastChild.nodeName.toUpperCase() == "DIV" && /figure/i.test(_node.lastChild.className)) {
-                $(_node).append("<p>&nbsp;</p>");
-                //var newP = document.createElement('p');
-                //newP.appendChild(document.createTextNode(""));
-                //_node.appendChild(newP);
+                //$(_node).append("<p>&nbsp;</p>");
+                $(_node).append("<p><br/></p>");
             }
         }
 
@@ -327,11 +329,11 @@ exports['default'] = (function () {
     }
 
     function isLineEmpty(pContainer) {
-        if (!pContainer || !pContainer.innerText) {
-            //console.log(`This bitch don't even have innerText: `, pContainer);
+        if (!pContainer || !pContainer.textContent) {
+            //console.log(`This bitch don't even have textContent: `, pContainer);
             return true;
         }
-        return !pContainer.innerText.trim();
+        return !pContainer.textContent.trim();
     }
     function swap(v1, v2) {
         var c = v1;
@@ -371,7 +373,7 @@ exports['default'] = (function () {
     }
 })();
 
-module.exports = exports['default'];
+module.exports = exports["default"];
 
 },{"../main/Editor/Figure/Figure":4}],2:[function(require,module,exports){
 //import CustomEvents from '../../helper/customEvents';
@@ -407,91 +409,189 @@ var _EditorUndoManagerJs = require('./EditorUndoManager.js');
 
 var _EditorUndoManagerJs2 = _interopRequireDefault(_EditorUndoManagerJs);
 
+var _editorDefaultButtonsJs = require('./editorDefaultButtons.js');
+
+var _editorDefaultButtonsJs2 = _interopRequireDefault(_editorDefaultButtonsJs);
+
 var Editor = (function () {
-    function Editor() {
-        _classCallCheck(this, Editor);
-
-        this.template = _editorTemplateJs2['default'];
-
-        this.editorContainer = $(this.template)[0];
-        this.editor = this.editorContainer.querySelector('.editor');
-        this.editorInsertToolbar = this.editorContainer.querySelector('.editorInsertToolbar');
-        this.elements = {};
-        // Containers
-        this.elements.editorContainer = this.editorContainer;
-        this.elements.editor = this.editorContainer.querySelector('.editor');
-        this.elements.editorInsertToolbar = this.editorContainer.querySelector('.editorInsertToolbar');
-        this.elements.editorMenu = this.editorContainer.querySelector('.editorMenu');
-
-        // Buttons in editorMenu
-        this.elements.boldBtn = this.editorContainer.querySelector('.boldBtn');
-        this.elements.h1Btn = this.elements.editorMenu.querySelector('.h1Btn');
-        this.elements.h2Btn = this.elements.editorMenu.querySelector('.h2Btn');
-        this.elements.highlightBtn = this.elements.editorMenu.querySelector('.highlightBtn');
-        this.elements.justifyCenterBtn = this.elements.editorMenu.querySelector('.justifyCenterBtn');
-        this.elements.justifyLeftBtn = this.elements.editorMenu.querySelector('.justifyLeftBtn');
-        this.elements.justifyRightBtn = this.elements.editorMenu.querySelector('.justifyRightBtn');
-        this.elements.linkBtn = this.elements.editorMenu.querySelector('.linkBtn');
-        this.elements.unlinkBtn = this.elements.editorMenu.querySelector('.unlinkBtn');
-        this.elements.blockquoteBtn = this.elements.editorMenu.querySelector('.blockquoteBtn');
-        // Linking stuff
-        this.elements.linkInput = this.elements.editorMenu.querySelector('input[name="linkAttached"]');
-        this.elements.confirmLinkBtn = this.elements.editorMenu.querySelector('.confirmLinkBtn');
-
-        // Buttons in editorInsertToolbar
-        this.elements.expandInsertToolbarBtn = this.editorContainer.querySelector('.editorInsertToolbar .expandInsertToolbarBtn');
-        this.elements.addImgBtn = this.elements.editorInsertToolbar.querySelector('.addImgBtn');
-        this.elements.enterImgUrlBtn = this.elements.editorInsertToolbar.querySelector('.enterImgUrlBtn');
-        this.elements.pastedImgUrl = this.elements.editorInsertToolbar.querySelector('input[name="pastedImgUrl"]');
-        this.elements.addImgOptions = this.elements.editorInsertToolbar.querySelector('div.addImgOptions');
-
-        this.linking = _linkingM2['default']($(this.editorContainer));
-        this.formatText = _formatTextM2['default']();
-
-        this.options = {};
-        this.options.prototype = {
-            pasteAsText: true,
-            inlineMode: false
-        };
-
-        //this.customEvents = new CustomEvents(this.editorContainer);
-
-        this.bindCustomEvents();
-        this.bindEvents();
-        this.bindImageUploadHandler();
-
-        this.paragraphUndoManager = new _EditorUndoManagerJs2['default'](this.elements.editor);
-        this.paragraphUndoManager.saveEditorState();
-    }
-
-    Editor.prototype.bindCustomEvents = function bindCustomEvents() {
+    function Editor(options) {
         var _this = this;
 
-        EventListener.addEventListener().on(this.editor)['with']({
-            'mouseup keyup focusout': function mouseupKeyupFocusout() {
-                // Text highlighted ?
-                if (!rangy.getNativeSelection().isCollapsed) _this.showEditorMenu();else _this.hideEditorMenu();
+        _classCallCheck(this, Editor);
 
-                // Cursor at an empty paragraph ?
-                if (rangy.getSelection().anchorNode && rangy.getSelection().anchorNode.nodeName == "P" && rangy.getSelection().focusNode && rangy.getSelection().focusNode.nodeName == "P" && !rangy.getSelection().anchorNode.innerText.trim() && rangy.getSelection().rangeCount == 1) _this.showInsertToolbar();else _this.hideInsertToolbar();
+        this.defaultButtons = new _editorDefaultButtonsJs2['default']();
+
+        this.options = options || {};
+        // Setting up default options
+        _helperHelper2['default'].assign(this.options, {
+            template: _editorTemplateJs2['default'],
+            editorMenu: {
+                buttons: ['h1', 'h2', 'bold', 'highlight', 'link', 'blockquote', 'justifyAuto'],
+                activeClass: 'animated flipInX',
+                'static': false
             },
-            'mouseup keyup': function mouseupKeyup() {
-                // Selection contains link ?
-                var selectionContainsLink = (function () {
-                    if (!rangy.getSelection() || rangy.getSelection().isCollapsed) return false;
-                    var cloneContent = rangy.getSelection().getRangeAt(0).cloneContents();
-                    return $(cloneContent).find('a').length > 0;
-                }).call(_this);
-                if (selectionContainsLink) _this.linking.disableAddLink();else _this.linking.enableAddLink();
+            figureMenu: {
+                buttons: ['imageJustify']
+            }
+
+        });
+
+        this.template = this.options.template;
+
+        this.elements = {};
+        // Containers
+        this.elements.editorContainer = $(this.template)[0];
+        this.elements.editor = this.elements.editorContainer.querySelector('.editor');
+        this.elements.editorInlineTooltip = this.elements.editorContainer.querySelector('.editorInlineTooltip');
+        this.elements.editorMenu = this.elements.editorContainer.querySelector('.editorMenu');
+        this.elements.figureMenu = this.elements.editorContainer.querySelector('.figureMenu');
+
+        this.linking = _linkingM2['default'](this.elements.editorContainer);
+        this.formatText = _formatTextM2['default']();
+        /* In order to save the editor's state after clicking formatting-text buttons, decorate those functions with an after function: this.editorUndoManager.saveEditorState*/
+        _helperHelper2['default'].decorateAfter(this.formatText, 'bold h1 h2 blockquote highlight', this.saveEditorState.bind(this));
+        _helperHelper2['default'].decorateAfter(this.formatText.justify, 'center left right', this.saveEditorState.bind(this));
+        _helperHelper2['default'].decorateAfter(this.linking, 'confirm', this.saveEditorState.bind(this));
+        /* After applying blockquote, h1 or h2, I want the editorMenu to change its position  */
+        _helperHelper2['default'].decorateAfter(this.formatText, 'h1 h2 blockquote', function () {
+            setTimeout(function () {
+                _this.showEditorMenu();
+            }, 0);
+        });
+
+        /* Setting up editorMenu */
+        this.addButtonsToEditorMenu(this.options.editorMenu.buttons);
+        this.addButtonsToFigureMenu(this.options.figureMenu.buttons);
+
+        this.saving = false;
+        this.startValue = this.getEditorContent();
+
+        this.activateCursorEvents();
+        this.activateEditorMenuEvents();
+        this.activateUndoAndRedo();
+        this.activateEditorTooltipEvents();
+
+        this.bindImageUploadHandler();
+
+        /* Set up undoManager */
+        this.editorUndoManager = new _EditorUndoManagerJs2['default'](this.elements.editor);
+        this.editorUndoManager.saveEditorState();
+    }
+
+    Editor.prototype.addButtonsToEditorMenu = function addButtonsToEditorMenu(buttons) {
+        var _this2 = this;
+
+        var buildInButtons = 'bold h1 h2 blockquote highlight justifyLeft justifyRight justifyCenter justifyAuto'.split(' ');
+        buttons.forEach(function (button) {
+            if (typeof button == "string") {
+                if (buildInButtons.indexOf(button) > -1) {
+                    standardizeAndAppendButton.call(_this2, _this2.defaultButtons[button + "Btn"]);
+                } else if (button === 'link') {
+                    /* This is a special case. It comprises other components like the input, confirm button,... */
+                    var linkBtn = document.createElement('button');
+                    linkBtn.className = 'btn linkBtn';
+                    linkBtn.innerHTML = "Link";
+                    /* unlinkBtn */
+                    var unlinkBtn = document.createElement('button');
+                    unlinkBtn.className = 'btn unlinkBtn';
+                    unlinkBtn.innerHTML = 'Unlink';
+                    unlinkBtn.style.display = 'none';
+
+                    var linkingComponent = '<div class="linkingStuff">\n                        <input type="text" name="linkAttached" disabled/>\n                        <button class="btn confirmLinkBtn" disabled>OK</button>\n                    </div>';
+                    // Parse the string to a DOM element
+                    var tempDom = document.createElement('div');
+                    tempDom.innerHTML = linkingComponent;
+                    linkingComponent = tempDom.firstChild;
+
+                    EventListener.addEventListener().on(linkBtn)['with']({
+                        'click': _this2.linking.saveBookmarkBeforeLinking.bind(_this2)
+                    });
+                    EventListener.addEventListener().on(unlinkBtn)['with']({
+                        'click': _this2.linking.unlink.bind(_this2)
+                    });
+
+                    _this2.elements.editorMenu.appendChild(linkBtn);
+                    _this2.elements.editorMenu.appendChild(unlinkBtn);
+                    _this2.elements.editorMenu.appendChild(linkingComponent);
+                    EventListener.addEventListener().on(linkingComponent.querySelector('.confirmLinkBtn'))['with']({
+                        'click': _this2.linking.confirm.bind(_this2)
+                    });
+                }
+            } else {}
+        });
+
+        /* (A private function) */
+        function standardizeAndAppendButton(button) {
+            var _this3 = this;
+
+            EventListener.addEventListener().on(button)['with']({
+                'click': function click() {
+                    setTimeout(function () {
+                        _this3.saveEditorState();
+                        _this3.showEditorMenu();
+                    }, 0);
+                }
+            });
+            this.elements.editorMenu.appendChild(button);
+        }
+    };
+
+    Editor.prototype.addButtonsToFigureMenu = function addButtonsToFigureMenu(buttons) {
+        var _this4 = this;
+
+        var buildInButtons = 'imageJustify'.split(' ');
+        buttons.forEach(function (button) {
+            if (typeof button == "string") {
+                if (buildInButtons.indexOf(button) > -1) {
+                    _this4.elements.figureMenu.appendChild(_this4.defaultButtons[button + 'Btn']);
+                }
             }
         });
     };
 
-    Editor.prototype.bindEvents = function bindEvents() {
-        var _this2 = this;
+    Editor.prototype.activateCursorEvents = function activateCursorEvents() {
+        var _this5 = this;
 
-        /* Events on this.editor */
-        EventListener.addEventListener().on(this.editor)['with']({
+        /* Hide or show editorMenu and editorInsertMenu */
+        EventListener.addEventListener().on(this.elements.editor)['with']({
+            'mouseup keyup focusout': function mouseupKeyupFocusout() {
+                setTimeout(function () {
+                    /* Text highlighted ? */
+                    if (!rangy.getSelection().isCollapsed && !_helperHelper2['default'].node(rangy.getSelection().getRangeAt(0).commonAncestorContainer).isChildOf(".figure")) _this5.showEditorMenu();else _this5.hideEditorMenu();
+                }, 0);
+
+                /* Cursor at an empty paragraph ? */
+                if (rangy.getSelection().anchorNode && rangy.getSelection().anchorNode.nodeName == "P" && rangy.getSelection().focusNode && rangy.getSelection().focusNode.nodeName == "P" && !rangy.getSelection().anchorNode.textContent.trim() && rangy.getSelection().rangeCount == 1) _this5.showInsertToolbar();else _this5.hideInsertToolbar();
+            },
+            'focusout': function focusout(e) {
+
+                //this.hideInsertToolbar();
+            }
+        });
+
+        /* Linking stuff. Only active when the link button is appended in editorMenu */
+        this.options.editorMenu.buttons.indexOf('link') && EventListener.addEventListener().on(this.elements.editor)['with']({
+            'mouseup keyup': function mouseupKeyup() {
+                /* Selection contains link ? */
+                var selectionContainsLink = (function () {
+                    /* Is selection wrapped in <a></a> */
+                    if (rangy.getSelection().rangeCount && $(rangy.getSelection().getRangeAt(0).commonAncestorContainer).parents('a').length) return true;
+
+                    /* Does selection contain <a></a> */
+                    if (!rangy.getSelection() || rangy.getSelection().isCollapsed) return false;
+                    var cloneContent = rangy.getSelection().getRangeAt(0).cloneContents();
+                    return $(cloneContent).find('a').length > 0;
+                }).call(_this5);
+                if (selectionContainsLink) _this5.linking.disableAddLink();else _this5.linking.enableAddLink();
+            }
+        });
+    };
+
+    Editor.prototype.activateEditorMenuEvents = function activateEditorMenuEvents() {
+        var _this6 = this;
+
+        /* Events on this.elements.editor */
+        EventListener.addEventListener().on(this.elements.editor)['with']({
             'paste': function paste(e) {
                 /* Prevent pasting formatted text */
                 e.preventDefault();
@@ -499,7 +599,13 @@ var Editor = (function () {
                 var curRange = rangy.getSelection().getRangeAt(0);
                 var cbData = document.createElement('div');
                 var block = _helperHelper2['default'].node(curRange.endContainer).parentOfTypes("P BLOCKQUOTE H1 H2 H3 PRE");
-                $(cbData).append($(e.clipboardData.getData('text/html')));
+                if (/Firefox/.test(_helperHelper2['default'].getBrowser())) {
+                    $(cbData).append($('<p>' + (e.originalEvent || e).clipboardData.getData('text/plain') + '</p>'));
+                } else {
+                    $(cbData).append($((e.originalEvent || e).clipboardData.getData('text/html')));
+                }
+
+                if (!cbData.innerHTML.trim()) return;
                 _helperHelper2['default'].node(cbData).removeAttributes();
                 _helperHelper2['default'].node(cbData).editorFormat();
 
@@ -517,7 +623,7 @@ var Editor = (function () {
                 }
 
                 /* Check if cursor is at the first or end of the block */
-                if (_helperHelper2['default'].node(curRange.startContainer).isFirstNodeIn(block) && curRange.startOffset == 0 || !block.innerText.trim()) {
+                if (_helperHelper2['default'].node(curRange.startContainer).isFirstNodeIn(block) && curRange.startOffset == 0 || !block.textContent.trim()) {
                     //console.log('Prepend to the block');
 
                     if (cbData.lastChild.nodeName.toUpperCase() == "P" || cbData.lastChild.nodeName == block.nodeName) {
@@ -590,10 +696,10 @@ var Editor = (function () {
             },
             'mouseup keyup': function mouseupKeyup(e) {
                 /* Guarantee that the editor must always contain at least 1 "P" node. If not, "#TEXT" node will take place. */
-                if (!_this2.elements.editor.innerHTML) {
-                    _this2.elements.editor.innerHTML = "<p><br/></p>";
+                if (!_this6.elements.editor.innerHTML) {
+                    _this6.elements.editor.innerHTML = "<p><br/></p>";
                     var nR = rangy.getSelection().getRangeAt(0);
-                    nR.setStart(_this2.elements.editor.firstElementChild, 0);
+                    nR.setStart(_this6.elements.editor.firstElementChild, 0);
                     rangy.getSelection().removeAllRanges();
                     rangy.getSelection().addRange(nR);
                 }
@@ -601,16 +707,16 @@ var Editor = (function () {
                 //console.log(rangy.getSelection().getRangeAt(0));
                 setTimeout(function () {
                     /* Disable or hide linking stuff */
-                    _this2.linking.disableLinking();
+                    _this6.linking.disableLinking();
 
-                    _this2.insertToolbarState().initial.call(_this2);
+                    _this6.insertToolbarState().initial.call(_this6);
                 }, 0);
             },
             'focusout': function focusout(e) {
                 /* If users focus out of the container, all ranges must be removed.
                  * editorMenu + insertToolbar must be hidden.
-                 * This line below prevents scenarios when user click extensions like editorMenu or insertToolbar*/
-                if (!($(_this2.editorContainer).has($(e.relatedTarget)).length > 0)) {
+                 * This line below prevents scenarios when user click extensions like editorMenu or editoInlineTooltip*/
+                if (!($(_this6.elements.editorContainer).has($(e.relatedTarget)).length > 0)) {
                     rangy.getSelection().removeAllRanges();
                 }
             },
@@ -619,24 +725,24 @@ var Editor = (function () {
                 if (e.ctrlKey && e.keyCode == 90) {
                     e.preventDefault();
                     // If timer is still running, terminate it and saveEditorState
-                    if (saving) {
-                        clearTimeout(timer);
-                        saving = false;
-                        _this2.paragraphUndoManager.saveEditorState();
+                    if (_this6.saving) {
+                        clearTimeout(_this6.timer);
+                        _this6.saving = false;
+                        _this6.editorUndoManager.saveEditorState();
                     }
                     if (e.shiftKey) {
-                        _this2.paragraphUndoManager.redo();
+                        _this6.editorUndoManager.redo();
                     } else {
-                        _this2.paragraphUndoManager.undo();
+                        _this6.editorUndoManager.undo();
                     }
-                    startValue = _this2.getEditorContent();
-                    //console.log(this.paragraphUndoManager.editorStates);
+                    _this6.startValue = _this6.getEditorContent();
+                    //console.log(this.editorUndoManager.editorStates);
                 }
                 /* Remain a br tag within a paragraph when editor is emptied. */
-                if (e.keyCode == 8 && $(_this2.elements.editor).find('p, blockquote, h1, h2, h3').length == 1 && (!$(_this2.elements.editor).text() || _this2.elements.editor.innerText == document.createElement("br").innerText)) e.preventDefault();
+                if (e.keyCode == 8 && $(_this6.elements.editor).find('p, blockquote, h1, h2, h3').length == 1 && (!$(_this6.elements.editor).text() || _this6.elements.editor.textContent == document.createElement("br").textContent)) e.preventDefault();
 
                 /* Disable line breaking in mode inline */
-                if (e.keyCode == 13 && _this2.options.mode == "inline") {
+                if (e.keyCode == 13 && _this6.options.mode == "inline") {
                     e.preventDefault();
                     return;
                 }
@@ -644,7 +750,7 @@ var Editor = (function () {
                 /* When backspacing at the beginning of a paragraph where after a Figure div */
                 var curRange = rangy.getSelection().getRangeAt(0);
                 var parBlock = _helperHelper2['default'].node(curRange.startContainer).parentOfTypes("P H1 H2 H3 PRE BLOCKQUOTE");
-                if (e.keyCode == 8 && rangy.getSelection().isCollapsed && parBlock && curRange.startOffset == 0 && (curRange.startContainer == parBlock || curRange.startContainer == _helperHelper2['default'].node(parBlock).findTextNodes()[0]) && (parBlock.previousElementSibling.nodeName == 'DIV' && /figure/i.test(parBlock.previousElementSibling.className))) {
+                if (e.keyCode == 8 && rangy.getSelection().isCollapsed && parBlock && curRange.startOffset == 0 && (curRange.startContainer == parBlock || curRange.startContainer == _helperHelper2['default'].node(parBlock).findTextNodes()[0]) && (parBlock.previousElementSibling && parBlock.previousElementSibling.nodeName == 'DIV' && /figure/i.test(parBlock.previousElementSibling.className))) {
                     e.preventDefault();
 
                     var sFig = new _FigureFigure2['default']();
@@ -654,191 +760,90 @@ var Editor = (function () {
 
                 if (e.keyCode == 13 && !e.shiftKey) {
                     var selectionRange = rangy.getSelection().getRangeAt(0);
-                    var block = _helperHelper2['default'].node(selectionRange.commonAncestorContainer).parentOfTypes("BLOCKQUOTE H1 H2 H3 PRE");
+                    var block = _helperHelper2['default'].node(selectionRange.commonAncestorContainer).parentOfTypes("BLOCKQUOTE H1 H2 H3 PRE CODE");
                     if (block) {
-                        e.preventDefault();
-                        _this2.exitBlockAfterLinebreak();
+                        //e.preventDefault();
+                        _this6.onReturn(e);
                     }
                 }
             }
         });
+    };
 
-        // Undo and Redo
-        var timer,
-            saving = false;
-        var startValue = this.getEditorContent();
+    Editor.prototype.activateUndoAndRedo = function activateUndoAndRedo() {
+        var _this7 = this;
 
-        EventListener.addEventListener().on(this.editor)['with']({
+        /* Undo and Redo */
+        /*   Save editor state when it changes */
+        EventListener.addEventListener().on(this.elements.editor)['with']({
             'mouseup keyup drag paste': function mouseupKeyupDragPaste(e) {
                 if (e.type == "keyup" && e.ctrlKey && e.keyCode == 90) {
                     return;
                 }
 
                 //console.log(e);
-                saveEditorState.call(_this2);
-            }
-        });
-
-        /* In order to save the editor's state after clicking formatting-text buttons, decorate those function with an after function: this.paragraphUndoManager.saveEditorState*/
-        _helperHelper2['default'].decorateAfter(this.formatText, 'bold h1 h2 blockquote highlight', saveEditorState.bind(this));
-        _helperHelper2['default'].decorateAfter(this.formatText.justify, 'center left right', saveEditorState.bind(this));
-        _helperHelper2['default'].decorateAfter(this.linking, 'confirm', saveEditorState.bind(this));
-
-        function saveEditorState() {
-            var _this3 = this;
-
-            clearTimeout(timer);
-            saving = true;
-            timer = setTimeout(function () {
-                saving = false;
-                var newValue = _this3.getEditorContent();
-                if (startValue != newValue) {
-                    //console.log(startValue);
-                    //console.log(newValue);
-                    _this3.paragraphUndoManager.saveEditorState();
-                    startValue = newValue;
-                }
-            }, 250);
-        }
-
-        /* Events on buttons */
-        EventListener.addEventListener().on(this.elements.boldBtn)['with']({
-            'click': this.formatText.bold.bind(this)
-        });
-
-        /* After applying blockquote, I want the editorMenu to change its position  */
-        _helperHelper2['default'].decorateAfter(this.formatText, 'h1 h2 blockquote', function () {
-            setTimeout(function () {
-                _this2.showEditorMenu();
-            }, 0);
-        });
-        EventListener.addEventListener().on(this.elements.h1Btn)['with']({
-            'click': this.formatText.h1.bind(this)
-        });
-        EventListener.addEventListener().on(this.elements.h2Btn)['with']({
-            'click': this.formatText.h2.bind(this)
-        });
-        EventListener.addEventListener().on(this.elements.blockquoteBtn)['with']({
-            'click': this.formatText.blockquote.bind(this)
-        });
-        EventListener.addEventListener().on(this.elements.justifyCenterBtn)['with']({
-            'click': function click() {
-                _this2.formatText.justify.center.call(_this2);
-                setTimeout(function () {
-                    _this2.showEditorMenu();
-                }, 0);
-            }
-        });
-        EventListener.addEventListener().on(this.elements.justifyLeftBtn)['with']({
-            'click': function click() {
-                _this2.formatText.justify.left.call(_this2);
-                setTimeout(function () {
-                    _this2.showEditorMenu();
-                }, 0);
-            }
-        });
-        EventListener.addEventListener().on(this.elements.justifyRightBtn)['with']({
-            'click': function click() {
-                _this2.formatText.justify.right.call(_this2);
-                setTimeout(function () {
-                    _this2.showEditorMenu();
-                }, 0);
-            }
-        });
-        EventListener.addEventListener().on(this.elements.highlightBtn)['with']({
-            'click': this.formatText.highlight.bind(this)
-        });
-        EventListener.addEventListener().on(this.elements.linkBtn)['with']({
-            'click': this.linking.saveBookmarkBeforeLinking.bind(this)
-        });
-        EventListener.addEventListener().on(this.elements.unlinkBtn)['with']({
-            'click': this.linking.unlink.bind(this)
-        });
-        EventListener.addEventListener().on(this.elements.confirmLinkBtn)['with']({
-            'click': this.linking.confirm.bind(this)
-        });
-        EventListener.addEventListener().on(this.elements.expandInsertToolbarBtn)['with']({
-            'click': this.insertToolbarState.call(this).showOptions.bind(this)
-        });
-        EventListener.addEventListener().on(this.elements.addImgBtn)['with']({
-            'click': this.insertToolbarState.call(this).addImg.bind(this)
-        });
-        EventListener.addEventListener().on(this.elements.editorInsertToolbar.querySelector(".enterImgUrlBtn"))['with']({
-            'click': function click() {
-                /* Save the cursor position before focusing on the text input */
-                _this2.cursorAt = rangy.getSelection().saveRanges();
-
-                _this2.insertToolbarState.call(_this2).addImg().pasteUrl();
-                _this2.elements.editorInsertToolbar.querySelector('.addImgOptions form input[name="pastedImgUrl"]').focus();
-            }
-        });
-        EventListener.addEventListener().on(this.elements.editorInsertToolbar.querySelector(".addImgOptions form"))['with']({
-            'submit': function submit(e) {
-                e.preventDefault();
-
-                /* Restore the position of the cursor */
-                if (_this2.cursorAt) rangy.getSelection().restoreRanges(_this2.cursorAt);
-
-                setTimeout(function () {
-                    _this2.insertImage(_this2.elements.editorInsertToolbar.querySelector('.addImgOptions form input[name="pastedImgUrl"]').value);
-                    _this2.elements.editorInsertToolbar.querySelector('.addImgOptions form input[name="pastedImgUrl"]').value = "";
-                }, 1);
-
-                _this2.insertToolbarState().initial();
-            }
-        });
-
-        EventListener.addEventListener().on(this.elements.editorContainer.querySelector('.figureMenu .imageJustifyBtn'))['with']({
-            'click': function click(e) {
-                _this2.imageJustify().auto();
+                _this7.saveEditorState.call(_this7);
             }
         });
     };
 
-    Editor.prototype.imageJustify = function imageJustify() {
-        // var focusedImgContainer = $(".figure").has("img.focused")[0];
-        var _imageJustify = {
-            left: left,
-            right: right,
-            center: center,
-            auto: auto
-        };
+    Editor.prototype.activateEditorTooltipEvents = function activateEditorTooltipEvents() {
+        var _this8 = this;
 
-        var focusedImgContainer = $(this.elements.editorContainer).find('.figure').has("img.focused")[0];
-        return _imageJustify;
+        EventListener.addEventListener().on(this.elements.editorContainer.querySelector('.editorInlineTooltip .expandInsertToolbarBtn'))['with']({
+            'click': this.insertToolbarState.call(this).showOptions.bind(this)
+        });
+        EventListener.addEventListener().on(this.elements.editorContainer.querySelector('.editorInlineTooltip .addImgBtn'))['with']({
+            'click': this.insertToolbarState.call(this).addImg.bind(this)
+        });
+        EventListener.addEventListener().on(this.elements.editorContainer.querySelector(".editorInlineTooltip .pasteBtn"))['with']({
+            'click': function click() {
+                /* Save the cursor position before focusing on the text input */
+                _this8.cursorAt = rangy.getSelection().saveRanges();
 
-        function left() {
-            if (!focusedImgContainer) return;
+                _this8.insertToolbarState.call(_this8).addImg().pasteUrl();
+                _this8.elements.editorContainer.querySelector('.editorInlineTooltip .addImgOptions form input[name="pastedImgUrl"]').focus();
+            }
+        });
+        EventListener.addEventListener().on(this.elements.editorContainer.querySelector(".editorInlineTooltip .addImgOptions form"))['with']({
+            'submit': function submit(e) {
+                e.preventDefault();
 
-            $(focusedImgContainer).removeClass('justifyRight justifyCenter').addClass('justifyLeft');
-            focusedImgContainer.querySelector('img').click();
-        }
+                /* Restore the position of the cursor */
+                if (_this8.cursorAt) rangy.getSelection().restoreRanges(_this8.cursorAt);
 
-        function right() {
-            if (!focusedImgContainer) return;
+                setTimeout(function () {
+                    _this8.insertImage(_this8.elements.editorContainer.querySelector('.editorInlineTooltip .addImgOptions form input[name="pastedImgUrl"]').value);
+                    _this8.elements.editorContainer.querySelector('.editorInlineTooltip .addImgOptions form input[name="pastedImgUrl"]').value = "";
+                }, 1);
 
-            $(focusedImgContainer).removeClass('justifyCenter justifyLeft').addClass('justifyRight');
-            focusedImgContainer.querySelector('img').click();
-        }
+                _this8.insertToolbarState().initial();
+            }
+        });
+    };
 
-        function center() {
-            if (!focusedImgContainer) return;
+    Editor.prototype.saveEditorState = function saveEditorState() {
+        var _this9 = this;
 
-            $(focusedImgContainer).removeClass('justifyRight justifyLeft').addClass('justifyCenter');
-            focusedImgContainer.querySelector('img').click();
-        }
-
-        function auto() {
-            if (!focusedImgContainer) return;
-            if ($(focusedImgContainer).hasClass('justifyLeft')) center();else if ($(focusedImgContainer).hasClass('justifyCenter')) right();else if ($(focusedImgContainer).hasClass('justifyRight')) left();
-        }
+        clearTimeout(this.timer);
+        this.saving = true;
+        this.timer = setTimeout(function () {
+            _this9.saving = false;
+            var newValue = _this9.getEditorContent();
+            if (_this9.startValue != newValue) {
+                //console.log(startValue);
+                //console.log(newValue);
+                _this9.editorUndoManager.saveEditorState();
+                _this9.startValue = newValue;
+            }
+        }, 250);
     };
 
     Editor.prototype.getEditorContent = function getEditorContent() {
         /* 1. Clone the editor
          * 2. Remove menus off the clone
          * 3. Get html */
-        var $clone = $(this.editor).clone();
+        var $clone = $(this.elements.editor).clone();
         /* Clicking on images results in adding classes on images and showing the figureMenus. Therefore I have to remove the "class" attributes on images and their figureMenus.
          * However this is a very DIRTY way to do! What if the type of nodes varies, they display identically but have different class set on them? */
         $clone.find(".menu").remove();
@@ -847,13 +852,13 @@ var Editor = (function () {
     };
 
     Editor.prototype.bindImageUploadHandler = function bindImageUploadHandler() {
-        var _this4 = this;
+        var _this10 = this;
 
-        this.uploadFileHandler($(this.editorContainer).find('.editorInsertToolbar .content input.imageUploadInput'), function (files) {
+        this.uploadFileHandler($(this.elements.editorContainer).find('.editorInlineTooltip .content input.imageUploadInput'), function (files) {
             var file = files[0];
             var imageUrl = '/uploads/' + file.name;
             //console.log(imageUrl);
-            _this4.insertImage(imageUrl);
+            _this10.insertImage(imageUrl);
         });
     };
 
@@ -891,18 +896,19 @@ var Editor = (function () {
 
     Editor.prototype.showEditorMenu = function showEditorMenu() {
         var editorMenu = this.elements.editorMenu;
+        $(editorMenu).removeClass('hidden').addClass('show');
+        if (this.options.editorMenu.activeClass) $(this.elements.editorMenu).addClass(this.options.editorMenu.activeClass);
 
-        /*  Move editorMenu to a new position and show */
+        /*  Move editorMenu to a new position */
         var wholeSelRect = rangy.getSelection().getBoundingDocumentRect();
         var bodyWidth = $('body').width();
         editorMenu.style.top = (wholeSelRect.top - 39 - 20).toString() + "px";
-        if (wholeSelRect.left < bodyWidth - 370) editorMenu.style.left = wholeSelRect.left + "px";else editorMenu.style.left = (wholeSelRect.right - 370).toString() + "px";
-        $(editorMenu).removeClass('hidden');
-        $(editorMenu).addClass('show');
+        if (wholeSelRect.left < bodyWidth - editorMenu.offsetWidth) editorMenu.style.left = wholeSelRect.left + "px";else editorMenu.style.left = (wholeSelRect.right - editorMenu.offsetWidth).toString() + "px";
     };
 
     Editor.prototype.hideEditorMenu = function hideEditorMenu() {
         $(this.elements.editorMenu).addClass('hidden').removeClass('show');
+        if (this.options.editorMenu.activeClass) $(this.elements.editorMenu).removeClass(this.options.editorMenu.activeClass);
     };
 
     Editor.prototype.showInsertToolbar = function showInsertToolbar() {
@@ -910,14 +916,14 @@ var Editor = (function () {
         var pContainer = _helperHelper2['default'].node(selectionRange.commonAncestorContainer).parentOfTypes("P");
         if (!pContainer) return;
 
-        this.editorInsertToolbar.style.top = pContainer.offsetTop - 10 + "px";
-        this.editorInsertToolbar.style.left = pContainer.offsetLeft - 40 + "px";
-        $(this.editorInsertToolbar).removeClass('hidden').addClass('show');
+        this.elements.editorInlineTooltip.style.top = pContainer.offsetTop - 10 + "px";
+        this.elements.editorInlineTooltip.style.left = pContainer.offsetLeft - 40 + "px";
+        $(this.elements.editorInlineTooltip).removeClass('hidden').addClass('show');
     };
 
     Editor.prototype.hideInsertToolbar = function hideInsertToolbar() {
         /*  */
-        $(this.editorInsertToolbar).removeClass('show').addClass('hidden');
+        $(this.elements.editorInlineTooltip).removeClass('show').addClass('hidden');
     };
 
     Editor.prototype.insertImage = function insertImage(imgUrl) {
@@ -938,17 +944,58 @@ var Editor = (function () {
         }
     };
 
-    Editor.prototype.exitBlockAfterLinebreak = function exitBlockAfterLinebreak() {
-        document.execCommand('insertParagraph');
-        document.execCommand('formatBlock', false, "p");
+    Editor.prototype.onReturn = function onReturn(e) {
+        var cR = rangy.getSelection().getRangeAt(0);
+        var nRLeft = rangy.createRange(),
+            nRRight = rangy.createRange(),
+            fR = rangy.createRange();
+        var _parBlock = $(cR.commonAncestorContainer).parents('PRE, H1, H2, H3, CODE, BLOCKQUOTE')[0];
+        nRRight.selectNodeContents(_parBlock);
+        nRRight.setStart(cR.startContainer, cR.startOffset);
+        //console.log($(nRLeft.cloneContents().childNodes));
+
+        nRLeft.selectNodeContents(_parBlock);
+        nRLeft.setEnd(cR.endContainer, cR.endOffset);
+        //console.log(nRLeft.cloneContents().childNodes);
+
+        // Cursor at the start of the block
+        if (!nRLeft.cloneContents().textContent) {
+            e.preventDefault();
+            var nPBlock = $('<p><br/></p>')[0];
+            $(_parBlock).before(nPBlock);
+        }
+        // Cursor at the end of the block
+        else if (!nRRight.cloneContents().textContent) {
+                e.preventDefault();
+                var nPBlock = $('<p><br/></p>')[0];
+                $(_parBlock).after(nPBlock);
+                fR.selectNodeContents(nPBlock);
+                fR.collapse(true);
+
+                rangy.getSelection().removeAllRanges();
+                rangy.getSelection().addRange(fR);
+            } else {
+                e.preventDefault();
+                var RR = rangy.createRange();
+                RR.selectNodeContents(_parBlock);
+                RR.setStart(cR.startContainer, cR.startOffset);
+                var nLine = document.createElement(_parBlock.nodeName);
+                $(nLine).append(RR.extractContents().childNodes);
+                $(_parBlock).after(nLine);
+
+                RR.selectNodeContents(_parBlock.nextElementSibling);
+                RR.collapse(true);
+                rangy.getSelection().removeAllRanges();
+                rangy.getSelection().addRange(RR);
+            }
     };
 
     Editor.prototype.insertToolbarState = function insertToolbarState() {
         var state = "initial";
-        var contentDiv = $(this.elements.editorInsertToolbar).find('.content')[0];
-        var addImgOptions = $(this.elements.editorInsertToolbar).find('.addImgOptions')[0];
-        var addImgForm = $(this.elements.editorInsertToolbar).find('.addImgOptions form')[0];
-        var inputText = $(this.elements.editorInsertToolbar).find('.addImgOptions form input[name="pastedImgUrl"]')[0];
+        var contentDiv = $(this.elements.editorInlineTooltip).find('.content')[0];
+        var addImgOptions = $(this.elements.editorInlineTooltip).find('.addImgOptions')[0];
+        var addImgForm = $(this.elements.editorInlineTooltip).find('.addImgOptions form')[0];
+        var inputText = $(this.elements.editorInlineTooltip).find('.addImgOptions form input[name="pastedImgUrl"]')[0];
         return {
             state: state,
             initial: initial,
@@ -996,7 +1043,7 @@ var Editor = (function () {
 exports['default'] = Editor;
 module.exports = exports['default'];
 
-},{"../../helper/helper":1,"./EditorUndoManager.js":3,"./Figure/Figure":4,"./editor.template.js":5,"./formatTextM":6,"./linkingM":7}],3:[function(require,module,exports){
+},{"../../helper/helper":1,"./EditorUndoManager.js":3,"./Figure/Figure":4,"./editor.template.js":5,"./editorDefaultButtons.js":6,"./formatTextM":7,"./linkingM":8}],3:[function(require,module,exports){
 /**
  * Created by chuso_000 on 28/9/2015.
  */
@@ -1151,7 +1198,7 @@ var EditorUndoManager = (function () {
 exports['default'] = EditorUndoManager;
 module.exports = exports['default'];
 
-},{"../../helper/helper":1,"./Figure/Figure.js":4,"undo-manager":9}],4:[function(require,module,exports){
+},{"../../helper/helper":1,"./Figure/Figure.js":4,"undo-manager":10}],4:[function(require,module,exports){
 /**
  * Created by chuso_000 on 23/9/2015.
  */
@@ -1232,11 +1279,14 @@ var Figure = (function () {
             'keydown': function keydown(e) {
                 /* When hitting backspace at the first offset in figureCaption, delete this figure */
                 if (e.keyCode == 8) {
-                    if (rangy.getSelection().getRangeAt(0).startOffset == 0) {
+                    if (rangy.getSelection().isCollapsed && rangy.getSelection().getRangeAt(0).startOffset == 0) {
                         e.preventDefault();
                         var nRange = rangy.createRange();
-                        nRange.setStartBefore(_this.elements.container);
-                        nRange.setEndBefore(_this.elements.container);
+                        if (!_this.elements.container.previousElementSibling) $(_this.elements.container).before('<p><br/></p>');
+
+                        nRange.selectNodeContents(_this.elements.container.previousElementSibling);
+                        nRange.collapse(false);
+
                         _this.elements.container.parentNode.removeChild(_this.elements.container);
                         rangy.getSelection().removeAllRanges();
                         rangy.getSelection().addRange(nRange);
@@ -1251,17 +1301,14 @@ var Figure = (function () {
                     _this.elements.figureCaption.innerHTML = "<br>";
                 }
             },
-            'focusin': function focusin(e) {
-
+            'focus': function focus(e) {
                 $(_this.elements.img).removeClass('focused');
                 $(_this.elements.img).addClass('focused');
-
-                //focusoutImage(){
-                //    $(this.editor.querySelector('img')).removeClass('focused');
-                //}
             },
-            'focusout': function focusout(e) {
-                if (!$(e.relatedTarget).parents('.figureMenu').length) {
+            'blur': function blur(e) {
+                if (!$(e.relatedTarget).parents('.figureMenu').length
+                // Mozilla
+                 && !$(e.explicitOriginalTarget).parents('.figureMenu').length) {
                     $(_this.elements.img).removeClass('focused');
                     _this.hideFigureMenu();
                 }
@@ -1277,7 +1324,8 @@ var Figure = (function () {
     };
 
     Figure.prototype.focus = function focus() {
-        $(this.elements.img).addClass('focused');
+        //$(this.elements.img).addClass('focused');
+        this.elements.figureCaption.focus();
         var nRange = rangy.createRange();
         nRange.setStart(this.elements.figureCaption, 0);
         nRange.setEnd(this.elements.figureCaption, 0);
@@ -1315,10 +1363,170 @@ module.exports = exports['default'];
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = "\n<div class=\"editorContainer\">\n    <div class=\"editorMenu hidden\">\n        <button class=\"btn h1Btn\">H1</button>\n        <button class=\"btn h2Btn\">H2</button>\n        <button class=\"btn boldBtn\">B</button>\n        <button class=\"btn highlightBtn\"><span class=\"highlighted\"><em>A</em></span></button>\n        <button class=\"btn justifyLeftBtn\">L</button>\n        <button class=\"btn justifyCenterBtn\">C</button>\n        <button class=\"btn justifyRightBtn\">R</button>\n        <button class=\"btn linkBtn\" >Link</button>\n        <button class=\"btn unlinkBtn\" style=\"display: none;\">Unlink</button>\n        <button class=\"btn blockquoteBtn\">\"</button>\n        <!-- Linking stuff -->\n        <div class=\"linkingStuff\" style=\"visibility: hidden;\">\n            <input type=\"text\" name=\"linkAttached\" disabled/>\n            <button class=\"btn confirmLinkBtn\" disabled>OK</button>\n        </div>\n\n    </div>\n    <div class=\"editorInsertToolbar hidden\">\n        <button class=\"btn expandInsertToolbarBtn\" >+</button>\n        <div class=\"content\">\n            <button class=\"btn addImgBtn\">Img</button>\n            <div class=\"addImgOptions\">\n                <button class=\"btn enterImgUrlBtn\">Paste an url</button>\n                <form><input type=\"text\" name=\"pastedImgUrl\"/></form>\n                <button class=\"btn uploadImgBtn\">\n                    Upload Image\n                    <input type=\"file\" accept=\"image/*\" name=\"files[]\" data-url=\"upload/\" class=\"imageUploadInput\"/>\n                </button>\n            </div>\n\n\n        </div>\n    </div>\n\n    <div class=\"menu figureMenu\">\n        <button class=\"btn imageJustifyBtn\">Justify</button>\n    </div>\n    <div class=\"editor article\" contenteditable=\"true\">\n        <blockquote>aasdgasdjghaksjdg</blockquote>\n        <p><br/></p>\n    </div>\n\n</div>\n";
+exports["default"] = "\n<div class=\"editorContainer\">\n    <div class=\"editorMenu hidden\"></div>\n\n    <div class=\"editorInlineTooltip hidden\">\n        <button class=\"btn expandInsertToolbarBtn\" >+</button>\n        <div class=\"content\">\n            <button class=\"btn addImgBtn\">Img</button>\n            <div class=\"addImgOptions\">\n                <button class=\"btn pasteBtn\">Paste an url</button>\n                <form><input type=\"text\" name=\"pastedImgUrl\"/></form>\n                <button class=\"btn uploadImgBtn\">\n                    Upload Image\n                    <input type=\"file\" accept=\"image/*\" name=\"files[]\" data-url=\"upload/\" class=\"imageUploadInput\"/>\n                </button>\n            </div>\n\n\n        </div>\n    </div>\n\n    <div class=\"menu figureMenu\"></div>\n    <div class=\"editor article\" contenteditable=\"true\" data-placeholder=\"Enter text...\">\n        <p><br/></p>\n    </div>\n\n</div>\n";
 module.exports = exports["default"];
 
 },{}],6:[function(require,module,exports){
+/**
+ * Created by chuso_000 on 10/10/2015.
+ */
+
+'use strict';
+
+exports.__esModule = true;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _formatTextM = require('./formatTextM');
+
+var _formatTextM2 = _interopRequireDefault(_formatTextM);
+
+var _helperHelper = require('../../helper/helper');
+
+var _helperHelper2 = _interopRequireDefault(_helperHelper);
+
+var _linkingM = require('./linkingM');
+
+var _linkingM2 = _interopRequireDefault(_linkingM);
+
+var DefaultButtons = function DefaultButtons() {
+    _classCallCheck(this, DefaultButtons);
+
+    /* let buildInButtons = 'BOLD H1 H2 BLOCKQUOTE JUSTIFYLEFT JUSTIFYRIGHT JUSTIFYCENTER JUSTIFYAUTO HIGHLIGHT'.split(' '); */
+    this.formatText = _formatTextM2['default']();
+
+    ///
+    /* boldBtn */
+    this.boldBtn = document.createElement('button');
+    this.boldBtn.className = 'btn boldBtn';
+    this.boldBtn.innerHTML = 'B';
+    EventListener.addEventListener().on(this.boldBtn)['with']({
+        'click': this.formatText.bold
+    });
+
+    /* h1Btn */
+    this.h1Btn = document.createElement('button');
+    this.h1Btn.className = 'btn h1Btn';
+    this.h1Btn.innerHTML = 'H1';
+    EventListener.addEventListener().on(this.h1Btn)['with']({
+        'click': this.formatText.h1
+    });
+
+    /* h2Btn */
+    this.h2Btn = document.createElement('button');
+    this.h2Btn.className = 'btn h2Btn';
+    this.h2Btn.innerHTML = 'H2';
+    EventListener.addEventListener().on(this.h2Btn)['with']({
+        'click': this.formatText.h2
+    });
+
+    /* blockquoteBtn */
+    this.blockquoteBtn = document.createElement('button');
+    this.blockquoteBtn.className = 'btn blockquoteBtn';
+    this.blockquoteBtn.innerHTML = '"';
+    EventListener.addEventListener().on(this.blockquoteBtn)['with']({
+        'click': this.formatText.blockquote
+    });
+
+    /* justifyLeftBtn */
+    this.justifyLeftBtn = document.createElement('button');
+    this.justifyLeftBtn.className = 'btn justifyLeftBtn';
+    this.justifyLeftBtn.innerHTML = 'Left';
+    EventListener.addEventListener().on(this.justifyLeftBtn)['with']({
+        'click': this.formatText.justify.left
+    });
+
+    /* justifyRightBtn */
+    this.justifyRightBtn = document.createElement('button');
+    this.justifyRightBtn.className = 'btn justifyRightBtn';
+    this.justifyRightBtn.innerHTML = 'Right';
+    EventListener.addEventListener().on(this.justifyRightBtn)['with']({
+        'click': this.formatText.justify.right
+    });
+
+    /* justifyCenterBtn */
+    this.justifyCenterBtn = document.createElement('button');
+    this.justifyCenterBtn.className = 'btn justifyCenterBtn';
+    this.justifyCenterBtn.innerHTML = 'Center';
+    EventListener.addEventListener().on(this.justifyCenterBtn)['with']({
+        'click': this.formatText.justify.center
+    });
+
+    /* justifyAutoBtn */
+    this.justifyAutoBtn = document.createElement('button');
+    this.justifyAutoBtn.className = 'btn justifyAutoBtn';
+    this.justifyAutoBtn.innerHTML = 'Justify';
+    EventListener.addEventListener().on(this.justifyAutoBtn)['with']({
+        'click': this.formatText.justify.auto.bind(this.formatText.justify)
+    });
+
+    /* highlightBtn */
+    this.highlightBtn = document.createElement('button');
+    this.highlightBtn.className = 'btn highlightBtn';
+    this.highlightBtn.innerHTML = '<span class="highlighted"><em>A</em></span>';
+    EventListener.addEventListener().on(this.highlightBtn)['with']({
+        'click': this.formatText.highlight.bind(this)
+    });
+
+    //////
+    this.imageJustifyBtn = parseElement('<button class="btn imageJustifyBtn">Justify</button>');
+    EventListener.addEventListener().on(this.imageJustifyBtn)['with']({
+        'click': function click(e) {
+            imageJustify($(e.target).parents('.editorContainer').find('.figure').has("img.focused")[0]).auto();
+        }
+    });
+
+    function parseElement(innerHTML) {
+        var div = document.createElement('div');
+        div.innerHTML = innerHTML;
+        return div.firstElementChild;
+    }
+
+    function imageJustify(focusedImgContainer) {
+        var _imageJustify = {
+            left: left,
+            right: right,
+            center: center,
+            auto: auto
+        };
+
+        //var focusedImgContainer = $(e.target).parents('.editorContainer').find('.figure').has("img.focused")[0];
+        return _imageJustify;
+
+        function left() {
+            if (!focusedImgContainer) return;
+
+            $(focusedImgContainer).removeClass('justifyRight justifyCenter').addClass('justifyLeft');
+            focusedImgContainer.querySelector('img').click();
+        }
+
+        function right() {
+            if (!focusedImgContainer) return;
+
+            $(focusedImgContainer).removeClass('justifyCenter justifyLeft').addClass('justifyRight');
+            focusedImgContainer.querySelector('img').click();
+        }
+
+        function center() {
+            if (!focusedImgContainer) return;
+
+            $(focusedImgContainer).removeClass('justifyRight justifyLeft').addClass('justifyCenter');
+            focusedImgContainer.querySelector('img').click();
+        }
+
+        function auto() {
+            if (!focusedImgContainer) return;
+            if ($(focusedImgContainer).hasClass('justifyLeft')) center();else if ($(focusedImgContainer).hasClass('justifyCenter')) right();else if ($(focusedImgContainer).hasClass('justifyRight')) left();
+        }
+    }
+};
+
+exports['default'] = DefaultButtons;
+module.exports = exports['default'];
+
+},{"../../helper/helper":1,"./formatTextM":7,"./linkingM":8}],7:[function(require,module,exports){
 /**
  * Created by chuso_000 on 19/9/2015.
  */
@@ -1361,6 +1569,9 @@ exports['default'] = function () {
         },
         right: function right() {
             document.execCommand('justifyRight');
+        },
+        auto: function auto() {
+            if (document.queryCommandState('justifyLeft')) this.center();else if (document.queryCommandState('justifyCenter')) this.right();else if (document.queryCommandState('justifyRight')) this.left();
         }
     };
     return {
@@ -1455,7 +1666,7 @@ exports['default'] = function () {
 
 module.exports = exports['default'];
 
-},{"../../helper/helper":1}],7:[function(require,module,exports){
+},{"../../helper/helper":1}],8:[function(require,module,exports){
 /**
  * Created by chuso_000 on 19/9/2015.
  */
@@ -1464,16 +1675,17 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-exports['default'] = function ($editorContainer) {
+exports['default'] = function (editorContainer) {
     var bookmark = undefined;
-    var $editor = $editorContainer.find('.editor');
-    var linkingStuffDiv = $editorContainer.find('.linkingStuff')[0];
-    var linkBtn = $editorContainer[0].querySelector('.linkBtn');
-    var unlinkBtn = $editorContainer[0].querySelector('.unlinkBtn');
-    var linkInput = $editorContainer.find('input[name="linkAttached"]')[0];
-    var confirmBtn = $editorContainer[0].querySelector('button.confirmLinkBtn');
+    var $editor = $(editorContainer).find('.editor');
+    //let linkingStuffDiv = $(editorContainer).find('.linkingStuff')[0];
+    //let linkBtn = editorContainer.querySelector('.linkBtn');
+    //let unlinkBtn = editorContainer.querySelector('.unlinkBtn');
+    //let linkInput = $(editorContainer).find('input[name="linkAttached"]')[0];
+    //let confirmBtn = editorContainer.querySelector('button.confirmLinkBtn');
 
     function saveBookmarkBeforeLinking() {
+        var linkInput = $(editorContainer).find('input[name="linkAttached"]')[0];
         bookmark = rangy.getSelection().getBookmark($editor[0]);
         enableLinking();
         //scope.$apply();
@@ -1483,10 +1695,11 @@ exports['default'] = function ($editorContainer) {
         }, 0);
     }
     function confirm() {
+        var linkInput = $(editorContainer).find('input[name="linkAttached"]')[0];
         $editor.focus();
         if (!bookmark) return;
         var bookmarkContainerNode = bookmark.rangeBookmarks[0].containerNode;
-        if ($editorContainer.has(bookmarkContainerNode).length > 0) {
+        if ($(editorContainer).has(bookmarkContainerNode).length > 0) {
             if (bookmark) {
                 rangy.getSelection().moveToBookmark(bookmark);
                 document.execCommand("CreateLink", false, linkInput.value);
@@ -1509,12 +1722,22 @@ exports['default'] = function ($editorContainer) {
     //
     //}
     function enableLinking() {
-        linkingStuffDiv.style.visibility = "visible";
+        var linkingStuffDiv = $(editorContainer).find('.linkingStuff')[0];
+        var confirmBtn = editorContainer.querySelector('button.confirmLinkBtn');
+        var linkInput = $(editorContainer).find('input[name="linkAttached"]')[0];
+        //linkingStuffDiv.style.visibility = "hidden";
+        //linkingStuffDiv.style.visibility = "visible";
+        $(linkingStuffDiv).addClass('show');
         linkInput.removeAttribute('disabled');
         confirmBtn.removeAttribute('disabled');
     }
     function disableLinking() {
-        linkingStuffDiv.style.visibility = "hidden";
+        var linkingStuffDiv = $(editorContainer).find('.linkingStuff')[0];
+        var linkBtn = editorContainer.querySelector('.linkBtn');
+        var confirmBtn = editorContainer.querySelector('button.confirmLinkBtn');
+        var linkInput = $(editorContainer).find('input[name="linkAttached"]')[0];
+        //linkingStuffDiv.style.visibility = "hidden";
+        $(linkingStuffDiv).removeClass('show');
         linkInput.setAttribute('disabled', 'disabled');
         confirmBtn.setAttribute('disabled', 'disabled');
     }
@@ -1525,11 +1748,15 @@ exports['default'] = function ($editorContainer) {
 
     /* When selection does NOT contain a link, show the linkBtn and hide the unlinkBtn */
     function enableAddLink() {
+        var linkBtn = editorContainer.querySelector('.linkBtn');
+        var unlinkBtn = editorContainer.querySelector('.unlinkBtn');
         linkBtn.style.display = "inline-block";
         unlinkBtn.style.display = "none";
     }
     /* When selection contains a link, hide the linkBtn and show the unlinkBtn */
     function disableAddLink() {
+        var linkBtn = editorContainer.querySelector('.linkBtn');
+        var unlinkBtn = editorContainer.querySelector('.unlinkBtn');
         linkBtn.style.display = "none";
         unlinkBtn.style.display = "inline-block";
     }
@@ -1547,7 +1774,7 @@ exports['default'] = function ($editorContainer) {
 
 module.exports = exports['default'];
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Created by chuso_000 on 14/9/2015.
  */
@@ -1562,9 +1789,9 @@ var _EditorEditorJs2 = _interopRequireDefault(_EditorEditorJs);
 
 rangy.init();
 var editor = new _EditorEditorJs2['default']();
-$('.editor').append(editor.editorContainer);
+$('.editor').append(editor.elements.editorContainer);
 
-},{"./Editor/Editor.js":2}],9:[function(require,module,exports){
+},{"./Editor/Editor.js":2}],10:[function(require,module,exports){
 /*
 Simple Javascript undo and redo.
 https://github.com/ArthurClemens/Javascript-Undo-Manager
@@ -1716,4 +1943,4 @@ https://github.com/ArthurClemens/Javascript-Undo-Manager
 
 }());
 
-},{}]},{},[8]);
+},{}]},{},[9]);

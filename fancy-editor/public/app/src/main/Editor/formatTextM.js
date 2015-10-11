@@ -32,6 +32,11 @@ export default (function (){
         },
         right(){
             document.execCommand('justifyRight');
+        },
+        auto(){
+            if (document.queryCommandState('justifyLeft')) this.center();
+            else if (document.queryCommandState('justifyCenter')) this.right();
+            else if (document.queryCommandState('justifyRight')) this.left();
         }
     };
     return {

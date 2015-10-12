@@ -69,13 +69,15 @@
     &:focus{
       outline:none;
     }
-
-    p, blockquote, h1, h2, h3, code, pre{
+    p, blockquote, h1, h2, h3{
       font-family: Trebuchet, 'Trebuchet MS', Arial, sans-serif;
+    }
+    p, blockquote, h1, h2, h3, code, pre{
       -ms-word-wrap: break-word;
       word-wrap: break-word;
     }
     p{
+      min-height: 27px;
       letter-spacing: -0.072px;
       line-height: 27px;
     }

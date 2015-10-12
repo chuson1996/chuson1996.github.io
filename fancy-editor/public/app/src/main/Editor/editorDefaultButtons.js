@@ -8,10 +8,21 @@ import linkingModule from './linkingM';
 
 
 export default class DefaultButtons{
-    constructor(){
+    constructor(editorContainer){
         /* let buildInButtons = 'BOLD H1 H2 BLOCKQUOTE JUSTIFYLEFT JUSTIFYRIGHT JUSTIFYCENTER JUSTIFYAUTO HIGHLIGHT'.split(' '); */
         this.formatText = formatTextModule();
 
+        if (/Firefox/.test(hp.getBrowser()))
+        {
+            let firefoxAfterFocus = ()=>{
+                setTimeout(()=>{
+                    //console.log('Focus plz');
+                    $(editorContainer).find('.editor').focus();
+                },0)
+            };
+            hp.decorateAfter(this.formatText,'bold h1 h2 blockquote highlight', firefoxAfterFocus);
+            hp.decorateAfter(this.formatText.justify,'center left right', firefoxAfterFocus)
+        }
         ///
         /* boldBtn */
         this.boldBtn = document.createElement('button');

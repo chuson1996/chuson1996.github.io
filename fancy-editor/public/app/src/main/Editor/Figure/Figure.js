@@ -89,7 +89,7 @@ export default class Figure {
                 }
             },
             'keyup': (e) => {
-                if (this.elements.figureCaption.innerText.trim() == "" && this.elements.figureCaption.innerHTML !== "<br>") {
+                if (this.elements.figureCaption.textContent.trim() == "" && this.elements.figureCaption.innerHTML !== "<br>") {
                     this.elements.figureCaption.innerHTML = "<br>";
                 }
             },
@@ -107,7 +107,20 @@ export default class Figure {
                 }
             },
             'paste': (e) => {
+                console.log(e);
+                if (!e)
+                    e = window.event;
+
+                //IE9 & Other Browsers
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+                //IE8 and Lower
+                else {
+                    e.cancelBubble = true;
+                }
                 /* Prevent pasting format text */
+                //e.cancelBubble();
                 e.preventDefault();
                 let text = e.clipboardData.getData("text/plain");
                 let url = e.clipboardData.getData("url");

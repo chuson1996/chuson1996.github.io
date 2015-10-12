@@ -10,8 +10,6 @@ import DefaultButtons from './editorDefaultButtons.js';
 
 export default class Editor {
     constructor(options) {
-        this.defaultButtons = new DefaultButtons();
-
         this.options = options || {};
         // Setting up default options
         hp.assign(this.options, {
@@ -48,6 +46,9 @@ export default class Editor {
         this.elements.figureMenu = this.elements.editorContainer.querySelector('.figureMenu');
 
 
+        this.defaultButtons = new DefaultButtons(this.elements.editorContainer);
+
+
 
         this.linking = linkingModule(this.elements.editorContainer);
         this.formatText = formatTextModule();
@@ -61,6 +62,14 @@ export default class Editor {
                 this.showEditorMenu();
             }, 0);
         });
+
+        if (/Firefox/.test(hp.getBrowser()))
+            hp.decorateAfter(this.formatText,'bold h1 h2 blockquote highlight', ()=>{
+                setTimeout(()=>{
+                    console.log('Focus plz');
+                    $(this.elements.editor).focus();
+                },0)
+            });
 
 
 
@@ -162,9 +171,10 @@ export default class Editor {
     activateCursorEvents() {
         /* Hide or show editorMenu and editorInsertMenu */
         EventListener.addEventListener().on(this.elements.editor).with({
-            'mouseup keyup focusout': ()=>{
+            'mouseup keyup blur': ()=>{
                 setTimeout(()=>{
                     /* Text highlighted ? */
+                    //console.log('Check');
                     if (!rangy.getSelection().isCollapsed
                         && !hp.node(rangy.getSelection().getRangeAt(0).commonAncestorContainer).isChildOf(".figure"))
                         this.showEditorMenu();
@@ -178,10 +188,6 @@ export default class Editor {
                     && rangy.getSelection().rangeCount == 1)
                     this.showInsertToolbar();
                 else this.hideInsertToolbar();
-            },
-            'focusout': (e)=>{
-
-                //this.hideInsertToolbar();
             }
         });
 
@@ -191,7 +197,7 @@ export default class Editor {
                 /* Selection contains link ? */
                 let selectionContainsLink = (function(){
                     /* Is selection wrapped in <a></a> */
-                    if (rangy.getSelection().rangeCount && $(rangy.getSelection().getRangeAt(0).commonAncestorContainer).parents('a').length) return true;
+                    if (rangy.getSelection().rangeCount && $(rangy.getSelection().getRangeAt(0).commonAncestorContainer).closest('a').length) return true;
 
                     /* Does selection contain <a></a> */
                     if (!rangy.getSelection() || rangy.getSelection().isCollapsed) return false;
@@ -217,7 +223,7 @@ export default class Editor {
 
                 let curRange = rangy.getSelection().getRangeAt(0);
                 let cbData = document.createElement('div');
-                let block = hp.node(curRange.endContainer).parentOfTypes("P BLOCKQUOTE H1 H2 H3 PRE");
+                let block = $(curRange.endContainer).closest("P, BLOCKQUOTE, H1, H2, H3, PRE")[0];
                 if (/Firefox/.test(hp.getBrowser())){
                     $(cbData).append($('<p>'+(e.originalEvent || e).clipboardData.getData('text/plain')+'</p>'));
                 }else{
@@ -234,93 +240,113 @@ export default class Editor {
                     document.execCommand('delete');
 
 
-                let rangeStartContainer;
-                let rangeStartOffset;
 
-                if (hp.node(cbData.lastChild).findTextNodes().length){
-                    rangeStartContainer = hp.node(cbData.lastChild).findTextNodes()[hp.node(cbData.lastChild).findTextNodes().length - 1];
-                    rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
-                }else {
-                    rangeStartContainer = curRange.startContainer;
-                    rangeStartOffset = curRange.startOffset;
-                }
 
 
                 /* Check if cursor is at the first or end of the block */
-                if ((hp.node(curRange.startContainer).isFirstNodeIn(block) && curRange.startOffset==0) || (!block.textContent.trim())){
-                    //console.log('Prepend to the block');
+                console.log(curRange.cloneRange());
+                if (hp.isAtEndOfLine(block, curRange)){
+                    console.log('Append to the block');
+                    //console.log(cbData.firstElementChild.cloneNode(false));
+                    if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == block.nodeName){
+                        /* Merge the first node to block */
+                        if (block.children.length == 1 && block.firstElementChild.nodeName.toUpperCase() == "BR"){
+                            block.firstElementChild.remove();
+                        }
+                        $(block).append(cbData.firstChild.childNodes);
+                        block.normalize();
+                        cbData.firstChild.remove();
+
+                        hp.moveCursorTo({startContainer: block, collapse: false});
+                    }
+                    if (cbData.childNodes.length) {
+                        let lastChild = cbData.lastElementChild;
+                        $(block).after(cbData.childNodes);
+                        cbData.remove();
+
+                        hp.moveCursorTo({startContainer: lastChild, collapse: false});
+                    }
+
+
+
+                }
+                else if (hp.isAtStartOfLine(block, curRange)){
+                    console.log('Prepend to the block');
 
                     if (cbData.lastChild.nodeName.toUpperCase() == "P" || cbData.lastChild.nodeName == block.nodeName){
                         // Merge the last node to block
+                        hp.moveCursorTo({startContainer:block, collapse: true});
+                        console.log(block);
                         $(block).prepend(cbData.lastChild.childNodes);
                         block.normalize();
                         cbData.lastChild.remove();
 
                     }
                     if (cbData.childNodes.length) {
-                        //console.log('Prepend: ', cbData);
                         $(block).before(cbData.childNodes);
                         cbData.remove();
                     }
-                }
-                else if (hp.node(curRange.startContainer).isLastNodeIn(block) && curRange.startOffset==rangy.dom.getNodeLength(curRange.startContainer)){
-                    //console.log('Append to block');
-                    if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == block.nodeName){
-                        /* Merge the first node to block */
-                        $(block).append(cbData.firstChild.childNodes);
-                        block.normalize();
-                        rangeStartContainer = hp.node(block).findTextNodes()[hp.node(block).findTextNodes().length-1];
-                        rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
 
-                        cbData.firstChild.remove();
-                    }
-                    if (cbData.childNodes.length) {
-                        $(block).after(cbData.childNodes);
-                        cbData.remove();
-                    }
 
                 }
                 else{
-                    //console.log('Split and insert in the middle!');
+                    console.log('Split and insert in the middle!');
                     let [blockL, blockR] = hp.node(block).split(curRange.startContainer, curRange.startOffset);
-
                     /* Merge to blockL if possible */
                     if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == blockL.nodeName){
                         $(blockL).append(cbData.firstChild.childNodes);
                         blockL.normalize();
-                        rangeStartContainer = hp.node(blockL).findTextNodes()[hp.node(blockL).findTextNodes().length-1];
-                        rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
 
                         cbData.firstChild.remove();
+
+                        hp.moveCursorTo({startContainer:blockL, collapse: false});
                     }
 
                     /* If the paste document is one piece, then merge blockR to blockL */
                     if (!cbData.children.length) {
+                        //console.log('If the paste document is one piece, then merge blockR to blockL');
+                        hp.moveCursorTo({startContainer:blockL, collapse: false});
                         $(blockL).append(blockR.childNodes);
                         blockL.normalize();
 
                         blockR.remove();
+
+
                     }
                     else if (cbData.lastChild.nodeName.toUpperCase() == "P" || cbData.lastChild.nodeName == blockR.nodeName){
                         /* Merge the rest of the copied content to blockR */
+                        //console.log('Merge the rest of the copied content to blockR ');
+
+                        hp.moveCursorTo({startContainer:blockR, collapse: true});
                         $(blockR).prepend(cbData.lastChild.childNodes);
                         blockR.normalize();
                         cbData.lastChild.remove();
+
+                        //console.log(blockR);
+
+                        if (cbData.childNodes.length) {
+                            //console.log('There\'re still some stuff left. After() them in!');
+                            $(blockL).after(cbData.childNodes);
+                            cbData.remove();
+
+                        }
+
+
                     }
-                    if (cbData.childNodes.length) {
-                        $(blockL).after(cbData.childNodes);
-                    }
+
                 }
 
 
 
 
-                let newRange = rangy.createRange();
-                //console.log(rangeStartContainer, rangeStartOffset);
-                newRange.setStart(rangeStartContainer, rangeStartOffset);
+                //let newRange = rangy.createRange();
+                ////console.log(rangeStartContainer, rangeStartOffset);
+                //newRange.selectNodeContents(rangeStartContainer);
+                //newRange.collapse(false);
+                //console.log(newRange);
+                //rangy.getSelection().removeAllRanges();
+                //rangy.getSelection().addRange(newRange);
 
-                rangy.getSelection().removeAllRanges();
-                rangy.getSelection().addRange(newRange);
             },
             'mouseup keyup': (e) => {
                 /* Guarantee that the editor must always contain at least 1 "P" node. If not, "#TEXT" node will take place. */
@@ -340,10 +366,12 @@ export default class Editor {
                     this.insertToolbarState().initial.call(this);
                 }, 0);
             },
-            'focusout': (e) => {
+            'blur': (e) => {
                 /* If users focus out of the container, all ranges must be removed.
                  * editorMenu + insertToolbar must be hidden.
-                 * This line below prevents scenarios when user click extensions like editorMenu or editoInlineTooltip*/
+                 * This line below prevents scenarios when user click extensions like editorMenu or editorInlineTooltip*/
+                if ($(e.target).parents('.editorContainer').length) return ;
+
                 if (!($(this.elements.editorContainer).has($(e.relatedTarget)).length > 0)) {
                     rangy.getSelection().removeAllRanges();
                 }
@@ -363,6 +391,7 @@ export default class Editor {
                         this.editorUndoManager.redo();
                     }else{
                         this.editorUndoManager.undo();
+
                     }
                     this.startValue = this.getEditorContent();
                     //console.log(this.editorUndoManager.editorStates);
@@ -377,9 +406,10 @@ export default class Editor {
                     return;
                 }
 
-                /* When backspacing at the beginning of a paragraph where after a Figure div */
+                /* When backspacing at the beginning of a paragraph after a Figure div */
                 let curRange = rangy.getSelection().getRangeAt(0);
-                let parBlock = hp.node(curRange.startContainer).parentOfTypes("P H1 H2 H3 PRE BLOCKQUOTE");
+                let parBlock = $(curRange.startContainer).closest("P, H1, H2, H3, PRE, BLOCKQUOTE")[0];
+                //console.log(parBlock);
                 if (e.keyCode == 8 && rangy.getSelection().isCollapsed && parBlock && curRange.startOffset == 0
                     && (curRange.startContainer == parBlock || curRange.startContainer == hp.node(parBlock).findTextNodes()[0])
                     && (parBlock.previousElementSibling && parBlock.previousElementSibling.nodeName=='DIV' && /figure/i.test(parBlock.previousElementSibling.className))){
@@ -408,14 +438,18 @@ export default class Editor {
         /* Undo and Redo */
         /*   Save editor state when it changes */
         EventListener.addEventListener().on(this.elements.editor).with({
-            'mouseup keyup drag paste': (e)=>{
-                if (e.type == "keyup" && e.ctrlKey && e.keyCode==90){
-                    return;
-                }
-
-                //console.log(e);
+            'mouseup drag paste': (e)=>{
                 this.saveEditorState.call(this);
+            },
+            'keydown keyup': e=>{
+                //console.log(e.ctrlKey && e.keyCode==90);
+                //if (!(e.ctrlKey && e.keyCode==90))
+                //    this.saveEditorState.call(this);
 
+                /* To prevent the editor from saving its state. Or else it will interrupt undo and redo events */
+                if (e.ctrlKey && e.keyCode==90){
+                    this.startValue = this.getEditorContent();
+                }
             }
         });
     }
@@ -557,7 +591,7 @@ export default class Editor {
     }
     insertImage(imgUrl) {
         let selectionRange = rangy.getSelection().getRangeAt(0);
-        let pContainer = selectionRange.commonAncestorContainer.nodeName == 'P' ? selectionRange.commonAncestorContainer : $(selectionRange.commonAncestorContainer).parents('p')[0];
+        let pContainer = $(selectionRange.commonAncestorContainer).closest('p')[0];
         //console.log(pContainer);
         if (hp.isLineEmpty(pContainer)) {
             //let newEl = $compile(`<figure src="${imgUrl}"></figure>`)(scope);
@@ -578,7 +612,7 @@ export default class Editor {
         let nRLeft = rangy.createRange(),
             nRRight = rangy.createRange(),
             fR = rangy.createRange();
-        let _parBlock = $(cR.commonAncestorContainer).parents('PRE, H1, H2, H3, CODE, BLOCKQUOTE')[0];
+        let _parBlock = $(cR.startContainer).closest('PRE, H1, H2, H3, CODE, BLOCKQUOTE')[0];
         nRRight.selectNodeContents(_parBlock);
         nRRight.setStart(cR.startContainer, cR.startOffset);
         //console.log($(nRLeft.cloneContents().childNodes));

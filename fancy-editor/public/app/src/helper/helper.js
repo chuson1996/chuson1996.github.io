@@ -16,11 +16,31 @@ export default (function(){
         testImageUrl,
         moveCursorTo,
         assign,
-        getBrowser
+        getBrowser,
+        isAtStartOfLine,
+        isAtEndOfLine
 
 
 
     };
+    function isAtStartOfLine(block, range){
+        //console.log('Testing isAtStartOfLine');
+        let lR = rangy.createRange();
+        //console.log(block);
+        //console.log(range.endContainer);
+        lR.selectNodeContents(block);
+        lR.setEnd(range.endContainer, range.endOffset);
+        //console.log($(lR.cloneContents()));
+        return !lR.cloneContents().textContent;
+
+    }
+    function isAtEndOfLine(block, range){
+        //console.log('Testing isAtEndOfLine');
+        let rR = rangy.createRange();
+        rR.selectNodeContents(block);
+        rR.setStart(range.startContainer, range.startOffset);
+        return !rR.cloneContents().textContent
+    }
     function assign(dest, source){
         if (typeof source != "object" || typeof dest != "object") return;
         Object.getOwnPropertyNames(source).forEach(function (souKey) {
@@ -56,10 +76,18 @@ export default (function(){
         })
 
     }
-    function moveCursorTo({startContainer, startOffset, endContainer, endOffset}){
+    function moveCursorTo({startContainer, collapse, startOffset, endContainer, endOffset}){
         startOffset = startOffset || 0;
         endOffset = endOffset || 0;
         let newR = rangy.createRange();
+        if (collapse !== undefined){
+            let lastTN = _.last(node(startContainer).findTextNodes());
+            newR.selectNodeContents(lastTN || startContainer);
+            newR.collapse(collapse);
+            rangy.getSelection().removeAllRanges();
+            rangy.getSelection().addRange(newR);
+            return ;
+        }
         if (startOffset) newR.setStart(startContainer, startOffset);
         if (endOffset) newR.setEnd(endContainer, endOffset);
         else{
@@ -233,8 +261,13 @@ export default (function(){
 
             // If an figure is an the end, append a <p><br/></p> after it!
             if (_node.lastChild && _node.lastChild.nodeName.toUpperCase() == "DIV" && /figure/i.test(_node.lastChild.className)){
-                //$(_node).append("<p>&nbsp;</p>");
-                $(_node).append("<p><br/></p>");
+                $(_node).append("<p></p>");
+
+                //let nP = document.createElement('p');
+                //let nTN = document.createTextNode("");
+                //$(nP).append('<br/>');
+                //nP.appendChild(nTN);
+                //$(_node).append(nP);
             }
         }
 

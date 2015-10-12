@@ -48,11 +48,13 @@
     padding: 0 20px 0 20px; }
     .editorContainer .editor:focus {
       outline: none; }
+    .editorContainer .editor p, .editorContainer .editor blockquote, .editorContainer .editor h1, .editorContainer .editor h2, .editorContainer .editor h3 {
+      font-family: Trebuchet, 'Trebuchet MS', Arial, sans-serif; }
     .editorContainer .editor p, .editorContainer .editor blockquote, .editorContainer .editor h1, .editorContainer .editor h2, .editorContainer .editor h3, .editorContainer .editor code, .editorContainer .editor pre {
-      font-family: Trebuchet, 'Trebuchet MS', Arial, sans-serif;
       -ms-word-wrap: break-word;
       word-wrap: break-word; }
     .editorContainer .editor p {
+      min-height: 27px;
       letter-spacing: -0.072px;
       line-height: 27px; }
     .editorContainer .editor p:focus {

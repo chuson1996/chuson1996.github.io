@@ -25,9 +25,28 @@ exports["default"] = (function () {
         testImageUrl: testImageUrl,
         moveCursorTo: moveCursorTo,
         assign: assign,
-        getBrowser: getBrowser
+        getBrowser: getBrowser,
+        isAtStartOfLine: isAtStartOfLine,
+        isAtEndOfLine: isAtEndOfLine
 
     };
+    function isAtStartOfLine(block, range) {
+        //console.log('Testing isAtStartOfLine');
+        var lR = rangy.createRange();
+        //console.log(block);
+        //console.log(range.endContainer);
+        lR.selectNodeContents(block);
+        lR.setEnd(range.endContainer, range.endOffset);
+        //console.log($(lR.cloneContents()));
+        return !lR.cloneContents().textContent;
+    }
+    function isAtEndOfLine(block, range) {
+        //console.log('Testing isAtEndOfLine');
+        var rR = rangy.createRange();
+        rR.selectNodeContents(block);
+        rR.setStart(range.startContainer, range.startOffset);
+        return !rR.cloneContents().textContent;
+    }
     function assign(dest, source) {
         if (typeof source != "object" || typeof dest != "object") return;
         Object.getOwnPropertyNames(source).forEach(function (souKey) {
@@ -61,6 +80,7 @@ exports["default"] = (function () {
     }
     function moveCursorTo(_ref) {
         var startContainer = _ref.startContainer;
+        var collapse = _ref.collapse;
         var startOffset = _ref.startOffset;
         var endContainer = _ref.endContainer;
         var endOffset = _ref.endOffset;
@@ -68,6 +88,14 @@ exports["default"] = (function () {
         startOffset = startOffset || 0;
         endOffset = endOffset || 0;
         var newR = rangy.createRange();
+        if (collapse !== undefined) {
+            var lastTN = _.last(node(startContainer).findTextNodes());
+            newR.selectNodeContents(lastTN || startContainer);
+            newR.collapse(collapse);
+            rangy.getSelection().removeAllRanges();
+            rangy.getSelection().addRange(newR);
+            return;
+        }
         if (startOffset) newR.setStart(startContainer, startOffset);
         if (endOffset) newR.setEnd(endContainer, endOffset);else {
             endContainer = startContainer;
@@ -236,8 +264,13 @@ exports["default"] = (function () {
 
             // If an figure is an the end, append a <p><br/></p> after it!
             if (_node.lastChild && _node.lastChild.nodeName.toUpperCase() == "DIV" && /figure/i.test(_node.lastChild.className)) {
-                //$(_node).append("<p>&nbsp;</p>");
-                $(_node).append("<p><br/></p>");
+                $(_node).append("<p></p>");
+
+                //let nP = document.createElement('p');
+                //let nTN = document.createTextNode("");
+                //$(nP).append('<br/>');
+                //nP.appendChild(nTN);
+                //$(_node).append(nP);
             }
         }
 
@@ -419,8 +452,6 @@ var Editor = (function () {
 
         _classCallCheck(this, Editor);
 
-        this.defaultButtons = new _editorDefaultButtonsJs2['default']();
-
         this.options = options || {};
         // Setting up default options
         _helperHelper2['default'].assign(this.options, {
@@ -446,6 +477,8 @@ var Editor = (function () {
         this.elements.editorMenu = this.elements.editorContainer.querySelector('.editorMenu');
         this.elements.figureMenu = this.elements.editorContainer.querySelector('.figureMenu');
 
+        this.defaultButtons = new _editorDefaultButtonsJs2['default'](this.elements.editorContainer);
+
         this.linking = _linkingM2['default'](this.elements.editorContainer);
         this.formatText = _formatTextM2['default']();
         /* In order to save the editor's state after clicking formatting-text buttons, decorate those functions with an after function: this.editorUndoManager.saveEditorState*/
@@ -456,6 +489,13 @@ var Editor = (function () {
         _helperHelper2['default'].decorateAfter(this.formatText, 'h1 h2 blockquote', function () {
             setTimeout(function () {
                 _this.showEditorMenu();
+            }, 0);
+        });
+
+        if (/Firefox/.test(_helperHelper2['default'].getBrowser())) _helperHelper2['default'].decorateAfter(this.formatText, 'bold h1 h2 blockquote highlight', function () {
+            setTimeout(function () {
+                console.log('Focus plz');
+                $(_this.elements.editor).focus();
             }, 0);
         });
 
@@ -554,18 +594,15 @@ var Editor = (function () {
 
         /* Hide or show editorMenu and editorInsertMenu */
         EventListener.addEventListener().on(this.elements.editor)['with']({
-            'mouseup keyup focusout': function mouseupKeyupFocusout() {
+            'mouseup keyup blur': function mouseupKeyupBlur() {
                 setTimeout(function () {
                     /* Text highlighted ? */
+                    //console.log('Check');
                     if (!rangy.getSelection().isCollapsed && !_helperHelper2['default'].node(rangy.getSelection().getRangeAt(0).commonAncestorContainer).isChildOf(".figure")) _this5.showEditorMenu();else _this5.hideEditorMenu();
                 }, 0);
 
                 /* Cursor at an empty paragraph ? */
                 if (rangy.getSelection().anchorNode && rangy.getSelection().anchorNode.nodeName == "P" && rangy.getSelection().focusNode && rangy.getSelection().focusNode.nodeName == "P" && !rangy.getSelection().anchorNode.textContent.trim() && rangy.getSelection().rangeCount == 1) _this5.showInsertToolbar();else _this5.hideInsertToolbar();
-            },
-            'focusout': function focusout(e) {
-
-                //this.hideInsertToolbar();
             }
         });
 
@@ -575,7 +612,7 @@ var Editor = (function () {
                 /* Selection contains link ? */
                 var selectionContainsLink = (function () {
                     /* Is selection wrapped in <a></a> */
-                    if (rangy.getSelection().rangeCount && $(rangy.getSelection().getRangeAt(0).commonAncestorContainer).parents('a').length) return true;
+                    if (rangy.getSelection().rangeCount && $(rangy.getSelection().getRangeAt(0).commonAncestorContainer).closest('a').length) return true;
 
                     /* Does selection contain <a></a> */
                     if (!rangy.getSelection() || rangy.getSelection().isCollapsed) return false;
@@ -598,7 +635,7 @@ var Editor = (function () {
 
                 var curRange = rangy.getSelection().getRangeAt(0);
                 var cbData = document.createElement('div');
-                var block = _helperHelper2['default'].node(curRange.endContainer).parentOfTypes("P BLOCKQUOTE H1 H2 H3 PRE");
+                var block = $(curRange.endContainer).closest("P, BLOCKQUOTE, H1, H2, H3, PRE")[0];
                 if (/Firefox/.test(_helperHelper2['default'].getBrowser())) {
                     $(cbData).append($('<p>' + (e.originalEvent || e).clipboardData.getData('text/plain') + '</p>'));
                 } else {
@@ -611,49 +648,46 @@ var Editor = (function () {
 
                 if (!rangy.getSelection().isCollapsed) document.execCommand('delete');
 
-                var rangeStartContainer = undefined;
-                var rangeStartOffset = undefined;
-
-                if (_helperHelper2['default'].node(cbData.lastChild).findTextNodes().length) {
-                    rangeStartContainer = _helperHelper2['default'].node(cbData.lastChild).findTextNodes()[_helperHelper2['default'].node(cbData.lastChild).findTextNodes().length - 1];
-                    rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
-                } else {
-                    rangeStartContainer = curRange.startContainer;
-                    rangeStartOffset = curRange.startOffset;
-                }
-
                 /* Check if cursor is at the first or end of the block */
-                if (_helperHelper2['default'].node(curRange.startContainer).isFirstNodeIn(block) && curRange.startOffset == 0 || !block.textContent.trim()) {
-                    //console.log('Prepend to the block');
+                console.log(curRange.cloneRange());
+                if (_helperHelper2['default'].isAtEndOfLine(block, curRange)) {
+                    console.log('Append to the block');
+                    //console.log(cbData.firstElementChild.cloneNode(false));
+                    if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == block.nodeName) {
+                        /* Merge the first node to block */
+                        if (block.children.length == 1 && block.firstElementChild.nodeName.toUpperCase() == "BR") {
+                            block.firstElementChild.remove();
+                        }
+                        $(block).append(cbData.firstChild.childNodes);
+                        block.normalize();
+                        cbData.firstChild.remove();
+
+                        _helperHelper2['default'].moveCursorTo({ startContainer: block, collapse: false });
+                    }
+                    if (cbData.childNodes.length) {
+                        var lastChild = cbData.lastElementChild;
+                        $(block).after(cbData.childNodes);
+                        cbData.remove();
+
+                        _helperHelper2['default'].moveCursorTo({ startContainer: lastChild, collapse: false });
+                    }
+                } else if (_helperHelper2['default'].isAtStartOfLine(block, curRange)) {
+                    console.log('Prepend to the block');
 
                     if (cbData.lastChild.nodeName.toUpperCase() == "P" || cbData.lastChild.nodeName == block.nodeName) {
                         // Merge the last node to block
+                        _helperHelper2['default'].moveCursorTo({ startContainer: block, collapse: true });
+                        console.log(block);
                         $(block).prepend(cbData.lastChild.childNodes);
                         block.normalize();
                         cbData.lastChild.remove();
                     }
                     if (cbData.childNodes.length) {
-                        //console.log('Prepend: ', cbData);
                         $(block).before(cbData.childNodes);
                         cbData.remove();
                     }
-                } else if (_helperHelper2['default'].node(curRange.startContainer).isLastNodeIn(block) && curRange.startOffset == rangy.dom.getNodeLength(curRange.startContainer)) {
-                    //console.log('Append to block');
-                    if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == block.nodeName) {
-                        /* Merge the first node to block */
-                        $(block).append(cbData.firstChild.childNodes);
-                        block.normalize();
-                        rangeStartContainer = _helperHelper2['default'].node(block).findTextNodes()[_helperHelper2['default'].node(block).findTextNodes().length - 1];
-                        rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
-
-                        cbData.firstChild.remove();
-                    }
-                    if (cbData.childNodes.length) {
-                        $(block).after(cbData.childNodes);
-                        cbData.remove();
-                    }
                 } else {
-                    //console.log('Split and insert in the middle!');
+                    console.log('Split and insert in the middle!');
 
                     var _hp$node$split = _helperHelper2['default'].node(block).split(curRange.startContainer, curRange.startOffset);
 
@@ -664,35 +698,46 @@ var Editor = (function () {
                     if (cbData.firstChild.nodeName.toUpperCase() == "P" || cbData.firstChild.nodeName == blockL.nodeName) {
                         $(blockL).append(cbData.firstChild.childNodes);
                         blockL.normalize();
-                        rangeStartContainer = _helperHelper2['default'].node(blockL).findTextNodes()[_helperHelper2['default'].node(blockL).findTextNodes().length - 1];
-                        rangeStartOffset = rangy.dom.getNodeLength(rangeStartContainer);
 
                         cbData.firstChild.remove();
+
+                        _helperHelper2['default'].moveCursorTo({ startContainer: blockL, collapse: false });
                     }
 
                     /* If the paste document is one piece, then merge blockR to blockL */
                     if (!cbData.children.length) {
+                        //console.log('If the paste document is one piece, then merge blockR to blockL');
+                        _helperHelper2['default'].moveCursorTo({ startContainer: blockL, collapse: false });
                         $(blockL).append(blockR.childNodes);
                         blockL.normalize();
 
                         blockR.remove();
                     } else if (cbData.lastChild.nodeName.toUpperCase() == "P" || cbData.lastChild.nodeName == blockR.nodeName) {
                         /* Merge the rest of the copied content to blockR */
+                        //console.log('Merge the rest of the copied content to blockR ');
+
+                        _helperHelper2['default'].moveCursorTo({ startContainer: blockR, collapse: true });
                         $(blockR).prepend(cbData.lastChild.childNodes);
                         blockR.normalize();
                         cbData.lastChild.remove();
-                    }
-                    if (cbData.childNodes.length) {
-                        $(blockL).after(cbData.childNodes);
+
+                        //console.log(blockR);
+
+                        if (cbData.childNodes.length) {
+                            //console.log('There\'re still some stuff left. After() them in!');
+                            $(blockL).after(cbData.childNodes);
+                            cbData.remove();
+                        }
                     }
                 }
 
-                var newRange = rangy.createRange();
-                //console.log(rangeStartContainer, rangeStartOffset);
-                newRange.setStart(rangeStartContainer, rangeStartOffset);
-
-                rangy.getSelection().removeAllRanges();
-                rangy.getSelection().addRange(newRange);
+                //let newRange = rangy.createRange();
+                ////console.log(rangeStartContainer, rangeStartOffset);
+                //newRange.selectNodeContents(rangeStartContainer);
+                //newRange.collapse(false);
+                //console.log(newRange);
+                //rangy.getSelection().removeAllRanges();
+                //rangy.getSelection().addRange(newRange);
             },
             'mouseup keyup': function mouseupKeyup(e) {
                 /* Guarantee that the editor must always contain at least 1 "P" node. If not, "#TEXT" node will take place. */
@@ -712,10 +757,12 @@ var Editor = (function () {
                     _this6.insertToolbarState().initial.call(_this6);
                 }, 0);
             },
-            'focusout': function focusout(e) {
+            'blur': function blur(e) {
                 /* If users focus out of the container, all ranges must be removed.
                  * editorMenu + insertToolbar must be hidden.
-                 * This line below prevents scenarios when user click extensions like editorMenu or editoInlineTooltip*/
+                 * This line below prevents scenarios when user click extensions like editorMenu or editorInlineTooltip*/
+                if ($(e.target).parents('.editorContainer').length) return;
+
                 if (!($(_this6.elements.editorContainer).has($(e.relatedTarget)).length > 0)) {
                     rangy.getSelection().removeAllRanges();
                 }
@@ -747,9 +794,10 @@ var Editor = (function () {
                     return;
                 }
 
-                /* When backspacing at the beginning of a paragraph where after a Figure div */
+                /* When backspacing at the beginning of a paragraph after a Figure div */
                 var curRange = rangy.getSelection().getRangeAt(0);
-                var parBlock = _helperHelper2['default'].node(curRange.startContainer).parentOfTypes("P H1 H2 H3 PRE BLOCKQUOTE");
+                var parBlock = $(curRange.startContainer).closest("P, H1, H2, H3, PRE, BLOCKQUOTE")[0];
+                //console.log(parBlock);
                 if (e.keyCode == 8 && rangy.getSelection().isCollapsed && parBlock && curRange.startOffset == 0 && (curRange.startContainer == parBlock || curRange.startContainer == _helperHelper2['default'].node(parBlock).findTextNodes()[0]) && (parBlock.previousElementSibling && parBlock.previousElementSibling.nodeName == 'DIV' && /figure/i.test(parBlock.previousElementSibling.className))) {
                     e.preventDefault();
 
@@ -776,13 +824,18 @@ var Editor = (function () {
         /* Undo and Redo */
         /*   Save editor state when it changes */
         EventListener.addEventListener().on(this.elements.editor)['with']({
-            'mouseup keyup drag paste': function mouseupKeyupDragPaste(e) {
-                if (e.type == "keyup" && e.ctrlKey && e.keyCode == 90) {
-                    return;
-                }
-
-                //console.log(e);
+            'mouseup drag paste': function mouseupDragPaste(e) {
                 _this7.saveEditorState.call(_this7);
+            },
+            'keydown keyup': function keydownKeyup(e) {
+                //console.log(e.ctrlKey && e.keyCode==90);
+                //if (!(e.ctrlKey && e.keyCode==90))
+                //    this.saveEditorState.call(this);
+
+                /* To prevent the editor from saving its state. Or else it will interrupt undo and redo events */
+                if (e.ctrlKey && e.keyCode == 90) {
+                    _this7.startValue = _this7.getEditorContent();
+                }
             }
         });
     };
@@ -928,7 +981,7 @@ var Editor = (function () {
 
     Editor.prototype.insertImage = function insertImage(imgUrl) {
         var selectionRange = rangy.getSelection().getRangeAt(0);
-        var pContainer = selectionRange.commonAncestorContainer.nodeName == 'P' ? selectionRange.commonAncestorContainer : $(selectionRange.commonAncestorContainer).parents('p')[0];
+        var pContainer = $(selectionRange.commonAncestorContainer).closest('p')[0];
         //console.log(pContainer);
         if (_helperHelper2['default'].isLineEmpty(pContainer)) {
             //let newEl = $compile(`<figure src="${imgUrl}"></figure>`)(scope);
@@ -949,7 +1002,7 @@ var Editor = (function () {
         var nRLeft = rangy.createRange(),
             nRRight = rangy.createRange(),
             fR = rangy.createRange();
-        var _parBlock = $(cR.commonAncestorContainer).parents('PRE, H1, H2, H3, CODE, BLOCKQUOTE')[0];
+        var _parBlock = $(cR.startContainer).closest('PRE, H1, H2, H3, CODE, BLOCKQUOTE')[0];
         nRRight.selectNodeContents(_parBlock);
         nRRight.setStart(cR.startContainer, cR.startOffset);
         //console.log($(nRLeft.cloneContents().childNodes));
@@ -1083,7 +1136,7 @@ var EditorUndoManager = (function () {
         var _this = this;
 
         //let id = this.generateId();
-        console.log('Saved');
+
         var id = this.index;
         var editorState = {
             innerHTML: this.editor.innerHTML
@@ -1110,6 +1163,8 @@ var EditorUndoManager = (function () {
                 _this.addEditorState(id, editorState);
             }
         });
+
+        console.log('Saved');
     };
 
     EditorUndoManager.prototype.addEditorState = function addEditorState(id, editorState) {
@@ -1136,6 +1191,7 @@ var EditorUndoManager = (function () {
         //console.log(this.editorStates);
 
         this.paraUndoManager.undo();
+        //console.log('After undo',this.editorStates);
         // Clear time out when undo
         this.restoreEditorState();
     };
@@ -1157,10 +1213,13 @@ var EditorUndoManager = (function () {
             //console.log(storedRange);
 
             if (this.editor) {
-                EventListener.saveEventListeners(this.editor);
+                this.editor.normalize();
+                //EventListener.saveEventListeners(this.editor);
                 //console.log(EventListener.savedEventListeners);
                 this.editor.innerHTML = innerHTML;
-                EventListener.restoreEventListeners(this.editor);
+                //console.log('Thinks problem here');
+                //EventListener.restoreEventListeners(this.editor);
+                //console.log('Thinks problem here');
                 /* !! You need to have a custom figure restoring function here !! */
                 // Step 1: Find figure div and remove all event listeners from every child in it, including itself
                 _.remove(EventListener.listeners, function (listener) {
@@ -1297,7 +1356,7 @@ var Figure = (function () {
                 }
             },
             'keyup': function keyup(e) {
-                if (_this.elements.figureCaption.innerText.trim() == "" && _this.elements.figureCaption.innerHTML !== "<br>") {
+                if (_this.elements.figureCaption.textContent.trim() == "" && _this.elements.figureCaption.innerHTML !== "<br>") {
                     _this.elements.figureCaption.innerHTML = "<br>";
                 }
             },
@@ -1314,7 +1373,19 @@ var Figure = (function () {
                 }
             },
             'paste': function paste(e) {
+                console.log(e);
+                if (!e) e = window.event;
+
+                //IE9 & Other Browsers
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+                //IE8 and Lower
+                else {
+                        e.cancelBubble = true;
+                    }
                 /* Prevent pasting format text */
+                //e.cancelBubble();
                 e.preventDefault();
                 var text = e.clipboardData.getData("text/plain");
                 var url = e.clipboardData.getData("url");
@@ -1391,12 +1462,22 @@ var _linkingM = require('./linkingM');
 
 var _linkingM2 = _interopRequireDefault(_linkingM);
 
-var DefaultButtons = function DefaultButtons() {
+var DefaultButtons = function DefaultButtons(editorContainer) {
     _classCallCheck(this, DefaultButtons);
 
     /* let buildInButtons = 'BOLD H1 H2 BLOCKQUOTE JUSTIFYLEFT JUSTIFYRIGHT JUSTIFYCENTER JUSTIFYAUTO HIGHLIGHT'.split(' '); */
     this.formatText = _formatTextM2['default']();
 
+    if (/Firefox/.test(_helperHelper2['default'].getBrowser())) {
+        var firefoxAfterFocus = function firefoxAfterFocus() {
+            setTimeout(function () {
+                //console.log('Focus plz');
+                $(editorContainer).find('.editor').focus();
+            }, 0);
+        };
+        _helperHelper2['default'].decorateAfter(this.formatText, 'bold h1 h2 blockquote highlight', firefoxAfterFocus);
+        _helperHelper2['default'].decorateAfter(this.formatText.justify, 'center left right', firefoxAfterFocus);
+    }
     ///
     /* boldBtn */
     this.boldBtn = document.createElement('button');
@@ -1595,14 +1676,15 @@ exports['default'] = function () {
     }
 
     function replacePWith(nodeName) {
-        var _bookmark = rangy.getSelection().getBookmark();
+        var editor = $(rangy.getSelection().getRangeAt(0).commonAncestorContainer).closest('.editor')[0] || rangy.getSelection().getRangeAt(0).commonAncestorContainer;
+        var _bookmark = rangy.getSelection().getBookmark(editor);
 
         var _rangy$getSelection$getRangeAt = rangy.getSelection().getRangeAt(0);
 
         var startContainer = _rangy$getSelection$getRangeAt.startContainer;
         var endContainer = _rangy$getSelection$getRangeAt.endContainer;
 
-        var mainNodeTypes = "BLOCKQUOTE P H1 H2".split(' ');
+        var mainNodeTypes = "BLOCKQUOTE P H1 H2 PRE CODE".split(' ');
 
         /* Trying to assign startContainer to one of these parent nodes ["P",nodeName] */
         if (!_helperHelper2['default'].node(startContainer).isOneOfTheseNodes(mainNodeTypes)) {
@@ -1635,8 +1717,10 @@ exports['default'] = function () {
         })) {
             elems.forEach(function (elem) {
                 var newP = document.createElement('p');
-                var textContent = elem.innerHTML || document.createTextNode("<br>");
-                $(newP).html(textContent);
+                //let textContent = elem.innerHTML || document.createTextNode("<br>");
+                //$(newP).html(textContent);
+                var textContent = elem.childNodes || document.createTextNode("<br>");
+                $(newP).append(textContent);
                 $(elem).replaceWith(newP);
             });
         } else {
@@ -1644,13 +1728,16 @@ exports['default'] = function () {
             elems.forEach(function (elem) {
                 if (_helperHelper2['default'].node(elem).isOneOfTheseNodes(mainNodeTypes) && elem.nodeName.toUpperCase() != nodeName) {
                     var newBlockquote = document.createElement(nodeName);
-                    var textContent = elem.innerHTML || document.createTextNode("<br>");
-                    $(newBlockquote).html(textContent);
+                    //let textContent = elem.innerHTML || document.createTextNode("<br>");
+                    //$(newBlockquote).html(textContent);
+                    var textContent = elem.childNodes || document.createTextNode("<br>");
+                    $(newBlockquote).append(textContent);
                     $(elem).replaceWith(newBlockquote);
                 }
             });
         }
 
+        rangy.getSelection().removeAllRanges();
         rangy.getSelection().moveToBookmark(_bookmark);
     }
     function blockquote() {

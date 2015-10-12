@@ -18,7 +18,7 @@ export default class EditorUndoManager{
 
     saveEditorState(){
         //let id = this.generateId();
-        console.log('Saved');
+
         let id = this.index;
         let editorState = {
             innerHTML : this.editor.innerHTML,
@@ -47,6 +47,8 @@ export default class EditorUndoManager{
                 this.addEditorState(id, editorState);
             }
         });
+
+        console.log('Saved');
     }
 
     addEditorState(id, editorState){
@@ -69,6 +71,7 @@ export default class EditorUndoManager{
         //console.log(this.editorStates);
 
         this.paraUndoManager.undo();
+        //console.log('After undo',this.editorStates);
         // Clear time out when undo
         this.restoreEditorState();
     }
@@ -86,10 +89,13 @@ export default class EditorUndoManager{
             //console.log(storedRange);
 
             if (this.editor) {
-                EventListener.saveEventListeners(this.editor);
+                this.editor.normalize();
+                //EventListener.saveEventListeners(this.editor);
                 //console.log(EventListener.savedEventListeners);
                 this.editor.innerHTML = innerHTML;
-                EventListener.restoreEventListeners(this.editor);
+                //console.log('Thinks problem here');
+                //EventListener.restoreEventListeners(this.editor);
+                //console.log('Thinks problem here');
                 /* !! You need to have a custom figure restoring function here !! */
                 // Step 1: Find figure div and remove all event listeners from every child in it, including itself
                 _.remove(EventListener.listeners, (listener)=> {

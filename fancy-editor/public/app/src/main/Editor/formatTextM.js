@@ -61,9 +61,13 @@ export default (function (){
 
 
     function replacePWith(nodeName){
-        let _bookmark = rangy.getSelection().getBookmark();
+        let editor = $(rangy.getSelection().getRangeAt(0).commonAncestorContainer).closest('.editor')[0] || rangy.getSelection().getRangeAt(0).commonAncestorContainer;
+        let _bookmark = rangy.getSelection().getBookmark(editor);
+
+
+
         let {startContainer, endContainer}=rangy.getSelection().getRangeAt(0);
-        let mainNodeTypes = "BLOCKQUOTE P H1 H2".split(' ');
+        let mainNodeTypes = "BLOCKQUOTE P H1 H2 PRE CODE".split(' ');
 
         /* Trying to assign startContainer to one of these parent nodes ["P",nodeName] */
         if (!hp.node(startContainer).isOneOfTheseNodes(mainNodeTypes)){
@@ -92,12 +96,16 @@ export default (function (){
         if (startContainer!=endContainer)
             elems.push(endContainer);
 
+
+
         /* If all elements is of type nodeName, replace them all with P nodes */
         if (_.all(elems, (elem) => elem.nodeName == nodeName)){
             elems.forEach(function (elem) {
                 let newP = document.createElement('p');
-                let textContent = elem.innerHTML || document.createTextNode("<br>");
-                $(newP).html(textContent);
+                //let textContent = elem.innerHTML || document.createTextNode("<br>");
+                //$(newP).html(textContent);
+                let textContent = elem.childNodes || document.createTextNode("<br>");
+                $(newP).append(textContent);
                 $(elem).replaceWith(newP);
             })
         }else{
@@ -105,14 +113,16 @@ export default (function (){
             elems.forEach(function (elem) {
                 if (hp.node(elem).isOneOfTheseNodes(mainNodeTypes) && elem.nodeName.toUpperCase() != nodeName){
                     let newBlockquote = document.createElement(nodeName);
-                    let textContent = elem.innerHTML || document.createTextNode("<br>");
-                    $(newBlockquote).html(textContent);
+                    //let textContent = elem.innerHTML || document.createTextNode("<br>");
+                    //$(newBlockquote).html(textContent);
+                    let textContent = elem.childNodes || document.createTextNode("<br>");
+                    $(newBlockquote).append(textContent);
                     $(elem).replaceWith(newBlockquote);
                 }
             })
         }
 
-
+        rangy.getSelection().removeAllRanges();
         rangy.getSelection().moveToBookmark(_bookmark);
     }
     function blockquote() {

@@ -25,14 +25,9 @@ module.exports = function (grunt) {
                     // if the source file has an extension of es6 then
                     // we change the name of the source file accordingly.
                     // The result file's extension is always .js
-                    'public/app/dist/bundle.js': ['public/app/src/main/main.js']
+                    'public/app/main/Editor/dist/fancy-editor.js': ['public/app/main/Editor/src/Editor.js']
                 }
             }
-            //dist:{
-            //    files:{
-            //        'public/app/dist/bundle.js':['public/app/src/main/main.js']
-            //    }
-            //}
         },
         concat: {
             options: {
@@ -40,17 +35,17 @@ module.exports = function (grunt) {
             },
             basic_and_extras: {
                 files: {
-                    'public/app/dist/bundle.css':['public/app/src/**/*.css','!public/app/src/node_modules/**/*.css']
+                    'public/app/main/Editor/dist/fancy-editor.css':['public/app/main/Editor/src/**/*.css']
                 },
             }
         },
         watch: {
             babelfiles:{
-                files: ['public/app/src/**/*.js','!public/app/src/node_modules/**/*.js'],
+                files: ['public/app/main/Editor/src/**/*.js'],
                 tasks : ['browserify']
             },
             cssfiles:{
-                files: ['public/app/src/**/*.css','!public/app/src/node_modules/**/*.css'],
+                files: ['public/app/main/Editor/src/**/*.css'],
                 tasks: ['concat']
             }
 

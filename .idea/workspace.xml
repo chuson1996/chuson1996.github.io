@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3bbf66d3-c485-4948-a201-0ad4741a7f7e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Editor.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Editor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/EditorUndoManager.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/EditorUndoManager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/helper/EventListener.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/helper/EventListener.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/Figure.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/Figure.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/dist/bundle.css" afterPath="$PROJECT_DIR$/fancy-editor/public/app/dist/bundle.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/dist/bundle.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/dist/bundle.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/node_modules/cson-serializer/lib/cson-serializer.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/node_modules/cson-serializer/lib/cson-serializer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.css.map" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.css" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.scss" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editorDefaultButtons.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editorDefaultButtons.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/formatTextM.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/formatTextM.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/src/helper/helper.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/src/helper/helper.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Editor.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Editor.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/dist/fancy-editor.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/dist/fancy-editor.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fancy-editor/public/app/main/main.js" afterPath="$PROJECT_DIR$/fancy-editor/public/app/main/main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="chuson1996.github.io.iws" />
@@ -39,84 +29,71 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fancy-editor/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.6153846">
-              <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Editor.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Editor.js">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/main.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="56" column="48" selection-start-line="56" selection-start-column="41" selection-end-line="56" selection-end-column="48" />
+              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding>
-                <element signature="e#14597#15437#0" expanded="false" />
-                <marker date="1444688177029" expanded="true" signature="4579:4760" placeholder="..." />
+                <element signature="e#0#45#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="editorDefaultButtons.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editorDefaultButtons.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.29411766">
-              <caret line="23" column="91" selection-start-line="23" selection-start-column="91" selection-end-line="23" selection-end-column="91" />
-              <folding>
-                <element signature="e#4473#6048#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="formatTextM.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/formatTextM.js">
+      <file leaf-file-name="Editor.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Editor.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="helper.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/helper/helper.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-43.62069">
-              <caret line="149" column="5" selection-start-line="133" selection-start-column="4" selection-end-line="149" selection-end-column="5" />
-              <folding />
+              <caret line="291" column="47" selection-start-line="291" selection-start-column="47" selection-end-line="291" selection-end-column="47" />
+              <folding>
+                <element signature="n#!!block;n#addButtonsToEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+                <element signature="n#!!block;n#placeholder#0;n#!!block;n#Editor#0" expanded="false" />
+                <element signature="e#18561#21315#0" expanded="false" />
+                <element signature="n#!!block;n#insertImage#0;n#!!block;n#Editor#0" expanded="false" />
+                <element signature="n#!!block;n#editorTooltipState#0;n#!!block;n#Editor#0" expanded="false" />
+                <element signature="n#!!block;n#activateUndoAndRedo#0;n#!!block;n#Editor#0" expanded="false" />
+                <element signature="n#!!block;n#saveEditorState#0;n#!!block;n#Editor#0" expanded="false" />
+                <element signature="n#!!block;n#getEditorContent#0;n#!!block;n#Editor#0" expanded="false" />
+                <element signature="n#!!block;n#showEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+                <element signature="n#!!block;n#hideEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+                <element signature="n#!!block;n#hideEditorTooltip#0;n#!!block;n#Editor#0" expanded="false" />
+                <marker date="1444805989991" expanded="false" signature="4489:4670" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="editor.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.scss">
+        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.461538">
-              <caret line="61" column="3" selection-start-line="61" selection-start-column="3" selection-end-line="61" selection-end-column="3" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="151" column="21" selection-start-line="151" selection-start-column="21" selection-end-line="151" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cson-serializer.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/node_modules/cson-serializer/lib/cson-serializer.js">
+      <file leaf-file-name="editor.template.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.template.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="83" column="18" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EventListener.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/helper/EventListener.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="77" column="72" selection-start-line="77" selection-start-column="72" selection-end-line="77" selection-end-column="72" />
-              <folding />
+              <caret line="11" column="40" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="40" />
+              <folding>
+                <marker date="1444766681420" expanded="true" signature="91:783" placeholder="..." />
+                <marker date="1444766681420" expanded="true" signature="221:613" placeholder="..." />
+                <marker date="1444766681420" expanded="true" signature="314:602" placeholder="..." />
+                <marker date="1444766681420" expanded="true" signature="409:585" placeholder="..." />
+                <marker date="1444766681420" expanded="true" signature="463:474" placeholder="..." />
+                <marker date="1444766681420" expanded="true" signature="743:775" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -144,20 +121,37 @@
         <option value="$PROJECT_DIR$/serializer/index.html" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/fancy-editor/public/app/src/style/paragraph.scss" />
-        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/main.js" />
         <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/linkingM.js" />
-        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.template.js" />
         <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/figure.scss" />
-        <option value="$PROJECT_DIR$/fancy-editor/index.html" />
-        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/node_modules/cson-serializer/lib/cson-serializer.js" />
         <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/EditorUndoManager.js" />
         <option value="$PROJECT_DIR$/fancy-editor/public/app/src/helper/helper.js" />
         <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/Figure.js" />
-        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.scss" />
         <option value="$PROJECT_DIR$/fancy-editor/public/app/src/helper/EventListener.js" />
         <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/formatTextM.js" />
-        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Editor.js" />
         <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editorDefaultButtons.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.template.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.scss" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/node_modules/cson-serializer/lib/cson-serializer.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Undoable.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Editor.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/main.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Editor2.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/formatTextM.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/linkingM.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/node_modules/cson-serializer/package.json" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/helper/EventListener.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/EditorUndoManager.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/index.html" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editorDefaultButtons.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/helper/helper.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Editor2.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/Gruntfile.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Figure/Figure.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.template.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.scss" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/main.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/dist/fancy-editor.js" />
+        <option value="$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Editor.js" />
       </list>
     </option>
   </component>
@@ -198,7 +192,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -267,28 +260,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="images" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chuson1996.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chuson1996.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fancy-editor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -312,138 +283,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chuson1996.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chuson1996.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fancy-editor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="node_modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chuson1996.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chuson1996.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fancy-editor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="node_modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cson-serializer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chuson1996.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chuson1996.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fancy-editor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="node_modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cson-serializer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chuson1996.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chuson1996.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fancy-editor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -470,10 +309,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -507,6 +342,48 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="chuson1996.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="chuson1996.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fancy-editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -515,13 +392,86 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="chuson1996.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="chuson1996.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fancy-editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Figure" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="chuson1996.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="chuson1996.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fancy-editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../discount.fi" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
     <property name="ignore_missing_gitignore" value="true" />
@@ -532,6 +482,12 @@
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="FullScreen" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\node-express\chuson1996.github.io\fancy-editor\public\app" />
+      <recent name="G:\node-express\chuson1996.github.io\fancy-editor\public\app\src\main\Editor\src" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
@@ -587,26 +543,26 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24969843" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24969843" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -622,7 +578,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="5" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -639,6 +595,122 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#45#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#addButtonsToEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#placeholder#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="e#18561#21315#0" expanded="false" />
+            <element signature="n#!!block;n#insertImage#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#editorTooltipState#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#activateUndoAndRedo#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#saveEditorState#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#getEditorContent#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#showEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#hideEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#hideEditorTooltip#0;n#!!block;n#Editor#0" expanded="false" />
+            <marker date="1444805989991" expanded="false" signature="4489:4670" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="151" column="21" selection-start-line="151" selection-start-column="21" selection-end-line="151" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.template.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="40" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="40" />
+          <folding>
+            <marker date="1444766681420" expanded="true" signature="91:783" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="221:613" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="314:602" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="409:585" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="463:474" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="743:775" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#45#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#addButtonsToEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#placeholder#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="e#18561#21315#0" expanded="false" />
+            <element signature="n#!!block;n#insertImage#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#editorTooltipState#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#activateUndoAndRedo#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#saveEditorState#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#getEditorContent#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#showEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#hideEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#hideEditorTooltip#0;n#!!block;n#Editor#0" expanded="false" />
+            <marker date="1444805989991" expanded="false" signature="4489:4670" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="151" column="21" selection-start-line="151" selection-start-column="21" selection-end-line="151" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.template.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="40" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="40" />
+          <folding>
+            <marker date="1444766681420" expanded="true" signature="91:783" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="221:613" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="314:602" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="409:585" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="463:474" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="743:775" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/fancy-editor/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -647,26 +719,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding>
-            <element signature="e#14597#15437#0" expanded="false" />
-            <marker date="1444688177029" expanded="true" signature="4579:4760" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/linkingM.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/linkingM.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.scss">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
@@ -674,40 +734,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.template.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.template.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
           <folding>
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="91:783" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="221:613" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="314:602" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="409:585" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="463:474" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="743:775" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/helper/helper.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/helper/helper.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="e#5242#13250#0" expanded="false" />
-            <element signature="e#6287#6632#0" expanded="false" />
-            <element signature="e#7848#10067#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/helper/EventListener.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/helper/EventListener.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="64" column="23" selection-start-line="64" selection-start-column="23" selection-end-line="64" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -719,71 +771,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/figure.scss">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Figure/figure.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.template.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.template.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="41" column="27" selection-start-line="41" selection-start-column="27" selection-end-line="41" selection-end-column="27" />
           <folding>
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="91:783" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="221:613" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="314:602" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="409:585" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="463:474" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="743:775" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/helper/helper.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/helper/helper.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="202" column="59" selection-start-line="202" selection-start-column="59" selection-end-line="202" selection-end-column="59" />
-          <folding>
-            <element signature="e#5242#13250#0" expanded="false" />
-            <element signature="e#6287#6632#0" expanded="false" />
-            <element signature="e#7848#10067#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="455" column="0" selection-start-line="455" selection-start-column="0" selection-end-line="455" selection-end-column="0" />
-          <folding>
-            <element signature="e#14597#15437#0" expanded="false" />
-            <marker date="1444688177029" expanded="true" signature="4579:4760" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/EditorUndoManager.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/EditorUndoManager.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/Figure.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Figure/Figure.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="128" column="74" selection-start-line="128" selection-start-column="74" selection-end-line="128" selection-end-column="74" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -795,71 +822,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/figure.scss">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Figure/figure.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.template.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.template.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="41" column="27" selection-start-line="41" selection-start-column="27" selection-end-line="41" selection-end-column="27" />
           <folding>
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="91:783" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="221:613" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="314:602" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="409:585" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="463:474" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="743:775" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/helper/helper.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/helper/helper.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="202" column="59" selection-start-line="202" selection-start-column="59" selection-end-line="202" selection-end-column="59" />
-          <folding>
-            <element signature="e#5242#13250#0" expanded="false" />
-            <element signature="e#6287#6632#0" expanded="false" />
-            <element signature="e#7848#10067#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="455" column="0" selection-start-line="455" selection-start-column="0" selection-end-line="455" selection-end-column="0" />
-          <folding>
-            <element signature="e#14597#15437#0" expanded="false" />
-            <marker date="1444688177029" expanded="true" signature="4579:4760" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/EditorUndoManager.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/EditorUndoManager.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/Figure.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Figure/Figure.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="128" column="74" selection-start-line="128" selection-start-column="74" selection-end-line="128" selection-end-column="74" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -891,181 +893,172 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/figure.css">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Figure/figure.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.css">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.39215687">
           <caret line="68" column="31" selection-start-line="68" selection-start-column="26" selection-end-line="68" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.css.map">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.css.map">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
       <provider editor-type-id="sourcemapFileViewerProvider">
         <state />
       </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/dist/bundle.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.54901963">
-          <caret line="121" column="27" selection-start-line="121" selection-start-column="8" selection-end-line="121" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23529412">
-          <caret line="14" column="35" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/linkingM.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.448276">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/helper/Serializer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.template.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
-          <folding>
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1444553432137" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/EditorUndoManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.797136">
-          <caret line="50" column="27" selection-start-line="50" selection-start-column="27" selection-end-line="50" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/node_modules/cson-serializer/lib/cson-serializer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="83" column="18" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/figure.scss">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Figure/figure.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.74791914">
           <caret line="71" column="24" selection-start-line="70" selection-start-column="4" selection-end-line="71" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editor.scss">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/node_modules/cson-serializer/lib/cson-serializer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.461538">
-          <caret line="61" column="3" selection-start-line="61" selection-start-column="3" selection-end-line="61" selection-end-column="3" />
-          <folding />
+        <state vertical-scroll-proportion="2.0023096">
+          <caret line="122" column="24" selection-start-line="122" selection-start-column="24" selection-end-line="122" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Figure/Figure.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/formatTextM.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33174226">
-          <caret line="100" column="60" selection-start-line="100" selection-start-column="60" selection-end-line="100" selection-end-column="60" />
-          <folding />
+        <state vertical-scroll-proportion="0.019630484">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/linkingM.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.019630484">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/node_modules/cson-serializer/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.6153846">
+          <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editorDefaultButtons.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09815242">
+          <caret line="7" column="54" selection-start-line="7" selection-start-column="54" selection-end-line="7" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/helper/helper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14217444">
+          <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fancy-editor/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6153846">
-          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/helper/helper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-43.62069">
-          <caret line="149" column="5" selection-start-line="133" selection-start-column="4" selection-end-line="149" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/helper/EventListener.js">
-      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="77" column="72" selection-start-line="77" selection-start-column="72" selection-end-line="77" selection-end-column="72" />
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/helper/customEvents.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/helper/EventListener.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/Gruntfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="102" selection-start-line="27" selection-start-column="102" selection-end-line="27" selection-end-column="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/EditorUndoManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.9310346">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Figure/Figure.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.019630484">
+          <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.template.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="40" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="40" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <marker date="1444766681420" expanded="true" signature="91:783" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="221:613" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="314:602" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="409:585" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="463:474" placeholder="..." />
+            <marker date="1444766681420" expanded="true" signature="743:775" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/formatTextM.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/editor.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+          <caret line="151" column="21" selection-start-line="151" selection-start-column="21" selection-end-line="151" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/Editor.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="56" column="48" selection-start-line="56" selection-start-column="41" selection-end-line="56" selection-end-column="48" />
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
-            <element signature="e#14597#15437#0" expanded="false" />
-            <marker date="1444688177029" expanded="true" signature="4579:4760" placeholder="..." />
+            <element signature="e#0#45#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/src/main/Editor/editorDefaultButtons.js">
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/dist/fancy-editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29411766">
-          <caret line="23" column="91" selection-start-line="23" selection-start-column="91" selection-end-line="23" selection-end-column="91" />
+        <state vertical-scroll-proportion="0.8822171">
+          <caret line="2262" column="20" selection-start-line="2262" selection-start-column="20" selection-end-line="2262" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fancy-editor/public/app/main/Editor/src/Editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="291" column="47" selection-start-line="291" selection-start-column="47" selection-end-line="291" selection-end-column="47" />
           <folding>
-            <element signature="e#4473#6048#0" expanded="false" />
+            <element signature="n#!!block;n#addButtonsToEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#placeholder#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="e#18561#21315#0" expanded="false" />
+            <element signature="n#!!block;n#insertImage#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#editorTooltipState#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#activateUndoAndRedo#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#saveEditorState#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#getEditorContent#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#showEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#hideEditorMenu#0;n#!!block;n#Editor#0" expanded="false" />
+            <element signature="n#!!block;n#hideEditorTooltip#0;n#!!block;n#Editor#0" expanded="false" />
+            <marker date="1444805989991" expanded="false" signature="4489:4670" placeholder="..." />
           </folding>
         </state>
       </provider>

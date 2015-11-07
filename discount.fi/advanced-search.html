@@ -1,0 +1,222 @@
+<div class="container" id="advancedSearch" ng-init="init(this)">
+    <nav class="col-xs-3" id="fixed-nav">
+        <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="205">
+
+            <li ng-repeat="filter in filters">
+                <p>{{filter.name}}</p>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <p>{{filter.value}}</p>
+                    </div>
+                    <div class="col-xs-4 modificationTools">
+                        <button class="btn no-padding" ng-if="filter.sortable">
+                            <i class="fa fa-long-arrow-down"></i>
+                        </button>
+                        <div class="dropdown inline">
+                            <button class="btn no-padding" data-toggle="dropdown"><i class="fa fa-bars"></i>
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><button class="btn"><i class="fa fa-pencil"></i>Edit</button></li>
+                                <li><button class="btn"><i class="fa fa-times"></i>Remove</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+            </li>
+        </ul>
+    </nav>
+    <div class="col-xs-9">
+        <form>
+            <div class="row">
+                <div class="col-xs-4 filterInput">
+                    <p class="filterTitle">Price</p>
+                    <label>
+                        <input type="radio" name="f_price" ng-model="filterOptions.price" value="noRanges">
+                    </label>No ranges <br/>
+                    <label>
+                        <input type="radio" name="f_price" ng-model="filterOptions.price" value="ranges"/>
+                    </label><label>
+                    <input type="number" min="0" max="100000" name="f_price_from" ng-model="filterOptions.priceFrom"/>
+                </label> - <label>
+                    <input type="number" min="0" max="100000" name="f_price_to" ng-model="filterOptions.priceTo"/>
+                </label>
+                </div>
+                <div class="col-xs-4 filterInput">
+                    <p class="filterTitle">Place</p>
+                    <label>
+                        <input type="text" name="f_place" ng-model="filterOptions.place"/>
+                    </label>
+                </div>
+                <div class="col-xs-4 filterInput">
+                    <p class="filterTitle">Time</p>
+                    <label>
+                        <input type="radio" name="f_time" value="closing" ng-model="filterOptions.time"/>
+                    </label> Closing<br/>
+                    <label>
+                        <input type="radio" name="f_time" value="newest" ng-model="filterOptions.time"/>
+                    </label> Newest<br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 filterInput">
+                    <p class="filterTitle">Type of discount</p>
+                    <label>
+                        <input type="radio" name="f_discountType" ng-model="filterOptions.discountType" value="discount"/>
+                    </label>Discount <br/>
+                    <label>
+                        <input type="radio" name="f_discountType" ng-model="filterOptions.discountType" value="promotion"/>
+                    </label>Promotion <br/>
+                    <label>
+                        <input type="radio" name="f_discountType" ng-model="filterOptions.discountType" value="pointSaving"/>
+                    </label>Point saving <br/>
+                </div>
+                <div class="col-xs-4 filterInput">
+                    <p class="filterTitle">Category</p>
+                    <label>
+                        <select name="f_category" ng-model="filterOptions.category">
+                            <option value="all">All</option>
+                            <option value="foodAndDrink">Food & Drink</option>
+                            <option value="deliveryAndTakeout">Delivery & Takeout</option>
+                            <option value="beautyAndSpas">Beauty & Spas</option>
+                            <option value="healthAndFitness">Health & Fitness</option>
+                            <option value="automotive">Automotive</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="homeAndGarden">Home & Garden</option>
+                            <option value="travel">Travel</option>
+                            <option value="giftIdeas">Gift Ideas</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="col-xs-4 filterInput">
+                    <p class="filterTitle">Deal title</p><br/>
+                    <label>
+                        <input type="text" name="f_dealTitle" ng-model="filterOptions.dealTitle"/>
+                    </label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12"><hr/></div>
+            </div>
+            <div class="col-xs-4 filterInput">
+                <p class="filterTitle">Rating & Reviews</p>
+                <p class="filterTitle">Rating</p>
+                From: <label>
+                <input type="number" name="f_rating_from" value="0" min="0" max="5" ng-model="filterOptions.ratingFrom"/>
+            </label>
+                To: <label>
+                <input type="number" name="f_rating_to" value="0" min="0" max="5" ng-model="filterOptions.ratingTo"/>
+            </label>
+                <p class="filterTitle">Rating percentage</p>
+                From: <label>
+                <input type="number" name="f_ratingPercent_from" min="0" max="100" ng-model="filterOptions.ratingPercentFrom"/>
+            </label>
+                To: <label>
+                <input type="number" name="f_ratingPercent_to" min="0" max="100" ng-model="filterOptions.ratingPercentTo"/>
+            </label>
+                <p class="filterTitle">Review percentage</p>
+                From: <label>
+                <input type="number" name="f_reviewPercent_from" min="0" max="100" ng-model="filterOptions.reviewPercentFrom"/>
+            </label>
+                To: <label>
+                <input type="number" name="f_reviewPercent_to" min="0" max="100" ng-model="filterOptions.reviewPercentTo"/>
+            </label>
+            </div>
+            <div class="col-xs-4 filterInput">
+                <p class="filterTitle">Quantity</p>
+                <label>
+                    <input type="number" name="f_quantity" min="0" ng-model="filterOptions.quantity"/>
+                </label>
+            </div>
+            <div class="col-xs-4 filterInput">
+                <p class="filterTitle">Tags</p>
+                <label>
+                    <input type="text" name="f_tag" ng-model="filterOptions.tags"/>
+                </label>
+            </div>
+            <div class="col-xs-4 filterInput">
+                <p class="filterTitle">Merchant name</p>
+                <label>
+                    <input type="text" name="f_merchantName" ng-model="filterOptions.merchant"/>
+                </label>
+            </div>
+            <div class="col-xs-4 filterInput text-align-center">
+                <button class="btn btn-success">Search</button>
+            </div>
+        </form>
+        <div class="row" >
+            <div class="col-xs-12" id="result-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td rowspan="2" style="vertical-align: middle"><b>Photo</b></td>
+                            <td rowspan="2" style="vertical-align: middle"><b>Title</b></td>
+                            <td rowspan="2" style="width: 70px;vertical-align: middle;"><b>Price</b></td>
+                            <td rowspan="2" style="vertical-align: middle"><b>Merchant name</b></td>
+                            <td rowspan="2" style="vertical-align: middle"><b>Type of discount</b></td>
+                            <td rowspan="2" style="vertical-align: middle"><b>Quantity</b></td>
+                            <td rowspan="2" style="vertical-align: middle"><b>Remaining</b></td>
+                            <td rowspan="1" colspan="3"  class="text-align-center"><b>Rating & Review</b></td>
+                        </tr>
+                        <tr>
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <td><b>Rating</b></td>
+                            <td><b>No. Reviews</b></td>
+                            <td><b>No. Views</b></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="deal in result">
+                            <td class="text-align-center">
+                                <div style="padding:6px; background-color: white;border: 1px solid rgba(0, 0, 0, 0.15);">
+                                    <img ng-src="{{deal.photo}}" style="width: 71px;height: 71px;object-fit: cover;">
+                                </div>
+                            </td>
+                            <td>
+                                <p>{{deal.title}}</p>
+                            </td>
+                            <td>
+                                <!--<p style="color:red;font-size: 25px;">{{deal.discountPercent}}%</p>-->
+                                <p style="font-size: 22px;color:#18B118;margin-bottom: 3px;">{{deal.discountPrice}} €</p>
+                                <p style="color: gray;text-decoration: line-through">{{deal.oriPrice}} €</p>
+                            </td>
+                            <td>
+                                <p>{{deal.merchant}}</p>
+                            </td>
+                            <td>
+                                <p>
+                                    {{deal.typeOfDiscount}}
+                                </p>
+                            </td>
+                            <td class="text-align-center">
+                                <p>
+                                    {{deal.quantity}}
+                                </p>
+                            </td>
+                            <td>
+                                <p>{{deal.remaining}}</p>
+                            </td>
+                            <td class="text-align-center">
+                                <p>{{deal.rating}}</p>
+                            </td>
+                            <td class="text-align-center">
+                                <p>{{deal.noReviews}}</p>
+                            </td>
+                            <td class="text-align-center">
+                                <p>{{deal.noViews}}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

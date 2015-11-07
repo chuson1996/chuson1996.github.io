@@ -1,0 +1,137 @@
+<div class="container">
+		<div class="row">
+			<div class="col-xs-2" id="left-nav-categories">
+				<ul class="list-group">
+					<li class="list-group-item">Food & Drink</li>
+					<li class="list-group-item">Delivery & Takeout</li>
+					<li class="list-group-item">Beauty & Spas</li>
+					<li class="list-group-item">Health & Fitness</li>
+					<li class="list-group-item">Automotive</li>
+					<li class="list-group-item">Electronics</li>
+					<li class="list-group-item">Home & Garden</li>
+					<li class="list-group-item">Travel</li>
+					<li class="list-group-item">Gift Ideas</li>
+				</ul>
+			</div>
+			<div class="col-xs-10" id="right-nav-recommendation">
+				<h3>Recommended for you</h3><br/>
+				<ul class="sortingTool">
+					<li class="active"><b><i class="fa fa-thumbs-up"></i>Popular</b></li>
+					<li><b><i class="fa fa-moon-o"></i>Closing</b></li>
+					<li><b><i class="fa fa-sun-o"></i>New</b></li>
+					<li><b><i class="fa fa-star"></i>Most rated</b></li>
+					<li><b><i class="fa fa-money"></i>Price</b></li>
+					<li><b><i class="fa fa-map-signs"></i>Nearest</b></li>
+				</ul>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<td><b>Photo</b></td>
+							<td><b>Title</b></td>
+							<td><b>Price</b></td>
+							<td><b>Merchant name</b></td>
+							<td><b>Quantity</b></td>
+							<td><b>Remaining</b></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="deal in deals">
+							<td style="width: 152px;height: 150px;">
+								<div style="padding:6px; background-color: white;border: 1px solid rgba(0, 0, 0, 0.15);">
+								<a style="cursor: pointer" ng-click="goToDeal()">
+									<img ng-src="{{deal.photo}}" style="width:120px;height: 120px;object-fit: cover;">
+								</a>	
+								</div>
+							</td>
+							<td>
+								<p>{{deal.title}}</p>
+							</td>
+							<td>
+								<p style="color:red;font-size: 25px;">{{deal.discountPercent}}%</p>
+								<p style="font-size: 22px;color:#18B118;margin-bottom: 3px;">{{deal.discountPrice}} €</p>
+								<p style="color: gray;text-decoration: line-through">{{deal.oriPrice}} €</p>
+							</td>
+							<td>
+								<p>{{deal.merchantName}}</p>
+							</td>
+							<td>
+								<p>{{deal.quantity}}</p>
+							</td>
+							<td>
+								<p>{{deal.time}}</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row" id="recentlyViewedDeals">
+			<div class="section-head col-xs-12">
+				<h2>Your Recently Viewed Deals</h2>
+			</div>
+			<div class="col-xs-3 figure">
+				<a href="#">
+					<img src="http://www.asema-aukionparturikampaamo.fi/upl/website/etusivu/101.jpg">	
+				</a>
+				<div class="figureCaption">
+					<p class="deal-title">Haircut Packages</p>
+					<p class="merchant-name">Asema-aukion parturi & Kampaamo</p>
+					<p class="deal-location">Hallituskatu 31, Helsinki</p>
+					
+					<p class="pricing">
+						<span class="ori-price">20€</span> 
+						<span class="discount-price">Now 11€</span>
+					</p>
+				
+				</div>
+			</div>
+			<div class="col-xs-3 figure">
+				<a href="#">
+					<img src="http://itsyogahelsinki.com/wp-content/uploads/2015/09/Helsinki7.jpg">	
+				</a>
+				<div class="figureCaption">
+					<p class="deal-title">Yoga class</p>
+					<p class="merchant-name">It's yoga Helsinki</p>
+					<p class="deal-location">Haukilahdenkatu 2 D, 3 kerros, 00550 Helsinki</p>
+					
+					<p class="pricing">
+						<span class="ori-price">40€</span> 
+						<span class="discount-price">Now 20€</span>
+					</p>
+				
+				</div>
+			</div>
+			<div class="col-xs-3 figure">
+				<a href="#/deal/classic-flannel-casual-shirt">
+					<img src="http://demandware.edgesuite.net/sits_pod39/dw/image/v2/AAGB_PRD/on/demandware.static/-/Sites-pim-catalog/default/dw9a268e75/pim-static/main/12098925_Syrah_480895_002_Main.jpg?sw=300">	
+				</a>
+				<div class="figureCaption">
+					<p class="deal-title">Classic flannel casual shirt</p>
+					<p class="merchant-name">Jack & Jones</p>
+					<p class="deal-location">Mannerheimintie 20</p>
+					
+					<p class="pricing">
+						<span class="ori-price">39,95€</span> 
+						<span class="discount-price">Now 29,99€</span>
+					</p>
+				
+				</div>
+			</div>
+			<div class="col-xs-3 figure">
+				<a href="#">
+					<img src="http://fi.fitness24seven.com/uploads/60449702.png">	
+				</a>
+				<div class="figureCaption">
+					<p class="deal-title">Gym packages</p>
+					<p class="merchant-name">24seven</p>
+					<p class="deal-location">Kauppakartanonkatu 3, Helsinki</p>
+					
+					<p class="pricing">
+						<span class="ori-price">20€</span> 
+						<span class="discount-price">Now 15€</span>
+					</p>
+				
+				</div>
+			</div>
+		</div>
+	</div>

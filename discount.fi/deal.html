@@ -1,0 +1,125 @@
+<section id="deal" class="container">
+	<div class="row">
+		<div class="col-xs-9 left-panel">
+			<h1>{{deal.title}}</h1>
+			<h2>{{deal.merchantName}}</h2>
+			<div class="dealImages">
+				<img ng-src="{{deal.images[0]}}" class="cover-pic"/>
+	            <div class="otherPics">
+	                <img ng-repeat="pic in deal.images" ng-src="{{pic}}" alt=""/>
+	            </div>	
+			</div>
+			<br/>
+			<div class="row">
+				<div class="col-xs-12">
+					<h3>{{deal.title}}</h3>
+					<p style="text-align: justify;line-height: 19px;">{{deal.description}}</p>
+				</div>
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="col-xs-12">
+					<p>
+						<i>For questions pertaining to this deal, click the Ask a Question button below. For post-purchase inquiries, please contact <a>Alennus.fi customer support</a>.
+						<br><br>
+						Goods sold by Alennus.fi Goods. View the <a>Alennus.fi Goods FAQ</a> to learn more.
+						</i>
+					</p>
+				</div>
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="col-xs-8 googleMap" google-map style="background:url('images/forum-googlemap.PNG') no-repeat fixed center; ">
+					
+				</div>
+				<div class="col-xs-4 mapDescription">
+					<p class="merchantName"><a>Jack & Jones</a></p>
+					<p class="address">Mannerheimintie 14–20, 00100 Helsinki</p>
+					<p class="directionLink"><a href="http://www.reittiopas.fi/en/?from_in=rautatientori&via_time=0&to_in=Forum%2C+Helsinki&to=poi*Forum%2C+Helsinki*2552274*6673395&hour=09&minute=48&timetype=departure&date_cb=on&day=23&month=10&year=2015" target="_blank">
+						<img class="logo" src="images/HSL-logo.png" style="background-color: #007ac9;">
+					Get directions</a></p>
+					<p class="directionLink"><a href="https://www.google.fi/maps/place/Forum/@60.1687676,24.9361478,17z" target="_blank"><img class="logo" src="images/googleMaps-logo.png">Get directions</a></p>
+				</div>
+			</div>
+			<hr/>
+			<div class="row review">
+				<div class="reviewSegment col-xs-12" ng-repeat="segment in deal.userRating">
+					<p style="font-size:16px">{{segment.title}} ({{segment.star}})</p>
+					<p style="color: #737373;">{{segment.review}}</p>
+					<p>- {{segment.user}}</p>
+				</div>
+				<h3 style="text-align: center">Write a review</h3>
+				<div ng-if="!isRated" ng-click="rate()">
+					<div class="col-xs-12" style="text-align: center">
+						<span class="glyphicon glyphicon-star-empty"></span>
+						<span class="glyphicon glyphicon-star-empty"></span>
+						<span class="glyphicon glyphicon-star-empty"></span>
+						<span class="glyphicon glyphicon-star-empty"></span>
+						<span class="glyphicon glyphicon-star-empty"></span>
+					</div>	
+				</div>
+				<div ng-if="isRated" ng-init="rating={}">
+						<div class="col-xs-12" style="text-align: center">
+							<span class="glyphicon glyphicon-star"></span>
+							<span class="glyphicon glyphicon-star"></span>
+							<span class="glyphicon glyphicon-star"></span>
+							<span class="glyphicon glyphicon-star"></span>
+							<span class="glyphicon glyphicon-star"></span>
+						</div>
+						<input type="text" class="form-control"  placeholder="Title" ng-model="rating.title"/>
+						<textarea class="form-control" placeholder="Review" ng-model="rating.review"></textarea>
+						<button type="button" class="btn btn-success" ng-click="fakeSubmitReview('user000',5,rating.title, rating.review)">Submit</button>
+
+				</div>
+			</div>
+
+		</div>
+		<div class="col-xs-3 right-panel">
+			<p>
+				Now
+				<span class="discountPrice">{{deal.discountPrice}}</span>
+				<span class="oriPrice">{{deal.oriPrice}}</span>
+			</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<p class="sm">VALUE</p>
+					</div>
+				<div class="col-xs-4">
+					<p class="sm">DISCOUNT</p>
+				</div>
+				<div class="col-xs-4">
+					<p class="sm">YOU SAVE</p>
+				</div>
+				<div class="col-xs-4">€{{deal.oriPrice}}</div>
+				<div class="col-xs-4">{{deal.discountPercent}}%</div>
+				<div class="col-xs-4">€{{deal.clientSaving}}</div>
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="col-xs-12">
+					<h4 class="">
+						LIMITED TIME ONLY
+					</h4>
+					<p>5 days 23:22:08</p>	
+				</div>
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="col-xs-12">
+					<h4>LIMITED QUANTITY AVAILABLE</h4>
+					<p>Over 20 bought</p>
+				</div>
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="col-xs-12">
+					<h4>TERMS AND CONDITIONS</h4>
+					<ul style="padding: 0 17px;">
+						<li ng-repeat="term in deal.termsAndConditions"> {{term}}</li>	
+					</ul>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,32 @@
+#advancedSearch{
+  .filterInput{
+    //border-bottom: 1px solid #6c6c5e;
+    margin-bottom:20px;
+
+    ///
+    .filterTitle{
+      font-weight: 700;
+    }
+  }
+  .modificationTools{
+    .btn{
+      &.sm{
+        width: 20px;
+        height: 21px;
+        padding: 0;
+      }
+    }
+  }
+
+}
+#result-container{
+  &>table{
+    td{
+      padding:5px;
+    }
+
+    &>thead{
+      border-bottom: 2px solid rgba(128, 128, 128, 0.29);
+    }
+  }
+}

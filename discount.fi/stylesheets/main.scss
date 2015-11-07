@@ -1,0 +1,124 @@
+#left-nav-categories{
+	.list-group{
+		.list-group-item{
+			padding:6px;
+		}
+	}
+
+}
+#right-nav-recommendation{
+	h1{
+		font-size:28px;
+	}
+	table{
+		thead{
+			border-bottom: 2px solid #D2D2D2;
+		}
+	}
+	ul.sortingTool{
+        padding: 0 0 0 18px;
+	    list-style-type: none;
+        border-bottom: 1px solid #DDD;
+	    li{
+	    	display:inline-block;
+    	    padding: 12px 20px;
+		    border: 1px solid #DDD;
+		    margin-bottom: -1px;
+    		margin-left: -5px;
+		    background-color: #f2f2f2;
+	        cursor: pointer;
+
+    		&.active{
+    			border-bottom:1px solid white;
+    			background-color: #FFFFFF;
+    		}
+    		///
+    		.fa{
+    			margin-left:3px;
+    			margin-right:3px;
+    		}
+	    }
+    }
+	.placeholder{
+		position: absolute;
+	    bottom: 0;
+	    background-color: rgba(8, 8, 8, 0.52);
+	    color: white;
+	    p{
+	    	font-size: 17px;
+	    }
+
+	    ///
+	    div.deal-location, div.merchant-name{
+		    min-height: 21px;
+		    margin: 0;
+		    color: #888;
+	    }
+	    p.deal-price{
+	    	color: #53a318;
+	    	span.ori-price{
+	    		text-decoration: line-through;
+	    		color: white;
+	    	}
+	    	span.discount-price{
+
+	    	}
+	    }
+	}
+	img{
+	    width: 100%;
+    	height: 100%;
+	}
+}
+#recentlyViewedDeals{
+	.figure{
+		img{
+		    width: 100%;
+	    	height: 134px;
+	    	object-fit: cover;
+		}	
+	}
+	.figureCaption{
+		padding: 15px 15px 10px 15px;
+    	//background-color: 15px 15px 1px 15px;
+
+    	///
+
+		p.deal-title{
+			font-size: 16px;
+		    line-height: 22px;
+		    color: #333;
+		    text-decoration: none;
+		}
+		p.merchant-name{
+			height: 22px;
+			color: #888;
+		}
+		p.deal-location{
+		    display: block;
+		    height: 24px;
+		    margin: 0;
+		    color: #888;
+		}
+		p.pricing{
+			    color: #53a318;
+			    font-size: 19px;
+			    display: block;
+			    text-align: right;
+			    margin-top: 8px;
+	    	span.ori-price{
+	    		text-decoration: line-through;
+	    		color: #888;
+	    	}
+	    	span.discount-price{
+
+	    	}
+		}
+	}
+	
+}
+
+@import 'postDeal';
+@import 'deal';
+@import 'general';
+@import 'advancedSearch';

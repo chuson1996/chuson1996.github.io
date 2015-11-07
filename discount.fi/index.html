@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Discount.fi</title>
+	<script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="./node_modules/angular-ui-router/build/angular-ui-router.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXGJT98-6fdkumZiJAt8E4GzDXSeOOR_c"
+        ></script>
+	<link rel="stylesheet" type="text/css" href="dist/bundle.css">
+	<link rel="stylesheet" type="text/css" href="./node_modules/font-awesome/css/font-awesome.min.css">
+</head>
+<body ng-app="discountApp" data-spy="scroll" data-target="#fixed-nav">
+	<div ui-view="header"></div>
+	<div ui-view="body"></div>
+
+	<script type="text/javascript" src="dist/bundle.js"></script>
+</body>
+</html>

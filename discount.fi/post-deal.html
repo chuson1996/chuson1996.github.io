@@ -1,0 +1,129 @@
+<section id="postDeal-main" class="container">
+	<div class="row">
+
+		<div class="col-xs-12">
+			<input type="text" class="h1 input" placeholder="Deal title" ng-model="dealTitle">
+		</div>	
+		<div class="col-xs-12">
+			<input type="text" class="h3 input" placeholder="Merchant name" ng-model="merchantName">
+		</div>
+		<div class="row">
+            <div class="left-panel col-xs-9">
+                <div class="whenNoImages" ng-if="!hasImages">
+                    <p>Uploading images will tremendously facilitate your deal.</p>
+                    <button class="btn btn-default" ng-click="afterPostImages()">Upload Images</button>
+                </div>
+                <div class="whenImages" ng-if="hasImages">
+                    <img ng-src="{{defaultImages[0]}}" class="cover-pic"/>
+                    <div class="otherPics">
+                        <img ng-repeat="pic in defaultImages" ng-src="{{pic}}" alt=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3 right-panel">
+                <label for="">Category</label>
+                <select name="" class="form-control">
+                    <option value="foodDrink">Food & Drink</option>
+                    <option value="deliveryTakeout">Delivery & Takeout</option>
+                    <option value="beautySpas">Beauty & Spas</option>
+                    <option value="healthFitness">Health & Fitness</option>
+                    <option value="automotive">Automotive</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="homeGarden">Home & Garden</option>
+                    <option value="travel">Travel</option>
+                    <option value="giftIdeas">Gift Ideas</option>
+                </select>
+
+                <hr/>
+
+                <label for="">Types</label>
+                <select name="" class="form-control" ng-model="type">
+                    <option value="discount">Discount</option>
+                    <option value="promotion">Promotion</option>
+                    <option value="pointSaving">Point Saving</option>
+                </select>
+                <div class="discountType" ng-if="type=='discount'">
+                    <label for="">Discount price</label>
+                    <input type="number" class="form-control" ng-model="ofDiscount.discountPrice" placeholder="Discount price" ng-change="ofDiscount.calculate()"/>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="">Value</label>
+                            <input type="number" class="form-control" ng-model="ofDiscount.oriPrice" ng-change="ofDiscount.calculate()"/>
+                        </div>
+                        <div class="col-xs-4">
+                            <label for="">Discount</label>
+                            <p ng-bind="ofDiscount.discountPercent"></p>
+                        </div>
+                        <div class="col-xs-4">
+                            <label for="">Client save</label>
+                            <p ng-bind="ofDiscount.clientSaving"></p>
+                        </div>
+                    </div>
+                    
+
+                </div>
+                <div class="promotionType row" ng-if="type=='promotion'">
+                    <div class="col-xs-12"><label for="">Buy</label></div>
+
+                    <div class="col-xs-6"><input type="number" placeholder="Quantity" class="form-control"/></div>
+                    <div class="col-xs-6"><input type="text" placeholder="Value" class="form-control"/></div>
+
+                    <div class="col-xs-12"><label for="">Get</label></div>
+
+                    <div class="col-xs-12"><input type="text" placeholder="Item" class="form-control"/></div>
+                    <div class="col-xs-6"><input type="number" placeholder="Quantity" class="form-control"/></div>
+                    <div class="col-xs-6"><input type="text" placeholder="Value" class="form-control"/></div>
+                </div>
+                <div class="pointSavingType row" ng-if="type=='pointSaving'">
+                    <div class="col-xs-12">
+                        <label for="">Point</label>
+                        <input type="number" class="form-control" ng-model="ofPointSaving.point"/>
+
+                        <label for="">Point Redemption</label>
+                        <div class="col-xs-12"><input type="text" placeholder="Item" class="form-control"/></div>
+                        <div class="col-xs-6"><input type="number" placeholder="Quantity" class="form-control"/></div>
+                        <div class="col-xs-6"><input type="text" placeholder="Value" class="form-control"/></div>
+                    </div>
+
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label for="">Quantity</label>
+                        <input type="number" class="form-control" min="0"/>
+                        <hr/>
+                    </div>
+                </div>
+                <label for="">Valid from</label>
+                <input type="date" class="form-control" ng-model="startDate"/>
+                <input type="time" class="form-control" ng-model="startTime"/>
+                <label for="">To</label>
+                <input type="date" class="form-control" ng-model="endDate"/>
+                <input type="time" class="form-control" ng-model="endTime"/>
+
+            </div>
+		</div>
+        <div class="row">
+            <div class="col-xs-9">
+                <h2>The deal</h2>
+                <ul>
+                    <li>{{dealTitle}}</li>
+                </ul>
+                <h2>{{merchantName}}</h2>
+                <textarea name="" cols="30" rows="6" ng-model="dealDescription" placeholder="Deal description" class="form-control"></textarea>
+
+                <hr/>
+
+                <h2>Tags</h2>
+                <div class="tagList">
+                    <span class="tag">T-shirt</span>
+                    <span class="tag">Man Clothes</span>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <h2>Terms & Conditions</h2>
+                <textarea name="" cols="30" rows="6" class="form-control"></textarea>
+            </div>
+        </div>
+	</div>
+</section>

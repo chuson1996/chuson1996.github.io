@@ -340,6 +340,7 @@ var _helperEventListenerJs = require('./helper/EventListener.js');
 var _helperEventListenerJs2 = _interopRequireDefault(_helperEventListenerJs);
 
 function Editor(rootContainer, options) {
+    rangy.init();
     options = options || {};
     // Setting up default options
     _helperHelper2['default'].assign(options, {
@@ -490,7 +491,9 @@ function Editor(rootContainer, options) {
                 }, 0);
 
                 /* Cursor at an empty paragraph ? */
-                if (rangy.getSelection().anchorNode && rangy.getSelection().anchorNode.nodeName == "P" && rangy.getSelection().focusNode && rangy.getSelection().focusNode.nodeName == "P" && !rangy.getSelection().anchorNode.textContent.trim() && rangy.getSelection().rangeCount == 1) showInsertToolbar();else hideInsertToolbar();
+                if (rangy.getSelection().anchorNode && /^(P|H1|H2|PRE|BLOCKQUOTE)$/.test(rangy.getSelection().anchorNode.nodeName.toUpperCase()) && rangy.getSelection().focusNode && /^(P|H1|H2|PRE|BLOCKQUOTE)$/.test(rangy.getSelection().focusNode.nodeName.toUpperCase()) && !rangy.getSelection().anchorNode.textContent.trim() && rangy.getSelection().rangeCount == 1) {
+                    showEditorTooltip();
+                } else hideEditorTooltip();
             }
         });
 
@@ -656,7 +659,7 @@ function Editor(rootContainer, options) {
                     /* Disable or hide linking stuff */
                     linking.disableLinking();
 
-                    insertToolbarState().initial();
+                    editorTooltipState().initial();
                 }, 0);
             },
             'blur': function blur(e) {
@@ -756,17 +759,17 @@ function Editor(rootContainer, options) {
     }
     function editorTooltipEvents() {
         _helperEventListenerJs2['default'].addEventListener().on(elements.editorContainer.querySelector('.editorInlineTooltip .expandInsertToolbarBtn'))['with']({
-            'click': insertToolbarState().showOptions
+            'click': editorTooltipState().showOptions
         });
         _helperEventListenerJs2['default'].addEventListener().on(elements.editorContainer.querySelector('.editorInlineTooltip .addImgBtn'))['with']({
-            'click': insertToolbarState().addImg
+            'click': editorTooltipState().addImg
         });
         _helperEventListenerJs2['default'].addEventListener().on(elements.editorContainer.querySelector(".editorInlineTooltip .pasteBtn"))['with']({
             'click': function click() {
                 /* Save the cursor position before focusing on the text input */
                 cursorAt = rangy.getSelection().saveRanges();
 
-                insertToolbarState().addImg().pasteUrl();
+                editorTooltipState().addImg().pasteUrl();
                 elements.editorContainer.querySelector('.editorInlineTooltip .addImgOptions form input[name="pastedImgUrl"]').focus();
             }
         });
@@ -782,7 +785,7 @@ function Editor(rootContainer, options) {
                     elements.editorContainer.querySelector('.editorInlineTooltip .addImgOptions form input[name="pastedImgUrl"]').value = "";
                 }, 1);
 
-                insertToolbarState().initial();
+                editorTooltipState().initial();
             }
         });
     }
@@ -804,7 +807,7 @@ function Editor(rootContainer, options) {
             });
         }
     }
-    function insertToolbarState() {
+    function editorTooltipState() {
         var state = "initial";
         var contentDiv = $(elements.editorInlineTooltip).find('.content')[0];
         var addImgOptions = $(elements.editorInlineTooltip).find('.addImgOptions')[0];
@@ -929,16 +932,16 @@ function Editor(rootContainer, options) {
         $(elements.editorMenu).addClass('hidden').removeClass('show');
         if (options.editorMenu.activeClass) $(elements.editorMenu).removeClass(options.editorMenu.activeClass);
     }
-    function showInsertToolbar() {
+    function showEditorTooltip() {
         var selectionRange = rangy.getSelection().getRangeAt(0);
-        var pContainer = _helperHelper2['default'].node(selectionRange.commonAncestorContainer).parentOfTypes("P");
+        var pContainer = $(selectionRange.commonAncestorContainer).closest("P, BLOCKQUOTE, H1, H2, H3, PRE")[0];
         if (!pContainer) return;
 
         elements.editorInlineTooltip.style.top = pContainer.offsetTop - 10 + "px";
         elements.editorInlineTooltip.style.left = pContainer.offsetLeft - 40 + "px";
         $(elements.editorInlineTooltip).removeClass('hidden').addClass('show');
     }
-    function hideInsertToolbar() {
+    function hideEditorTooltip() {
         $(elements.editorInlineTooltip).removeClass('show').addClass('hidden');
     }
 }

@@ -1,0 +1,62 @@
+#deal{
+	p{
+		&.sm{
+			font-size:12px;
+		}
+	}
+
+	///
+	.left-panel{
+
+	}
+	.right-panel{
+
+	}
+	.review{
+		.glyphicon{
+			font-size: 27px;
+			color: #8E8E07;
+		}
+	}
+
+	.dealImages{
+		text-align:center;
+		.otherPics{
+	        display: block;
+	        text-align: center;
+	        img{
+	          width: 48px;
+	          margin: 0 7px;
+	        }
+	    }
+	}
+	.googleMap{
+		height:500px
+	}
+	.mapDescription{
+		.merchantName{
+			font-weight: 700;
+		}
+		.address{
+
+		}
+		.directionLink{
+			.logo{
+	    		width: 51px;
+			}
+		}
+	}
+	.oriPrice{
+		text-decoration: line-through;
+	    font-size: 17px;
+	    color: rgba(128, 128, 128, 0.47);
+	    margin-left: 5px;
+		margin-right: 5px;
+	}
+	.discountPrice{
+		font-size: 38px;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+	
+}

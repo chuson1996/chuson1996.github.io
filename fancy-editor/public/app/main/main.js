@@ -10,6 +10,6 @@
 
 
 
-rangy.init();
+
 var editor = new Editor($('.editor')[0]);
 

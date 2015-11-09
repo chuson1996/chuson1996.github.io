@@ -2,43 +2,43 @@ doctype html
 html(lang="en")
     head
         title As our inner souls open...
-        script(src="./app/src/node_modules/jquery/dist/jquery.min.js")
-        script(src="./app/src/node_modules/lodash/index.js")
+        script(src="./app/node_modules/jquery/dist/jquery.min.js")
+        script(src="./app/node_modules/lodash/index.js")
 
         script(src="./app/lib/rangy-core.js")
         script(src="./app/lib/rangy-classapplier.js")
-        //script(src="./app/lib/rangy-selectionsaverestore.js")
+        
         script(src="./app/lib/rangy-textrange.js")
-        //script(src="./app/lib/rangy-highlighter.js")
+        
         script(src="./app/lib/rangy-serializer.js")
-        //script(src="./app/lib/wrappedselection.js")
+        
         script(src="./app/lib/rangy-position.js")
 
-        //script(src="./app/src/node_modules/undo-manager/lib/undomanager.js")
+        //- script(src="./app/src/node_modules/undo-manager/lib/undomanager.js")
 
-        script(src="./app/src/node_modules/angular/angular.min.js")
-        //script(src="./app/lib/jQuery-File-Upload/jquery.fileupload-angular.js")
-        script(src="./app/lib/jQuery-File-Upload/jquery.ui.widget.js")
-        script(src="./app/lib/jQuery-File-Upload/jquery.fileupload.js")
-        script(src="./app/lib/jQuery-File-Upload/jquery.iframe-transport.js")
-        script(src="./app/lib/jQuery-File-Upload/jquery.fileupload-process.js")
-        script(src="./app/lib/jQuery-File-Upload/jquery.fileupload-image.js")
+        script(src="./app/node_modules/angular/angular.min.js")
+        //- script(src="./app/lib/jQuery-File-Upload/jquery.fileupload-angular.js")
+        //- script(src="./app/lib/jQuery-File-Upload/jquery.ui.widget.js")
+        //- script(src="./app/lib/jQuery-File-Upload/jquery.fileupload.js")
+        //- script(src="./app/lib/jQuery-File-Upload/jquery.iframe-transport.js")
+        //- script(src="./app/lib/jQuery-File-Upload/jquery.fileupload-process.js")
+        //- script(src="./app/lib/jQuery-File-Upload/jquery.fileupload-image.js")
 
-        script(src="./app/src/node_modules/cson-serializer/lib/cson-serializer.js")
-        script(src="./app/src/helper/EventListener.js")
+        script(src="./app/node_modules/cson-serializer/lib/cson-serializer.js")
+        //- script(src="./app/lib/Editor/src/helper/EventListener.js")
 
-        link(rel="stylesheet", href="./app/src/node_modules/animate.css/animate.min.css")
-        link(rel="stylesheet", href="./app/dist/bundle.css")
+        link(rel="stylesheet", href="./app/node_modules/animate.css/animate.min.css")
+        link(rel="stylesheet", href="./app/lib/Editor/dist/fancy-editor.css")
+        script(src="./app/lib/Editor/dist/fancy-editor.js")
 
     body()
-        h1 This is preview
-        p This doesn't work when replacing buttons with a tags
 
         p Rich text format:
-        .editor(paste-as-text="true")
+        #my-editor(paste-as-text="true")
         //p Inline mode + no rich text format:
         //paragraph(paste-as-text="true", mode="inline")
         div#testing
 
 
-        script(src="./app/dist/bundle.js")
+        link(rel="stylesheet", href="./app/main/style.css")
+        script(src="./app/main/main.js")

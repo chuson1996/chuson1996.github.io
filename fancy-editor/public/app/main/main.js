@@ -11,5 +11,5 @@
 
 
 
-var editor = new Editor($('.editor')[0]);
+var editor = new Editor($('#my-editor')[0]);
 

@@ -16,6 +16,8 @@
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
+    "angular": "^1.4.7",
+    "animate.css": "^3.4.0",
     "babel-runtime": "^5.8.24",
     "babelify": "^6.3.0",
     "grunt": "^0.4.5",
@@ -23,6 +25,10 @@
     "grunt-browserify": "^4.0.1",
     "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-watch": "^0.6.1",
-    "load-grunt-tasks": "^3.3.0"
+    "grunt-sass": "^1.1.0",
+    "jquery": "^2.1.4",
+    "load-grunt-tasks": "^3.3.0",
+    "lodash": "^3.10.1",
+    "undo-manager": "^1.0.3"
   }
 }
